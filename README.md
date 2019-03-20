@@ -1,2 +1,2 @@
 # WavesSDK-android
-Waves SDK for Android
+Template for Waves SDK for Android
