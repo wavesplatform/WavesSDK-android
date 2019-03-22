@@ -12,10 +12,14 @@ import com.wavesplatform.sdk.net.OnErrorListener
 import com.wavesplatform.sdk.net.RetrofitException
 import com.wavesplatform.sdk.utils.RxUtil
 import com.wavesplatform.sdk.utils.getScaledAmount
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    // For Activity or Fragment add Observables in CompositeDisposable
+    private val compositeDisposable = CompositeDisposable()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,20 +37,26 @@ class MainActivity : AppCompatActivity() {
             // Create Wallet with your seed
             Wavesplatform.createWallet(newSeed)
 
-            Wavesplatform.getNodeService()
-                .wavesBalance(Wavesplatform.getAddress())
-                .compose(RxUtil.applyObservableDefaultSchedulers())
-                .subscribe({ wavesBalance ->
-                    Toast.makeText(this,
-                        "Balance is : ${getScaledAmount(wavesBalance.balance, 8)} Waves",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }, { error ->
-                    val errorMessage = "Can't get wavesBalance! + ${error.message}"
-                    Log.e("MainActivity", errorMessage)
-                    error.printStackTrace()
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                })
+            // Create request to Node service about address balance
+            compositeDisposable.add(
+                Wavesplatform.getNodeService()
+                    .wavesBalance(Wavesplatform.getAddress())
+                    .compose(RxUtil.applyObservableDefaultSchedulers())
+                    .subscribe({ wavesBalance ->
+                        // Success
+                        Toast.makeText(
+                            this,
+                            "Balance is : ${getScaledAmount(wavesBalance.balance, 8)} Waves",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }, { error ->
+                        // Fail
+                        val errorMessage = "Can't get wavesBalance! + ${error.message}"
+                        Log.e("MainActivity", errorMessage)
+                        error.printStackTrace()
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    })
+            )
         }
 
         Wavesplatform.setOnErrorListener(object : OnErrorListener {
@@ -56,16 +66,18 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    // Unsubscribe after destroy
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
