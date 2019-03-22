@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: "$rootDir/ktlint.gradle"
+apply from: "$rootDir/detekt.gradle"
 
 android {
     compileSdkVersion 28
