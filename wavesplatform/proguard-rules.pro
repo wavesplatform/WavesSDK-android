@@ -1,208 +1,137 @@
--verbose
--dontobfuscate
--ignorewarnings
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
 
-# These lines allow optimisation whilst preserving stack traces
--optimizations !code/allocation/variable
--optimizations !class/unboxing/enum
--keepattributes SourceFile, LineNumberTable
--keep,allowshrinking,allowoptimization class * { <methods>; }
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
 
-# Support V7
--dontwarn android.support.v7.**
--keep class android.support.v7.** { *; }
--keep interface android.support.v7.** { *; }
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
 
- #Strip all logging for security and performance
--assumenosideeffects class android.util.Log {
-    public static boolean isLoggable(java.lang.String, int);
-    public static int v(...);
-    public static int i(...);
-    public static int w(...);
-    public static int d(...);
-    public static int e(...);
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+
+# Whispersystems ---------------------------------------------#
+-keep class org.whispersystems.curve25519.** { *; }
+# End Whispersystems ------------------------------------------
+
+# Spongycastle -----------------------------------------------#
+-keep class org.spongycastle.**
+-dontwarn org.spongycastle.jce.provider.X509LDAPCertStoreSpi
+-dontwarn org.spongycastle.x509.util.LDAPStoreHelper
+# End Spongycastle --------------------------------------------
+
+# Guava ------------------------------------------------------#
+-dontwarn javax.lang.model.element.Modifier
+
+# Note: We intentionally don't add the flags we'd need to make Enums work.
+# That's because the Proguard configuration required to make it work on
+# optimized code would preclude lots of optimization, like converting enums
+# into ints.
+
+# Throwables uses internal APIs for lazy stack trace resolution
+-dontnote sun.misc.SharedSecrets
+-keep class sun.misc.SharedSecrets {
+  *** getJavaLangAccess(...);
+}
+-dontnote sun.misc.JavaLangAccess
+-keep class sun.misc.JavaLangAccess {
+  *** getStackTraceElement(...);
+  *** getStackTraceDepth(...);
 }
 
-# Google Play Services
--keep public class com.google.android.gms.* { public *; }
--dontwarn com.google.android.gms.**
-
-# Don't mess with classes with native methods
--keepclasseswithmembers class * {
-    native <methods>;
+# FinalizableReferenceQueue calls this reflectively
+# Proguard is intelligent enough to spot the use of reflection onto this, so we
+# only need to keep the names, and allow it to be stripped out if
+# FinalizableReferenceQueue is unused.
+-keepnames class com.google.common.base.internal.Finalizer {
+  *** startFinalizer(...);
+}
+# However, it cannot "spot" that this method needs to be kept IF the class is.
+-keepclassmembers class com.google.common.base.internal.Finalizer {
+  *** startFinalizer(...);
+}
+-keepnames class com.google.common.base.FinalizableReference {
+  void finalizeReferent();
+}
+-keepclassmembers class com.google.common.base.FinalizableReference {
+  void finalizeReferent();
 }
 
--keepclasseswithmembernames class * {
-    native <methods>;
-}
-
--keep class android.support.v7.widget.SearchView { *; }
-
-# Enums
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
-
-# Keep all serializable objects
--keepclassmembers class * implements java.io.Serializable {
-    static final long serialVersionUID;
-    private static final java.io.ObjectStreamField[] serialPersistentFields;
-    private void writeObject(java.io.ObjectOutputStream);
-    private void readObject(java.io.ObjectInputStream);
-    java.lang.Object writeReplace();
-    java.lang.Object readResolve();
-}
-
-# To prevent cases of reflection causing issues
--keepattributes InnerClasses
-# Keep custom components in XML
--keep public class custom.components.**
-
--keepclasseswithmembernames class * {
-    native <methods>;
-}
-
--keepclasseswithmembernames class * {
-    public <init>(android.content.Context, android.util.AttributeSet);
-}
-
--keepclasseswithmembernames class * {
-    public <init>(android.content.Context, android.util.AttributeSet, int);
-}
-
-# To maintain custom components names that are used on layouts XML:
--keep public class * extends android.view.View {
-    public <init>(android.content.Context);
-    public <init>(android.content.Context, android.util.AttributeSet);
-    public <init>(android.content.Context, android.util.AttributeSet, int);
-    public void set*(...);
-}
-
-# Specific to Blockchain
--keep class android.support.design.widget.NavigationView { *; }
-
-# Retrolambda
--dontwarn java.lang.invoke.*
-
-# zxing
--dontwarn com.google.zxing.common.BitMatrix
-
-# Guava
+# Striped64, LittleEndianByteArray, UnsignedBytes, AbstractFuture
 -dontwarn sun.misc.Unsafe
--dontnote com.google.common.reflect.**
--dontnote com.google.common.util.concurrent.MoreExecutors
--dontnote com.google.common.cache.Striped64,com.google.common.cache.Striped64$Cell
 
-
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.** { *; }
--dontnote com.squareup.okhttp.internal.Platform
-
--dontwarn com.octo.android.robospice.retrofit.RetrofitJackson**
--dontwarn retrofit.appengine.UrlFetchClient
--keepclasseswithmembers class * {
-    @retrofit.http.* <methods>;
+# Striped64 appears to make some assumptions about object layout that
+# really might not be safe. This should be investigated.
+-keepclassmembers class com.google.common.cache.Striped64 {
+  *** base;
+  *** busy;
 }
--keep class com.google.gson.** { *; }
--keep class com.google.inject.** { *; }
--keep class org.apache.http.** { *; }
--keep class org.apache.james.mime4j.** { *; }
--keep class javax.inject.** { *; }
--dontwarn org.apache.http.**
--dontwarn android.net.http.AndroidHttpClient
-
--dontwarn sun.misc.**
-
-
-# ALSO REMEMBER KEEPING YOUR MODEL CLASSES
--keep class com.wavesplatform.wallet.v1.payload.** { *; }
--keep class com.wavesplatform.wallet.v1.api.** { *; }
-
-# slf4j
--dontwarn org.slf4j.**
-
-# Apache Commons
--dontwarn org.apache.**
-
--keep class com.firebase.** { *; }
--keep class org.apache.** { *; }
--keepnames class com.fasterxml.jackson.** { *; }
--keepnames class javax.servlet.** { *; }
--keepnames class org.ietf.jgss.** { *; }
--dontwarn org.w3c.dom.**
--dontwarn org.joda.time.**
--dontwarn org.shaded.apache.**
--dontwarn org.ietf.jgss.**
-
-# Only necessary if you downloaded the SDK jar directly instead of from maven.
--keep class com.shaded.fasterxml.jackson.** { *; }
-
--keepattributes InnerClasses
-
--keep class com.wavesplatform.wallet.v1.data.services.** {*;}
--keepclassmembers class com.wavesplatform.wallet.v1.data.services.** {*;}
--keep class com.wavesplatform.wallet.v1.data.access.** {*;}
--keepclassmembers class com.wavesplatform.wallet.v1.data.access.** {*;}
-
-
-# fingerprintidentify
--ignorewarnings
-# fingerprintidentify MeiZuFingerprint
--dontwarn com.fingerprints.service.**
--keep class com.fingerprints.service.** { *; }
-# fingerprintidentify SmsungFingerprint
--dontwarn com.samsung.android.sdk.**
--keep class com.samsung.android.sdk.** { *; }
-
--keep class com.chad.library.adapter.** {
-*;
-}
--keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
--keep public class * extends com.chad.library.adapter.base.BaseViewHolder
--keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
-     <init>(...);
+-keepclassmembers class com.google.common.cache.Striped64$Cell {
+  <fields>;
 }
 
+-dontwarn java.lang.SafeVarargs
 
-## Android architecture components: Lifecycle
-# LifecycleObserver's empty constructor is considered to be unused by proguard
--keepclassmembers class * implements android.arch.lifecycle.LifecycleObserver {
-    <init>(...);
-}
-# ViewModel's empty constructor is considered to be unused by proguard
--keepclassmembers class * extends android.arch.lifecycle.ViewModel {
-    <init>(...);
-}
-# keep Lifecycle State and Event enums values
--keepclassmembers class android.arch.lifecycle.Lifecycle$State { *; }
--keepclassmembers class android.arch.lifecycle.Lifecycle$Event { *; }
-# keep methods annotated with @OnLifecycleEvent even if they seem to be unused
-# (Mostly for LiveData.LifecycleBoundObserver.onStateChange(), but who knows)
--keepclassmembers class * {
-    @android.arch.lifecycle.OnLifecycleEvent *;
+-keep class java.lang.Throwable {
+  *** addSuppressed(...);
 }
 
--keep class android.support.v7.widget.SearchView { *; }
+# Futures.getChecked, in both of its variants, is incompatible with proguard.
 
--keepclassmembers class * implements android.arch.lifecycle.LifecycleObserver {
-    <init>(...);
+# Used by AtomicReferenceFieldUpdater and sun.misc.Unsafe
+-keepclassmembers class com.google.common.util.concurrent.AbstractFuture** {
+  *** waiters;
+  *** value;
+  *** listeners;
+  *** thread;
+  *** next;
+}
+-keepclassmembers class com.google.common.util.concurrent.AtomicDouble {
+  *** value;
+}
+-keepclassmembers class com.google.common.util.concurrent.AggregateFutureState {
+  *** remaining;
+  *** seenExceptions;
 }
 
--keep class * implements android.arch.lifecycle.LifecycleObserver {
-    <init>(...);
+# Since Unsafe is using the field offsets of these inner classes, we don't want
+# to have class merging or similar tricks applied to these classes and their
+# fields. It's safe to allow obfuscation, since the by-name references are
+# already preserved in the -keep statement above.
+-keep,allowshrinking,allowobfuscation class com.google.common.util.concurrent.AbstractFuture** {
+  <fields>;
 }
--keepclassmembers class android.arch.** { *; }
--keep class android.arch.** { *; }
--dontwarn android.arch.**
 
+# Futures.getChecked (which often won't work with Proguard anyway) uses this. It
+# has a fallback, but again, don't use Futures.getChecked on Android regardless.
+-dontwarn java.lang.ClassValue
 
--keepattributes *Annotation*,InnerClasses
+# MoreExecutors references AppEngine
+-dontnote com.google.appengine.api.ThreadManager
+-keep class com.google.appengine.api.ThreadManager {
+  static *** currentRequestThreadFactory(...);
+}
+-dontnote com.google.apphosting.api.ApiProxy
+-keep class com.google.apphosting.api.ApiProxy {
+  static *** getCurrentEnvironment (...);
+}
+# End Guava ---------------------------------------------------
 
--dontwarn ren.yale.android.retrofitcachelib.**
--keep class ren.yale.android.retrofitcachelib.** { *; }
+# RxJava 2 & RxAndroid ---------------------------------------#
+# Nothing requires ProGuard
+# End RxJava 2 & RxAndroid ------------------------------------
 
-# Retrofit
+# Retrofit ---------------------------------------------------#
 -dontwarn retrofit2.**
 -dontwarn org.codehaus.mojo.**
 -keep class retrofit2.** { *; }
@@ -224,38 +153,55 @@
 
 -dontwarn org.robovm.**
 -keep class org.robovm.** { *; }
+# End Retrofit ------------------------------------------------
 
-#okhttp3
--dontwarn com.squareup.okhttp3.**
--keep class com.squareup.okhttp3.** { *;}
--keep class okhttp3.** { *;}
--keep class okio.** { *;}
--dontwarn sun.security.**
--keep class sun.security.** { *;}
--dontwarn okhttp3.**
--dontwarn javax.annotation.**
--keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
--dontwarn org.codehaus.mojo.animal_sniffer.*
--dontwarn okhttp3.internal.platform.ConscryptPlatform
+# LeakCanary -------------------------------------------------#
+-keep class org.eclipse.mat.** { *; }
+-keep class com.squareup.leakcanary.** { *; }
+# End LeakCanary ----------------------------------------------
 
-# Rxjava rules
+# Reactive Network -------------------------------------------#
+-dontwarn com.github.pwittchen.reactivenetwork.library.ReactiveNetwork
+-dontwarn io.reactivex.functions.Function
 -dontwarn rx.internal.util.**
+-dontwarn sun.misc.Unsafe
+# End Reactive Network ----------------------------------------
 
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-    long producerIndex;
-    long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    long producerNode;
-    long consumerNode;
-}
+# Gson -------------------------------------------------------#
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
 
-#rxjava
--dontwarn rx.**
--keep class rx.** { *; }
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
 
--dontwarn sun.misc.**
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
 
+# Application classes that will be serialized/deserialized over Gson
+# -keep class com.google.gson.examples.android.model.** { *; }
+
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+# End Gson ----------------------------------------------------
+
+# OkHttp3 ----------------------------------------------------#
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+# End OkHttp3 -------------------------------------------------
+
+# Dagger 2 ---------------------------------------------------#
+-dontwarn com.google.errorprone.annotations.**
+# End Dagger 2 ------------------------------------------------
+
+# Retrofitcachelibrx2 (retrofit2 + okhttp3 + rxjava2) --------#
 -dontwarn ren.yale.android.retrofitcachelibrx2.**
 -keep class ren.yale.android.retrofitcachelibrx2.** { *; }
 -keepclasseswithmembernames class  retrofit2.adapter.rxjava2.BodyObservable { *; }
@@ -265,162 +211,47 @@
 -keepclasseswithmembernames class retrofit2.Retrofit { *; }
 -keepclasseswithmembernames class retrofit2.ServiceMethod { *; }
 -keepclasseswithmembernames class retrofit2.OkHttpCall { *; }
+# End Retrofitcachelibrx2 (retrofit2 + okhttp3 + rxjava2) -----
 
--dontwarn com.google.errorprone.annotations.*
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-   long producerIndex;
-   long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
--dontnote rx.internal.util.PlatformDependent
+# Apache commons.io ------------------------------------------#
+-dontwarn java.beans.*
+-dontnote org.apache.commons.compress.**
+-dontwarn org.apache.commons.compress.**
+-keep class org.apache.commons.lang3.StringUtils { *; }
+-keep class org.apache.commons.io.IOUtils { *; }
+-keep class org.apache.commons.io.FileUtils { *; }
+-dontnote org.apache.commons.io.IOUtils
+-dontnote org.apache.commons.lang3.StringUtils
+-dontnote org.apache.commons.io.FileUtils
+-dontwarn java.nio.channels.SeekableByteChannel
+-dontwarn java.nio.file.attribute.FileAttribute
+-dontwarn java.io.File
+# End Apache commons.io ---------------------------------------
 
-# Retrofit rules
--dontwarn retrofit.**
--keep class retrofit.** { *; }
--keepattributes Exceptions
--dontwarn retrofit2.Platform$Java8
-
-# OkHttp rules
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
-
-# RxJava rules
-# RxAndroid will soon ship with rules so this may not be needed in the future
-# https://github.com/ReactiveX/RxAndroid/issues/219
--dontwarn sun.misc.Unsafe
--keep class rx.internal.util.unsafe.** { *; }
-
-# Gson rules
--keep class sun.misc.Unsafe { *; }
--keepattributes RetrofitException
-# Keep non static or private fields of models so Gson can find their names
--keepclassmembers class com.filmsinfo.android.data.model.** {
-    !static !private <fields>;
+# Common recommendations -------------------------------------#
+# Enums
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
 }
 
--keep class com.wavesplatform.sdk.net.service.GithubService { *; }
--keep class com.wavesplatform.sdk.net.service.NodeService { *; }
--keep class com.wavesplatform.sdk.net.service.ApiService { *; }
--keep class com.wavesplatform.sdk.net.service.MatcherService { *; }
--keep class com.wavesplatform.sdk.net.service.CoinomatService { *; }
--keep class com.wavesplatform.sdk.net.service.DataFeedService { *; }
+# Keep all serializable objects
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
 
--keep class com.wavesplatform.sdk.net.model.** { *; }
--keep class com.wavesplatform.wallet.v2.data.model.** { *; }
+# To prevent cases of reflection causing issues
+-keepattributes *Annotation*, InnerClasses
+# End Common recommendations -----------------------------------
+
+# Waves Net Models & Interfeces ------------------------------#
+-keep class com.wavesplatform.sdk.net.** { *; }
 -keepclassmembernames interface * {
     @retrofit.http.* <methods>;
 }
-
-# Produces useful obfuscated stack traces
-# http://proguard.sourceforge.net/manual/examples.html#stacktrace
--renamesourcefileattribute SourceFile
--keepattributes SourceFile,LineNumberTable
--dontwarn sun.misc.**
-
-
--dontnote rx.internal.util.PlatformDependent
-
-
--keepnames public class * extends io.realm.RealmObject
--keepnames public class * extends io.realm.RealmModel
--keep class io.realm.annotations.RealmModule
--keep class io.realm.annotations.RealmClass
--keep @io.realm.annotations.RealmModule class *
--keep @io.realm.annotations.RealmClass class *
--keep class io.realm.internal.Keep
--keep @io.realm.internal.Keep class *
--dontwarn io.realm.**
-
-# com.github.vicpinm:krealmextensions
--keep class com.vicpin.krealmextensions.**
-
-
-# Gson specific classes
--keep class sun.misc.Unsafe { *; }
-#-keep class com.google.gson.stream.** { *; }
-
--keepattributes *Annotation*,EnclosingMethod,Signature
--keepnames class com.fasterxml.jackson.** {
-*;
-}
--keepnames interface com.fasterxml.jackson.** {
-    *;
-}
--dontwarn com.fasterxml.jackson.databind.**
--keep class org.codehaus.** { *; }
-
-
--keep class com.google.common.io.Resources {
-    public static <methods>;
-}
--keep class com.google.common.collect.Lists {
-    public static ** reverse(**);
-}
--keep class com.google.common.base.Charsets {
-    public static <fields>;
-}
-
--keep class com.google.common.base.Joiner {
-    public static com.google.common.base.Joiner on(java.lang.String);
-    public ** join(...);
-}
-
--keep class com.google.common.collect.MapMakerInternalMap$ReferenceEntry
--keep class com.google.common.cache.LocalCache$ReferenceEntry
-
-# http://stackoverflow.com/questions/9120338/proguard-configuration-for-guava-with-obfuscation-and-optimization
--dontwarn javax.annotation.**
--dontwarn javax.inject.**
--dontwarn sun.misc.Unsafe
-
-# Guava
--dontwarn java.lang.ClassValue
--dontwarn com.google.j2objc.annotations.Weak
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
--dontoptimize
--dontobfuscate
--dontwarn sun.misc.Unsafe
--dontwarn com.google.common.collect.MinMaxPriorityQueue
-
--keepclasseswithmembers public class * {
-    public static void main(java.lang.String[]);
-}
-
-# AppsFlyer
--dontwarn com.android.installreferrer
--keep class com.appsflyer.** { *; }
-
--dontwarn com.samsung.android.sdk.**
--dontwarn afu.org.checkerframework.checker.**
--dontnote com.samsung.android.sdk.**
-
-# Crashlytics
--keep public class * extends java.lang.Exception
--printmapping mapping.txt
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
-
-# ReactiveNetwork
--dontwarn com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
--dontwarn io.reactivex.functions.Function
--dontwarn rx.internal.util.**
--dontwarn sun.misc.Unsafe
-
-# BaseRecyclerViewAdapterHelper
--keep class com.chad.library.adapter.** { *; }
--keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
--keep public class * extends com.chad.library.adapter.base.BaseViewHolder
--keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder { <init>(...); }
-
-# Glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
+# End Waves Net Models & Interfeces ---------------------------

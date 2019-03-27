@@ -32,6 +32,7 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled true
+            consumerProguardFiles 'proguard-rules.pro'
         }
         debug {
             // multiDexEnabled false
@@ -40,6 +41,7 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled true
+            consumerProguardFiles 'proguard-rules.pro'
         }
     }
 }
