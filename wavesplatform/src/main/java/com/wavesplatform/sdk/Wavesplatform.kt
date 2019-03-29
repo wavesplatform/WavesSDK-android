@@ -91,7 +91,11 @@ class Wavesplatform private constructor(var context: Application, factory: CallA
         }
 
         /**
-         * Create wallet from secret seed-phrase.
+         * Create wallet.
+         * @param encrypted Encrypted seed by password
+         * @param password Password of seed
+         * @param guid Optional. Set your specific id for the wallet
+         * @return New generated guid or return from {@code guid} parameter
          */
         @JvmStatic
         fun createWallet(encrypted: String,
@@ -108,6 +112,10 @@ class Wavesplatform private constructor(var context: Application, factory: CallA
             }
         }
 
+        /**
+         * @see com.wavesplatform.sdk.crypto.WavesWallet
+         * @return Current Waveswallet
+         */
         @JvmStatic
         @Throws(NullPointerException::class)
         fun getWallet(): WavesWallet {
@@ -118,16 +126,25 @@ class Wavesplatform private constructor(var context: Application, factory: CallA
             }
         }
 
+        /**
+         * Resets current wallet and loosing any data of it
+         */
         @JvmStatic
         fun resetWallet() {
             get().wavesWallet = null
         }
 
+        /**
+         * @return Checks is platform set any active wallet
+         */
         @JvmStatic
         fun isAuthenticated(): Boolean {
             return get().wavesWallet != null
         }
 
+        /**
+         * @return Address of current wallet
+         */
         @JvmStatic
         fun getAddress(): String {
             return Wavesplatform.getWallet().address
@@ -158,6 +175,10 @@ class Wavesplatform private constructor(var context: Application, factory: CallA
             return Wavesplatform.get().dataManager.matcherService
         }
 
+        /**
+         * Returns service for working with nodes
+         * @see com.wavesplatform.sdk.net.service.NodeService
+         */
         @JvmStatic
         fun getNodeService(): NodeService {
             return Wavesplatform.get().dataManager.nodeService
