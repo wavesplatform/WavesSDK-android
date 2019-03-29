@@ -204,10 +204,10 @@
 # Retrofitcachelibrx2 (retrofit2 + okhttp3 + rxjava2) --------#
 -dontwarn ren.yale.android.retrofitcachelibrx2.**
 -keep class ren.yale.android.retrofitcachelibrx2.** { *; }
--keepclasseswithmembernames class  retrofit2.adapter.rxjava2.BodyObservable { *; }
--keepclasseswithmembernames class  retrofit2.adapter.rxjava2.ResultObservable { *; }
--keepclasseswithmembernames class  retrofit2.adapter.rxjava2.CallEnqueueObservable { *; }
--keepclasseswithmembernames class  retrofit2.adapter.rxjava2.CallExecuteObservable { *; }
+-keepclasseswithmembernames class retrofit2.adapter.rxjava2.BodyObservable { *; }
+-keepclasseswithmembernames class retrofit2.adapter.rxjava2.ResultObservable { *; }
+-keepclasseswithmembernames class retrofit2.adapter.rxjava2.CallEnqueueObservable { *; }
+-keepclasseswithmembernames class retrofit2.adapter.rxjava2.CallExecuteObservable { *; }
 -keepclasseswithmembernames class retrofit2.Retrofit { *; }
 -keepclasseswithmembernames class retrofit2.ServiceMethod { *; }
 -keepclasseswithmembernames class retrofit2.OkHttpCall { *; }
@@ -250,8 +250,7 @@
 # End Common recommendations -----------------------------------
 
 # Waves Net Models & Interfeces ------------------------------#
--keep class com.wavesplatform.sdk.net.** { *; }
--keepclassmembernames interface * {
-    @retrofit.http.* <methods>;
-}
+-keep class com.wavesplatform.sdk.** { *; }
 # End Waves Net Models & Interfeces ---------------------------
+
+-ignorewarnings
