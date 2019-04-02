@@ -150,6 +150,9 @@ class Wavesplatform private constructor(var context: Application, factory: CallA
             return Wavesplatform.getWallet().address
         }
 
+        /**
+         * @return Public key of current wallet
+         */
         @JvmStatic
         fun getPublicKeyStr(): String {
             return Wavesplatform.getWallet().publicKeyStr
