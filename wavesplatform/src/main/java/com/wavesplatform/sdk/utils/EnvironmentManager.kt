@@ -1,3 +1,8 @@
+/*
+ * Created by Eduard Zaydel on 1/4/2019
+ * Copyright © 2019 Waves Platform. All rights reserved.
+ */
+
 package com.wavesplatform.sdk.utils
 
 import android.app.Application
@@ -22,7 +27,7 @@ import java.util.*
 
 class EnvironmentManager {
 
-    private var current: Environment? = null
+    var current: Environment? = null
     private var application: Application? = null
     private var configurationDisposable: Disposable? = null
     private var timeDisposable: Disposable? = null
