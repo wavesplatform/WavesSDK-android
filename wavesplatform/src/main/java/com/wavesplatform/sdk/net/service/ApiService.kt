@@ -5,7 +5,7 @@
 
 package com.wavesplatform.sdk.net.service
 
-import com.wavesplatform.sdk.net.model.response.*
+import com.wavesplatform.sdk.model.response.*
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,7 +14,7 @@ import retrofit2.http.Query
 /**
  * The goal of this service is to provide a simple
  * and convenient way to get data from Waves blockchain.
- * For more information: [Wavesplatform API Swagger]({https://api.wavesplatform.com/v0/docs/)
+ * For more information: [WavesPlatform API Swagger]({https://api.wavesplatform.com/v0/docs/)
  */
 interface ApiService {
 
@@ -28,7 +28,7 @@ interface ApiService {
      * Get address for alias
      */
     @GET("v0/aliases/{alias}")
-    fun alias(@Path("alias") alias: String?): Observable<AliasData>
+    fun alias(@Path("alias") alias: String?): Observable<AliasDataResponse>
 
     /**
      * Get asset info by asset ID

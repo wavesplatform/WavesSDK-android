@@ -5,8 +5,8 @@
 
 package com.wavesplatform.sdk.utils
 
-import com.wavesplatform.sdk.net.model.response.AssetBalance
-import com.wavesplatform.sdk.net.model.response.AssetInfo
+import com.wavesplatform.sdk.model.response.AssetBalanceResponse
+import com.wavesplatform.sdk.model.response.AssetInfoResponse
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -89,11 +89,11 @@ class MoneyUtil private constructor() {
             return formatter.format(amount)
         }
 
-        fun getScaledText(amount: Long?, ab: AssetBalance?): String {
+        fun getScaledText(amount: Long?, ab: AssetBalanceResponse?): String {
             return getScaledText(amount!!, ab?.getDecimals() ?: 8)
         }
 
-        fun getScaledText(amount: Long?, assetInfo: AssetInfo?): String {
+        fun getScaledText(amount: Long?, assetInfo: AssetInfoResponse?): String {
             return getScaledText(amount!!, assetInfo?.precision ?: 8)
         }
 
@@ -101,17 +101,21 @@ class MoneyUtil private constructor() {
             return get().wavesFormat.format(BigDecimal.valueOf(amount, 8))
         }
 
-        fun getUnscaledValue(amount: String, ab: AssetBalance?): Long {
+        fun getUnscaledValue(amount: String, ab: AssetBalanceResponse?): Long {
             return getUnscaledValue(amount, ab?.getDecimals() ?: 8)
         }
 
         fun getUnscaledValue(amount: String?, decimals: Int): Long {
+            return getUnscaledValue(amount, decimals, RoundingMode.HALF_EVEN)
+        }
+
+        fun getUnscaledValue(amount: String?, decimals: Int, roundingMod: RoundingMode): Long {
             if (amount == null)
                 return 0L
             return try {
                 val value = get().getFormatter(decimals).parse(amount)
                 (value as? BigDecimal)?.setScale(decimals,
-                        RoundingMode.HALF_EVEN)?.unscaledValue()?.toLong() ?: 0L
+                        roundingMod)?.unscaledValue()?.toLong() ?: 0L
             } catch (ex: Exception) {
                 0L
             }

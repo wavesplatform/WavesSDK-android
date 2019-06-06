@@ -3,7 +3,8 @@ package com.wavesplatform.sdk.utils
 import android.util.Patterns
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Shorts
-import com.wavesplatform.sdk.net.model.response.*
+import com.wavesplatform.sdk.model.TransactionType
+import com.wavesplatform.sdk.model.response.*
 import org.spongycastle.util.encoders.Hex
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -11,16 +12,24 @@ import java.security.SecureRandom
 
 
 fun String.isWaves(): Boolean {
-    return this.toLowerCase() == Constants.WAVES_ASSET_INFO.name.toLowerCase()
+    return this.toLowerCase() == WavesConstants.WAVES_ASSET_INFO.name.toLowerCase()
+}
+
+fun String.withWavesIdConvert(): String {
+    if (this.isWaves()) {
+        return ""
+    }
+    return this
 }
 
 fun getWavesDexFee(fee: Long): BigDecimal {
-    return MoneyUtil.getScaledText(fee, Constants.WAVES_ASSET_INFO.precision).clearBalance().toBigDecimal()
-
+    return MoneyUtil.getScaledText(fee, WavesConstants.WAVES_ASSET_INFO.precision)
+            .clearBalance()
+            .toBigDecimal()
 }
 
 fun String.isWavesId(): Boolean {
-    return this.toLowerCase() == Constants.WAVES_ASSET_INFO.id
+    return this.toLowerCase() == WavesConstants.WAVES_ASSET_INFO.id
 }
 
 fun ByteArray.arrayWithSize(): ByteArray {
@@ -33,7 +42,7 @@ fun String.clearBalance(): String {
             .replace(MoneyUtil.DEFAULT_SEPARATOR_THIN_SPACE.toString(), "")
 }
 
-fun Transaction.transactionType(): TransactionType {
+fun TransactionResponse.transactionType(): TransactionType {
     return TransactionType.getTypeById(this.transactionTypeId)
 }
 
@@ -62,7 +71,7 @@ fun <T : Any> T?.notNull(f: (it: T) -> Unit) {
     if (this != null) f(this)
 }
 
-fun findMyOrder(first: Order, second: Order, address: String?): Order {
+fun findMyOrder(first: OrderResponse, second: OrderResponse, address: String?): OrderResponse {
     return if (first.sender == second.sender) {
         if (first.timestamp > second.timestamp) {
             first
@@ -86,10 +95,10 @@ fun ErrorResponse.isSmartError(): Boolean {
     return this.error in 305..308
 }
 
-fun AssetInfo.getTicker(): String {
+fun AssetInfoResponse.getTicker(): String {
 
     if (this.id.isWavesId()) {
-        return Constants.WAVES_ASSET_INFO.name
+        return WavesConstants.WAVES_ASSET_INFO.name
     }
 
     return this.ticker ?: this.name
@@ -121,10 +130,4 @@ fun randomString(): String {
     val random = SecureRandom()
     random.nextBytes(bytes)
     return String(Hex.encode(bytes), charset("UTF-8"))
-}
-
-fun isShowTicker(assetId: String?): Boolean {
-    return EnvironmentManager.globalConfiguration.generalAssets.any {
-        it.assetId == assetId || assetId.isNullOrEmpty()
-    }
 }

@@ -5,8 +5,8 @@
 
 package com.wavesplatform.sdk.net.service
 
-import com.wavesplatform.sdk.net.model.request.*
-import com.wavesplatform.sdk.net.model.response.*
+import com.wavesplatform.sdk.model.response.*
+import com.wavesplatform.sdk.model.transaction.node.*
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,14 +24,14 @@ interface NodeService {
      * @param address Address
      */
     @GET("assets/balance/{address}")
-    fun assetsBalance(@Path("address") address: String?): Observable<AssetBalances>
+    fun assetsBalance(@Path("address") address: String?): Observable<AssetBalancesResponse>
 
     /**
      * Account's Waves balance
      * @param address Address
      */
     @GET("addresses/balance/{address}")
-    fun wavesBalance(@Path("address") address: String?): Observable<WavesBalance>
+    fun wavesBalance(@Path("address") address: String?): Observable<WavesBalanceResponse>
 
     /**
      * Get list of transactions where specified address has been involved
@@ -40,110 +40,104 @@ interface NodeService {
      */
     @GET("transactions/address/{address}/limit/{limit}")
     fun transactionList(@Path("address") address: String?,
-                        @Path("limit") limit: Int): Observable<List<List<Transaction>>>
+                        @Path("limit") limit: Int): Observable<List<List<TransactionResponse>>>
 
     @GET("assets/balance/{address}/{assetId}")
     fun addressAssetBalance(
         @Path("address") address: String?,
         @Path("assetId") assetId: String?
-    ): Observable<AddressAssetBalance>
+    ): Observable<AddressAssetBalanceResponse>
 
     /**
      * Get a transaction info by it's id
      * @param id id of transaction
      */
     @GET("transactions/info/{id}")
-    fun getTransactionsInfo(@Path("id") id: String): Observable<TransactionsInfo>
-
-    /**
-     *
-     */
-    @POST("assets/broadcast/transfer")
-    fun broadcastTransfer(@Body tx: TransferTransactionRequest): Observable<TransferTransactionRequest>
+    fun getTransactionsInfo(@Path("id") id: String): Observable<TransactionsInfoResponse>
 
     /**
      *
      */
     @POST("assets/broadcast/issue")
-    fun broadcastIssue(@Body tx: IssueTransactionRequest): Observable<IssueTransactionRequest>
+    fun broadcastIssue(@Body transaction: IssueTransaction): Observable<IssueTransaction>
 
     /**
      *
      */
     @POST("assets/broadcast/reissue")
-    fun broadcastReissue(@Body tx: ReissueTransactionRequest): Observable<ReissueTransactionRequest>
+    fun broadcastReissue(@Body transaction: ReissueTransaction): Observable<ReissueTransaction>
 
     /**
      * Create alias - short name for address
-     * @param createAliasRequest AliasRequest with signature by privateKey
+     * @param transaction AliasTransaction with signature by privateKey
      */
     @POST("transactions/broadcast")
-    fun createAlias(@Body createAliasRequest: AliasRequest): Observable<Alias>
+    fun broadcastAlias(@Body transaction: AliasTransaction): Observable<AliasResponse>
 
     /**
-     * Get list of unconfirmed transactions
+     * Broadcast a signed create leasing transaction
+     * @param transaction CreateLeasingTransaction with signature by privateKey
      */
-    @GET("transactions/unconfirmed")
-    fun unconfirmedTransactions(): Observable<List<Transaction>>
+    @POST("transactions/broadcast")
+    fun broadcastCreateLeasing(@Body transaction: CreateLeasingTransaction): Observable<TransactionResponse>
+
+    /**
+     * Broadcast a signed cancel leasing transaction
+     * @param transaction CancelLeasingTransaction with signature by privateKey
+     */
+    @POST("transactions/broadcast")
+    fun broadcastCancelLeasing(@Body transaction: CancelLeasingTransaction): Observable<TransactionResponse>
+
+    /**
+     * Broadcast a signed burn transaction
+     * @param transaction BurnTransaction with signature by privateKey
+     */
+    @POST("transactions/broadcast")
+    fun broadcastBurn(@Body transaction: BurnTransaction): Observable<BurnTransaction>
 
     /**
      * Broadcast a signed transfer transaction
-     * @param tx TransactionsBroadcastRequest with signature by privateKey
+     * @param transaction TransferTransaction with signature by privateKey
      */
     @POST("transactions/broadcast")
-    fun transactionsBroadcast(@Body tx: TransactionsBroadcastRequest): Observable<TransactionsBroadcastRequest>
+    fun broadcastTransfer(@Body transaction: TransferTransaction): Observable<TransferTransaction>
 
     /**
      * Get current Waves block-chain height
      */
     @GET("blocks/height")
-    fun currentBlocksHeight(): Observable<Height>
+    fun currentBlocksHeight(): Observable<HeightResponse>
 
     /**
      * Active leasing transactions of account
      * @param address Address
      */
     @GET("leasing/active/{address}")
-    fun activeLeasing(@Path("address") address: String?): Observable<List<Transaction>>
-
-    /**
-     * Broadcast a signed create leasing transaction
-     * @param createLeasingRequest CreateLeasingRequest with signature by privateKey
-     */
-    @POST("transactions/broadcast")
-    fun createLeasing(@Body createLeasingRequest: CreateLeasingRequest): Observable<Transaction>
-
-    /**
-     * Broadcast a signed cancel leasing transaction
-     * @param cancelLeasingRequest CancelLeasingRequest with signature by privateKey
-     */
-    @POST("transactions/broadcast")
-    fun cancelLeasing(@Body cancelLeasingRequest: CancelLeasingRequest): Observable<Transaction>
-
-    /**
-     * Broadcast a signed burn transaction
-     * @param burnRequest BurnRequest with signature by privateKey
-     */
-    @POST("transactions/broadcast")
-    fun burn(@Body burnRequest: BurnRequest): Observable<BurnRequest>
+    fun activeLeasing(@Path("address") address: String?): Observable<List<TransactionResponse>>
 
     /**
      * Account's script
      * @param address Address
      */
     @GET("addresses/scriptInfo/{address}")
-    fun scriptAddressInfo(@Path("address") address: String): Observable<ScriptInfo>
+    fun scriptAddressInfo(@Path("address") address: String): Observable<ScriptInfoResponse>
 
     /**
      * Provides detailed information about given asset
      * @param assetId Asset Id
      */
     @GET("/assets/details/{assetId}")
-    fun assetDetails(@Path("assetId") assetId: String): Observable<AssetsDetails>
+    fun assetDetails(@Path("assetId") assetId: String): Observable<AssetsDetailsResponse>
 
     /**
      * Current Node time (UTC)
      */
     @GET("/utils/time")
-    fun utilsTime(): Observable<UtilsTime>
+    fun utilsTime(): Observable<UtilsTimeResponse>
+
+    /**
+     * Get list of unconfirmed transactions
+     */
+    @GET("transactions/unconfirmed")
+    fun unconfirmedTransactions(): Observable<List<TransactionResponse>>
 }

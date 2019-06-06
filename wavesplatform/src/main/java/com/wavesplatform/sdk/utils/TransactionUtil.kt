@@ -6,85 +6,85 @@
 package com.wavesplatform.sdk.utils
 
 
-import com.wavesplatform.sdk.Wavesplatform
-import com.wavesplatform.sdk.net.model.response.AssetInfo
-import com.wavesplatform.sdk.net.model.response.GlobalTransactionCommission
-import com.wavesplatform.sdk.net.model.response.Transaction
-import com.wavesplatform.sdk.net.model.response.TransactionType
+import com.wavesplatform.sdk.model.response.AssetInfoResponse
+import com.wavesplatform.sdk.model.response.TransactionResponse
+import com.wavesplatform.sdk.model.TransactionType
 import javax.inject.Inject
 
 class TransactionUtil @Inject constructor() {
 
     companion object {
 
-        fun getTransactionType(transaction: Transaction): Int =
-                if (transaction.type == Transaction.TRANSFER &&
-                        transaction.sender != Wavesplatform.getAddress() &&
+        fun getTransactionType(transaction: TransactionResponse, address: String): Int =
+                if (transaction.type == TransactionResponse.TRANSFER &&
+                        transaction.sender != address &&
                         transaction.asset?.isSpam == true) {
-                    Constants.ID_SPAM_RECEIVE_TYPE
-                } else if (transaction.type == Transaction.TRANSFER &&
-                        transaction.sender != Wavesplatform.getAddress() &&
-                        transaction.recipientAddress != Wavesplatform.getAddress()) {
-                    Constants.ID_RECEIVE_SPONSORSHIP_TYPE
-                } else if (transaction.type == Transaction.MASS_TRANSFER &&
-                        transaction.sender != Wavesplatform.getAddress() &&
+                    WavesConstants.ID_SPAM_RECEIVE_TYPE
+                } else if (transaction.type == TransactionResponse.TRANSFER &&
+                        transaction.sender != address &&
+                        transaction.recipientAddress != address) {
+                    WavesConstants.ID_RECEIVE_SPONSORSHIP_TYPE
+                } else if (transaction.type == TransactionResponse.MASS_TRANSFER &&
+                        transaction.sender != address &&
                         transaction.asset?.isSpam == true) {
-                    Constants.ID_MASS_SPAM_RECEIVE_TYPE
-                } else if (transaction.type == Transaction.LEASE_CANCEL &&
+                    WavesConstants.ID_MASS_SPAM_RECEIVE_TYPE
+                } else if (transaction.type == TransactionResponse.LEASE_CANCEL &&
                         !transaction.leaseId.isNullOrEmpty()) {
-                    Constants.ID_CANCELED_LEASING_TYPE
-                } else if ((transaction.type == Transaction.TRANSFER || transaction.type == 9) &&
-                        transaction.sender != Wavesplatform.getAddress()) {
-                    Constants.ID_RECEIVED_TYPE
-                } else if (transaction.type == Transaction.TRANSFER &&
+                    WavesConstants.ID_CANCELED_LEASING_TYPE
+                } else if ((transaction.type == TransactionResponse.TRANSFER || transaction.type == 9) &&
+                        transaction.sender != address) {
+                    WavesConstants.ID_RECEIVED_TYPE
+                } else if (transaction.type == TransactionResponse.TRANSFER &&
                         transaction.sender == transaction.recipientAddress) {
-                    Constants.ID_SELF_TRANSFER_TYPE
-                } else if (transaction.type == Transaction.TRANSFER &&
-                        transaction.sender == Wavesplatform.getAddress()) {
-                    Constants.ID_SENT_TYPE
-                } else if (transaction.type == Transaction.LEASE &&
-                        transaction.recipientAddress != Wavesplatform.getAddress()) {
-                    Constants.ID_STARTED_LEASING_TYPE
-                } else if (transaction.type == Transaction.EXCHANGE) {
-                    Constants.ID_EXCHANGE_TYPE
-                } else if (transaction.type == Transaction.ISSUE) {
-                    Constants.ID_TOKEN_GENERATION_TYPE
-                } else if (transaction.type == Transaction.BURN) {
-                    Constants.ID_TOKEN_BURN_TYPE
-                } else if (transaction.type == Transaction.REISSUE) {
-                    Constants.ID_TOKEN_REISSUE_TYPE
-                } else if (transaction.type == Transaction.CREATE_ALIAS) {
-                    Constants.ID_CREATE_ALIAS_TYPE
-                } else if (transaction.type == Transaction.LEASE &&
-                        transaction.recipientAddress == Wavesplatform.getAddress()) {
-                    Constants.ID_INCOMING_LEASING_TYPE
-                } else if (transaction.type == Transaction.MASS_TRANSFER &&
-                        transaction.sender == Wavesplatform.getAddress()) {
-                    Constants.ID_MASS_SEND_TYPE
-                } else if (transaction.type == Transaction.MASS_TRANSFER &&
-                        transaction.sender != Wavesplatform.getAddress()) {
-                    Constants.ID_MASS_RECEIVE_TYPE
-                } else if (transaction.type == Transaction.DATA) {
-                    Constants.ID_DATA_TYPE
-                } else if (transaction.type == Transaction.ADDRESS_SCRIPT) {
+                    WavesConstants.ID_SELF_TRANSFER_TYPE
+                } else if (transaction.type == TransactionResponse.TRANSFER &&
+                        transaction.sender == address) {
+                    WavesConstants.ID_SENT_TYPE
+                } else if (transaction.type == TransactionResponse.LEASE &&
+                        transaction.recipientAddress != address) {
+                    WavesConstants.ID_STARTED_LEASING_TYPE
+                } else if (transaction.type == TransactionResponse.EXCHANGE) {
+                    WavesConstants.ID_EXCHANGE_TYPE
+                } else if (transaction.type == TransactionResponse.ISSUE) {
+                    WavesConstants.ID_TOKEN_GENERATION_TYPE
+                } else if (transaction.type == TransactionResponse.BURN) {
+                    WavesConstants.ID_TOKEN_BURN_TYPE
+                } else if (transaction.type == TransactionResponse.REISSUE) {
+                    WavesConstants.ID_TOKEN_REISSUE_TYPE
+                } else if (transaction.type == TransactionResponse.CREATE_ALIAS) {
+                    WavesConstants.ID_CREATE_ALIAS_TYPE
+                } else if (transaction.type == TransactionResponse.LEASE &&
+                        transaction.recipientAddress == address) {
+                    WavesConstants.ID_INCOMING_LEASING_TYPE
+                } else if (transaction.type == TransactionResponse.MASS_TRANSFER &&
+                        transaction.sender == address) {
+                    WavesConstants.ID_MASS_SEND_TYPE
+                } else if (transaction.type == TransactionResponse.MASS_TRANSFER &&
+                        transaction.sender != address) {
+                    WavesConstants.ID_MASS_RECEIVE_TYPE
+                } else if (transaction.type == TransactionResponse.DATA) {
+                    WavesConstants.ID_DATA_TYPE
+                } else if (transaction.type == TransactionResponse.ADDRESS_SCRIPT) {
                     if (transaction.script == null) {
-                        Constants.ID_CANCEL_ADDRESS_SCRIPT_TYPE
+                        WavesConstants.ID_CANCEL_ADDRESS_SCRIPT_TYPE
                     } else {
-                        Constants.ID_SET_ADDRESS_SCRIPT_TYPE
+                        WavesConstants.ID_SET_ADDRESS_SCRIPT_TYPE
                     }
-                } else if (transaction.type == Transaction.SPONSORSHIP) {
+                } else if (transaction.type == TransactionResponse.SPONSORSHIP) {
                     if (transaction.minSponsoredAssetFee == null) {
-                        Constants.ID_CANCEL_SPONSORSHIP_TYPE
+                        WavesConstants.ID_CANCEL_SPONSORSHIP_TYPE
                     } else {
-                        Constants.ID_SET_SPONSORSHIP_TYPE
+                        WavesConstants.ID_SET_SPONSORSHIP_TYPE
                     }
-                } else if (transaction.type == Transaction.ASSET_SCRIPT) {
-                    Constants.ID_UPDATE_ASSET_SCRIPT_TYPE
+                } else if (transaction.type == TransactionResponse.ASSET_SCRIPT) {
+                    WavesConstants.ID_UPDATE_ASSET_SCRIPT_TYPE
+                } else if (transaction.type == TransactionResponse.SCRIPT_INVOCATION) {
+                    WavesConstants.ID_SCRIPT_INVOCATION_TYPE
                 } else {
-                    Constants.ID_UNRECOGNISED_TYPE
+                    WavesConstants.ID_UNRECOGNISED_TYPE
                 }
 
-        fun getTransactionAmount(transaction: Transaction, decimals: Int = 8, round: Boolean = true): String {
+        fun getTransactionAmount(transaction: TransactionResponse, decimals: Int = 8, round: Boolean = true): String {
 
             var sign = "-"
             if (transaction.transactionType() == TransactionType.MASS_SPAM_RECEIVE_TYPE ||
@@ -114,7 +114,7 @@ class TransactionUtil @Inject constructor() {
             }
         }
 
-        fun getScaledText(amount: Long, assetInfo: AssetInfo?): String {
+        fun getScaledText(amount: Long, assetInfo: AssetInfoResponse?): String {
             val afterDot = MoneyUtil.getScaledText(amount, assetInfo)
                     .substringAfter(".").clearBalance().toLong()
             return if (afterDot == 0L) {
@@ -122,118 +122,6 @@ class TransactionUtil @Inject constructor() {
             } else {
                 MoneyUtil.getScaledText(amount, assetInfo)
             }
-        }
-
-        fun countCommission(
-            commission: GlobalTransactionCommission,
-            params: GlobalTransactionCommission.Params
-        ): Long {
-
-            val type = params.transactionType!!
-
-            val feeRules = when (type) {
-                Transaction.ISSUE -> commission.calculateFeeRules.issue
-                Transaction.REISSUE -> commission.calculateFeeRules.reissue
-                Transaction.EXCHANGE -> commission.calculateFeeRules.exchange
-                Transaction.MASS_TRANSFER -> commission.calculateFeeRules.massTransfer
-                Transaction.DATA -> commission.calculateFeeRules.data
-                Transaction.ADDRESS_SCRIPT -> commission.calculateFeeRules.script
-                Transaction.SPONSORSHIP -> commission.calculateFeeRules.sponsor
-                Transaction.ASSET_SCRIPT -> commission.calculateFeeRules.assetScript
-                else -> commission.calculateFeeRules.default
-            }
-
-            return when (type) {
-                Transaction.ISSUE,
-                Transaction.REISSUE,
-                Transaction.LEASE,
-                Transaction.LEASE_CANCEL,
-                Transaction.CREATE_ALIAS,
-                Transaction.ADDRESS_SCRIPT,
-                Transaction.SPONSORSHIP,
-                Transaction.ASSET_SCRIPT ->
-                    getAccountCommission(feeRules, params, commission)
-                Transaction.TRANSFER,
-                Transaction.BURN ->
-                    getAssetAccountCommission(feeRules, params, commission)
-                Transaction.EXCHANGE ->
-                    getExchangeCommission(feeRules, params, commission)
-                Transaction.MASS_TRANSFER ->
-                    getMassTransferCommission(feeRules, params, commission)
-                Transaction.DATA -> {
-                    getDataCommission(params, feeRules, commission)
-                }
-                else -> commission.calculateFeeRules.default.fee
-            }
-        }
-
-        private fun getDataCommission(
-            params: GlobalTransactionCommission.Params,
-            feeRules: GlobalTransactionCommission.FeeRules,
-            commission: GlobalTransactionCommission
-        ): Long {
-            var total = 0.0
-            total += Math.floor(1 + (params.bytesCount!!.toDouble() - 1) / 1024) * feeRules.fee
-            if (params.smartAccount!!) {
-                total += commission.smartAccountExtraFee
-            }
-            return total.toLong()
-        }
-
-        private fun getMassTransferCommission(
-            feeRules: GlobalTransactionCommission.FeeRules,
-            params: GlobalTransactionCommission.Params,
-            commission: GlobalTransactionCommission
-        ): Long {
-            val total = getAssetAccountCommission(feeRules, params, commission)
-            var transfersPrice = (params.transfersCount!! * feeRules.pricePerTransfer!!).toDouble()
-            val minPriceStep = feeRules.minPriceStep.toDouble()
-            if (transfersPrice.rem(minPriceStep) != 0.0) {
-                transfersPrice = Math.ceil((transfersPrice / minPriceStep)) * minPriceStep
-            }
-            return (transfersPrice + total).toLong()
-        }
-
-        private fun getExchangeCommission(
-            feeRules: GlobalTransactionCommission.FeeRules,
-            params: GlobalTransactionCommission.Params,
-            commission: GlobalTransactionCommission
-        ): Long {
-            var total = feeRules.fee
-            if (params.smartPriceAsset!!) {
-                total += commission.smartAssetExtraFee
-            }
-            if (params.smartAmountAsset!!) {
-                total += commission.smartAssetExtraFee
-            }
-            return total
-        }
-
-        private fun getAccountCommission(
-            feeRules: GlobalTransactionCommission.FeeRules,
-            params: GlobalTransactionCommission.Params,
-            commission: GlobalTransactionCommission
-        ): Long {
-            var total = feeRules.fee
-            if (params.smartAccount!!) {
-                total += commission.smartAccountExtraFee
-            }
-            return total
-        }
-
-        private fun getAssetAccountCommission(
-            feeRules: GlobalTransactionCommission.FeeRules,
-            params: GlobalTransactionCommission.Params,
-            commission: GlobalTransactionCommission
-        ): Long {
-            var total = feeRules.fee
-            if (params.smartAccount!!) {
-                total += commission.smartAccountExtraFee
-            }
-            if (params.smartAsset!!) {
-                total += commission.smartAssetExtraFee
-            }
-            return total
         }
     }
 }

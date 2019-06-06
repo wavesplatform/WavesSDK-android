@@ -7,7 +7,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.wavesplatform.sdk.Wavesplatform
+import com.wavesplatform.sdk.WavesPlatform
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.net.OnErrorListener
 import com.wavesplatform.sdk.net.RetrofitException
 import com.wavesplatform.sdk.utils.RxUtil
@@ -31,16 +32,15 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             // Generate or add your seed
-            val newSeed = Wavesplatform.generateSeed()
+            val newSeed = WavesCrypto.randomSeed()
             seedTextView.text = "New seed is: $newSeed"
 
-            // Create Wallet with your seed
-            Wavesplatform.createWallet(newSeed)
+            val address = WavesCrypto.addressBySeed(newSeed, "W")
 
             // Create request to Node service about address balance
             compositeDisposable.add(
-                Wavesplatform.getNodeService()
-                    .wavesBalance(Wavesplatform.getAddress())
+                WavesPlatform.service().getNode()
+                    .wavesBalance(address)
                     .compose(RxUtil.applyObservableDefaultSchedulers())
                     .subscribe({ wavesBalance ->
                         // Success
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        Wavesplatform.setOnErrorListener(object : OnErrorListener {
+        WavesPlatform.service().addOnErrorListener(object : OnErrorListener {
             override fun onError(exception: RetrofitException) {
                 // Handle by RetrofitException.Type
             }
