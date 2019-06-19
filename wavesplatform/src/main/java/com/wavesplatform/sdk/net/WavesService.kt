@@ -8,16 +8,13 @@ import com.ihsanbal.logging.Level
 import com.ihsanbal.logging.LoggingInterceptor
 import com.wavesplatform.sdk.BuildConfig
 import com.wavesplatform.sdk.WavesPlatform
-import com.wavesplatform.sdk.net.service.ApiService
+import com.wavesplatform.sdk.net.service.DataService
 import com.wavesplatform.sdk.net.service.MatcherService
 import com.wavesplatform.sdk.net.service.NodeService
 import com.wavesplatform.sdk.utils.WavesConstants
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import ren.yale.android.retrofitcachelibrx2.RetrofitCache
-import ren.yale.android.retrofitcachelibrx2.intercept.CacheForceInterceptorNoNet
-import ren.yale.android.retrofitcachelibrx2.intercept.CacheInterceptorOnNet
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -26,13 +23,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
-@Singleton
 open class WavesService(private var context: Context) {
 
     private lateinit var nodeService: NodeService
-    private lateinit var apiService: ApiService
+    private lateinit var dataService: DataService
     private lateinit var matcherService: MatcherService
     private var cookies: HashSet<String> = hashSetOf()
     private var adapterFactory: CallAdapter.Factory
@@ -55,8 +50,8 @@ open class WavesService(private var context: Context) {
         return matcherService
     }
 
-    fun getApiService(): ApiService {
-        return apiService
+    fun getDataService(): DataService {
+        return dataService
     }
 
     fun addOnErrorListener(errorListener: OnErrorListener) {
@@ -77,7 +72,6 @@ open class WavesService(private var context: Context) {
                 .addCallAdapterFactory(adapterFactory)
                 .addConverterFactory(createGsonFactory())
                 .build()
-        RetrofitCache.getInstance().addRetrofit(retrofit)
         return retrofit
     }
 
@@ -85,8 +79,8 @@ open class WavesService(private var context: Context) {
         nodeService = createService(addSlash(WavesPlatform.getEnvironment().nodeUrl), adapterFactory)
                 .create(NodeService::class.java)
 
-        apiService = createService(addSlash(WavesPlatform.getEnvironment().dataUrl), adapterFactory)
-                .create(ApiService::class.java)
+        dataService = createService(addSlash(WavesPlatform.getEnvironment().dataUrl), adapterFactory)
+                .create(DataService::class.java)
 
         matcherService = createService(addSlash(WavesPlatform.getEnvironment().matcherUrl), adapterFactory)
                 .create(MatcherService::class.java)
@@ -101,15 +95,13 @@ open class WavesService(private var context: Context) {
     }
 
     private fun createClient(timeout: Long = 30L): OkHttpClient {
-        return OkHttpClient.Builder()
+        val okHttpClientBuilder = OkHttpClient.Builder()
                 .cache(createCache())
                 .readTimeout(timeout, TimeUnit.SECONDS)
                 .writeTimeout(timeout, TimeUnit.SECONDS)
                 .addInterceptor(receivedCookiesInterceptor())
                 .addInterceptor(addCookiesInterceptor())
-                .addInterceptor(CacheForceInterceptorNoNet())
                 .addInterceptor(createHostInterceptor())
-                .addNetworkInterceptor(CacheInterceptorOnNet())
                 .addInterceptor(LoggingInterceptor.Builder()
                         .loggable(BuildConfig.DEBUG)
                         .setLevel(Level.BASIC)
@@ -117,7 +109,8 @@ open class WavesService(private var context: Context) {
                         .request("Request")
                         .response("Response")
                         .build())
-                .build()
+
+        return okHttpClientBuilder.build()
     }
 
     private fun receivedCookiesInterceptor(): Interceptor {
