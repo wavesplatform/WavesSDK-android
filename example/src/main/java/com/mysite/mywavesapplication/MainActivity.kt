@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.wavesplatform.sdk.WavesPlatform
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.net.OnErrorListener
-import com.wavesplatform.sdk.net.RetrofitException
+import com.wavesplatform.sdk.net.NetworkException
 import com.wavesplatform.sdk.utils.RxUtil
 import com.wavesplatform.sdk.utils.getScaledAmount
 import io.reactivex.disposables.CompositeDisposable
@@ -35,36 +35,45 @@ class MainActivity : AppCompatActivity() {
             val newSeed = WavesCrypto.randomSeed()
             seedTextView.text = "New seed is: $newSeed"
 
-            val address = WavesCrypto.addressBySeed(newSeed, "W")
+            val address = WavesCrypto.addressBySeed(newSeed)
 
             // Create request to Node service about address balance
-            compositeDisposable.add(
-                WavesPlatform.service().getNode()
-                    .wavesBalance(address)
-                    .compose(RxUtil.applyObservableDefaultSchedulers())
-                    .subscribe({ wavesBalance ->
-                        // Success
-                        Toast.makeText(
-                            this,
-                            "Balance is : ${getScaledAmount(wavesBalance.balance, 8)} Waves",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }, { error ->
-                        // Fail
-                        val errorMessage = "Can't get wavesBalance! + ${error.message}"
-                        Log.e("MainActivity", errorMessage)
-                        error.printStackTrace()
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                    })
-            )
+            getWavesBalance(address)
         }
 
+        handleServiceErrors()
+    }
+
+    private fun handleServiceErrors() {
         WavesPlatform.service().addOnErrorListener(object : OnErrorListener {
-            override fun onError(exception: RetrofitException) {
-                // Handle by RetrofitException.Type
+            override fun onError(exception: NetworkException) {
+                // Handle NetworkException here
             }
         })
     }
+
+    private fun getWavesBalance(address: String) {
+        compositeDisposable.add(
+            WavesPlatform.service().getNode()
+                .wavesBalance(address)
+                .compose(RxUtil.applyObservableDefaultSchedulers())
+                .subscribe({ wavesBalance ->
+                    // Do something on success, now we have wavesBalance.balance in satoshi in Long
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Balance is : ${getScaledAmount(wavesBalance.balance, 8)} Waves",
+                        Toast.LENGTH_SHORT)
+                        .show()
+                }, { error ->
+                    // Do something on fail
+                    val errorMessage = "Can't get wavesBalance! + ${error.message}"
+                    Log.e("MainActivity", errorMessage)
+                    error.printStackTrace()
+                    Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                })
+        )
+    }
+
 
     // Unsubscribe after destroy
     override fun onDestroy() {

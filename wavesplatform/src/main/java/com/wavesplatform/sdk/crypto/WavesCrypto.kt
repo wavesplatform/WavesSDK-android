@@ -1,5 +1,6 @@
 package com.wavesplatform.sdk.crypto
 
+import com.wavesplatform.sdk.WavesPlatform
 import com.wavesplatform.sdk.utils.*
 import org.apache.commons.codec.binary.Base64
 import java.security.MessageDigest
@@ -84,7 +85,7 @@ interface WavesCrypto {
     fun privateKey(seed: Seed): PrivateKey
 
     fun addressByPublicKey(publicKey: PublicKey, chainId: String?): Address
-    fun addressBySeed(seed: Seed, chainId: String?): Address
+    fun addressBySeed(seed: Seed, chainId: String? = WavesPlatform.getEnvironment().scheme.toString()): Address
 
     fun randomSeed(): Seed
 
