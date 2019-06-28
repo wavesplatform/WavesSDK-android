@@ -37,7 +37,7 @@ class MassTransferTransaction(
         @SerializedName("assetId") var assetId: String?,
         /**
          * Additional info in Base58 converted string
-         * [0,[MAX_ATTACHMENT_SIZE]] bytes of string or byte array
+         * [0,[MAX_ATTACHMENT_SIZE]] bytes of string encoded in Base58
          */
         @SerializedName("attachment") var attachment: String,
         /**

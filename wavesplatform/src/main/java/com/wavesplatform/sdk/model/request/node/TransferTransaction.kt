@@ -41,7 +41,7 @@ class TransferTransaction(
          */
         fee: Long,
         /**
-         * Additional info [0,[MAX_ATTACHMENT_SIZE]] bytes of string or byte array
+         * Additional info [0,[MAX_ATTACHMENT_SIZE]] bytes of string encoded in Base58
          */
         @SerializedName("attachment") var attachment: String?,
         /**

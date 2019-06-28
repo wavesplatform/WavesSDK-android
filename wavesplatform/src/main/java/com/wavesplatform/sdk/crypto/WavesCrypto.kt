@@ -248,12 +248,12 @@ interface WavesCrypto {
 
             val bytes = Base58.decode(address)
 
-            if (chainId != null) {
-                if (chainId.length == 1) {
-                    if (chainId[0].toByte() != bytes[1]) {
+            if (!chainId.isNullOrEmpty()) {
+                try {
+                    if (chainId.toByte().toChar() != bytes[1].toChar()) {
                         return false
                     }
-                } else {
+                } catch (error: NumberFormatException) {
                     return false
                 }
             }
