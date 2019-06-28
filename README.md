@@ -31,7 +31,7 @@ You can use [Explorer Testnet](https://wavesexplorer.com/testnet) for testing yo
 
 ## Easy Start
 
-[Easy Start](docs/easy_start.md)
+[Easy Start](wavesplatform/docs/easy_start.md)
 
 
 ## Blockchain for the people
