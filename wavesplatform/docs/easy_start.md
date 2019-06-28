@@ -1,6 +1,8 @@
-Add waves and in necessary rxjava libs to your app-project in в build.gradle-file
+# WavesSDK for Android
 
-app/build.gradle
+1. Add waves and in necessary rxjava libs to your app-project in "app/build.gradle" - file
+
+```groovy
 dependencies {
     // ...
     // Check last version at https://search.maven.org/artifact/com.wavesplatform
@@ -9,42 +11,59 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.7'
     // ...
 }
-Add uses-permisson about Internet in manifest.xml-file of project
+```
 
+2. Add uses-permisson about Internet in "app/src/main/manifest.xml" - file of project
+
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mysite.mywavesapplication">
  
     <uses-permission android:name="android.permission.INTERNET"/>
  
-    <application
+    <application>
         <!-- ... -->
     </application>
  
 </manifest>
-Add library initialization to onCreate() method in your Application-class extension
+```
 
-class App : Application()
+3. Add library initialization to onCreate() method in your Application-class extension
+
+```java
 class App : Application() {
      
     override fun onCreate() {
         super.onCreate()
         // ...
         // Waves SDK initialization
-        WavesPlatform.init(this)
+        WavesSdk.init(this)
+        
+        // or use Environment.TEST_NET for switch to Test-Net
+        // WavesSdk.init(this, Environment.TEST_NET)
         // ...
     }
 }
-Now everything is ready to start using Waves. For example, we want to create a new seed-phrase and get address for blockchain. It is available in WavesCrypto.
+```
 
-Seed-phrase generation
-// Generate or add your seed-phrase
-val newSeed: String = WavesCrypto.randomSeed()
-// Get address by seed-phrase
-val address: String = WavesCrypto.addressBySeed(newSeed)
+4. Now everything is ready to start using Waves. For example, we want to create a new seed-phrase and get address for blockchain. It is available in WavesCrypto.
+
+```java
+fun seedPhraseGeneration() {
+    // Generate or add your seed-phrase
+    val newSeed: String = WavesCrypto.randomSeed()
+    // Get address by seed-phrase
+    val address: String = WavesCrypto.addressBySeed(newSeed)
+}
+```
+
 You can see about other methods in WavesCrypto.
 
-Now let's see how we can work with the blockchain.
+
+5. Now let's see how we can work with the blockchain.
+
+```java
 class MainActivity : AppCompatActivity() {
  
     // For Activity or Fragment add Observables in CompositeDisposable from Rx
@@ -60,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     // Now you can get Waves balance from Node
     private fun getWavesBalance(address: String) {
         compositeDisposable.add(
-            WavesPlatform.service()
+            WavesSdk.service()
                 .getNode() // You can choose different Waves services: node, matcher and data service
                 .wavesBalance(address) // Here methods of service
                 .compose(RxUtil.applyObservableDefaultSchedulers()) // Rx Asynchron settings
@@ -84,7 +103,7 @@ class MainActivity : AppCompatActivity() {
  
     // Handle NetworkExceptions if it necessary
     private fun handleNetworkErrors() {
-        WavesPlatform.service().addOnErrorListener(object : OnErrorListener {
+        WavesSdk.service().addOnErrorListener(object : OnErrorListener {
             override fun onError(exception: NetworkException) {
                 // Handle NetworkException here
             }
@@ -98,7 +117,11 @@ class MainActivity : AppCompatActivity() {
         compositeDisposable.clear()
     }
 }
-Signing and sending a transaction:
+```
+
+6. Signing and sending a transaction:
+
+```java
 private fun transactionsBroadcast() {
      
     // Creation Transfer transaction and fill it with parameters
@@ -114,7 +137,7 @@ private fun transactionsBroadcast() {
     transferTransaction.sign(seed = "sign transaction with your seed phrase")
  
     // Try to send transaction into Waves blockchain
-    compositeDisposable.add(WavesPlatform.service()
+    compositeDisposable.add(WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
@@ -124,6 +147,9 @@ private fun transactionsBroadcast() {
                 // Do something on fail
             }))
 }
-You can find your transaction in https://wavesexplorer.com by id.
-Basically that's it. For more information about sending other transactions and work with services, read the table of contents.
+```
+
+7. You can find your transaction in [Explorer](https://wavesexplorer.com) by id.
+
+8. Basically that's it.
 
