@@ -64,6 +64,20 @@ class WavesCryptoTest {
         Assert.assertEquals(WavesCrypto.verifyAddress(ADDRESS, TEST_NET_CHAIN_ID, PUBLIC_KEY), true)
     }
 
+    @Test
+    fun base58() {
+        Assert.assertEquals(WavesCrypto.base58decode(WavesCrypto.base58encode(RANDOM_BYTES)).contentEquals(RANDOM_BYTES),
+            true)
+        Assert.assertEquals(WavesCrypto.base58encode(WavesCrypto.base58decode(ADDRESS)), ADDRESS)
+    }
+
+    @Test
+    fun base64() {
+        Assert.assertEquals(WavesCrypto.base64decode(WavesCrypto.base64encode(RANDOM_BYTES)).contentEquals(RANDOM_BYTES),
+            true)
+        Assert.assertEquals(WavesCrypto.base64encode(WavesCrypto.base64decode(ADDRESS)), ADDRESS)
+    }
+
     companion object {
         const val SEED =
             "chronic comic else cool seat filter amount banner bottom spice cup figure exact elephant copper"
