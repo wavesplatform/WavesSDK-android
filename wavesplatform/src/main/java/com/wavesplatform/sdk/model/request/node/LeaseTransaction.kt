@@ -9,20 +9,27 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.WavesPlatform
 import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.utils.arrayWithSize
 import com.wavesplatform.sdk.utils.isAlias
 import com.wavesplatform.sdk.utils.parseAlias
 import java.nio.charset.Charset
 
-class CreateLeasingTransaction(
+/**
+ * The transaction leases amount of Waves to node operator.
+ * it can be address or alias by Proof-of-Stake consensus. It will perform at non-node address.
+ * You always can reverse the any leased amount by [LeaseCancelTransaction]
+ */
+class LeaseTransaction(
+        /**
+         * Address or alias of Waves blockchain to lease
+         */
         @SerializedName("recipient") var recipient: String,
+        /**
+         * Amount to lease of Waves in satoshi
+         */
         @SerializedName("amount") var amount: Long)
     : BaseTransaction(CREATE_LEASING) {
-
-    @SerializedName("scheme")
-    var scheme: String = WavesPlatform.getEnvironment().scheme.toString()
 
     override fun toBytes(): ByteArray {
         return try {
@@ -35,7 +42,7 @@ class CreateLeasingTransaction(
                     Longs.toByteArray(fee),
                     Longs.toByteArray(timestamp))
         } catch (e: Exception) {
-            Log.e("Sign", "Can't create bytes for sign in CreateLeasing Transaction", e)
+            Log.e("Sign", "Can't create bytes for sign in Create Leasing Transaction", e)
             ByteArray(0)
         }
     }
@@ -43,7 +50,7 @@ class CreateLeasingTransaction(
     private fun resolveRecipientBytes(recipientIsAlias: Boolean): ByteArray? {
         return if (recipientIsAlias) {
             Bytes.concat(byteArrayOf(version.toByte()),
-                    byteArrayOf(scheme.toByte()),
+                    byteArrayOf(chainId),
                     recipient.parseAlias().toByteArray(
                             Charset.forName("UTF-8")).arrayWithSize())
         } else {

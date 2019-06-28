@@ -1,40 +1,95 @@
 package com.wavesplatform.sdk.model.request.node
 
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.WavesPlatform
+import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.WavesConstants
 
-abstract class BaseTransaction(@SerializedName("type")
-                               val type: Int) {
+/**
+ * Base transaction
+ */
+abstract class BaseTransaction(
+        /**
+         * ID of the transaction type. Correct values in [1; 16] @see[BaseTransaction.Companion]
+         */
+        @SerializedName("type") val type: Int) {
 
+    /**
+     * Account public key of the sender in Base58
+     */
     @SerializedName("senderPublicKey")
     var senderPublicKey: String = ""
+
+    /**
+     * Unix time of sending of transaction to blockchain, must be in current time +/- half of hour
+     */
     @SerializedName("timestamp")
     var timestamp: Long = 0L
+
+    /**
+     * A transaction fee is a fee that an account owner pays to send a transaction.
+     * Transaction fee in WAVELET
+     */
     @SerializedName("fee")
     var fee: Long = 0L
+
+    /**
+     * Version number of the data structure of the transaction.
+     * The value has to be equal to [WavesConstants.VERSION]
+     */
     @SerializedName("version")
-    var version: Int = 0
+    var version: Int = WavesConstants.VERSION
+
+    /**
+     * Signatures v2 string set.
+     * A transaction signature is a digital signature
+     * with which the sender confirms the ownership of the outgoing transaction.
+     * If the array is empty, then S= 3. If the array is not empty,
+     * then S = 3 + 2 × N + (P1 + P2 + ... + Pn), where N is the number of proofs in the array,
+     * Pn is the size on N-th proof in bytes.
+     * The maximum number of proofs in the array is 8. The maximum size of each proof is 64 bytes
+     */
     @SerializedName("proofs")
     val proofs: MutableList<String> = mutableListOf()
 
+    /**
+     * Signature v1. See also [proofs]
+     */
+    @SerializedName("signature")
+    var signature: String? = null
+
+    /**
+     * Determines the network where the transaction will be published to.
+     * [WavesCrypto.TEST_NET_CHAIN_ID] for test network,
+     * [WavesCrypto.MAIN_NET_CHAIN_ID] for main network
+     */
+    @SerializedName("chainId")
+    var chainId: Byte = WavesSdk.getEnvironment().scheme
+
+    /**
+     * @return bytes to sign of the transaction
+     */
     abstract fun toBytes(): ByteArray
 
-    fun sign(seed: String) {
+    /**
+     * Sign the transaction with seed-phrase with current time if null
+     * and [WavesConstants.WAVES_MIN_FEE] if it equals 0
+     * @param seed Seed-phrase
+     */
+    open fun sign(seed: String): String {
         if (senderPublicKey == "") {
             senderPublicKey = WavesCrypto.publicKey(seed)
         }
         if (timestamp == 0L) {
-            timestamp = WavesPlatform.getEnvironment().getTime()
+            timestamp = WavesSdk.getEnvironment().getTime()
         }
         if (fee == 0L) {
             fee = WavesConstants.WAVES_MIN_FEE
         }
-        if (version == 0) {
-            version = WavesConstants.VERSION
-        }
-        proofs.add(getSignedStringWithSeed(seed))
+        proofs.clear()
+        val signature = getSignedStringWithSeed(seed)
+        proofs.add(signature)
+        return signature
     }
 
     fun getSignedBytesWithSeed(seed: String): ByteArray {
@@ -72,7 +127,9 @@ abstract class BaseTransaction(@SerializedName("type")
         const val ASSET_SCRIPT = 15
         const val SCRIPT_INVOCATION = 16
 
-        private fun getNameBy(type: Int): String {
+        const val SET_SCRIPT_LANG_VERSION: Byte = 1
+
+        fun getNameBy(type: Int): String {
             return when (type) {
                 GENESIS -> "Genesis"
                 PAYMENT -> "Payment"
@@ -87,7 +144,7 @@ abstract class BaseTransaction(@SerializedName("type")
                 MASS_TRANSFER -> "MassTransfer"
                 DATA -> "Data"
                 ADDRESS_SCRIPT -> "Address Script"
-                SPONSORSHIP -> "SponsorShip"
+                SPONSORSHIP -> "Sponsorship"
                 ASSET_SCRIPT -> "Asset Script"
                 SCRIPT_INVOCATION -> "Script Invocation"
                 else -> ""

@@ -1,6 +1,6 @@
 package com.wavesplatform.sdk.crypto
 
-object Base58 {
+internal object Base58 {
 
     private val ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
             .toCharArray()
@@ -80,7 +80,7 @@ object Base58 {
 
     @Throws(Base58.InvalidBase58::class)
     fun decode(input: String): ByteArray {
-        if (input.length == 0) {
+        if (input.isEmpty()) {
             // paying with the same coin
             throw InvalidBase58()
         }

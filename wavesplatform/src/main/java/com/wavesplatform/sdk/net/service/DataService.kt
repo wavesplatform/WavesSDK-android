@@ -14,7 +14,7 @@ import retrofit2.http.Query
 /**
  * The goal of this service is to provide a simple
  * and convenient way to get data from Waves blockchain.
- * For more information: [WavesPlatform API Swagger]({https://api.wavesplatform.com/v0/docs/)
+ * For more information: [WavesSdk API Swagger]({https://api.wavesplatform.com/v0/docs/)
  */
 interface DataService {
 
@@ -61,7 +61,7 @@ interface DataService {
             @Path("amountAsset") amountAsset: String?,
             @Path("priceAsset") priceAsset: String?,
             @Query("interval") interval: String,
-            @Query("timeStart") from: Long,
+            @Query("timeStart") timeStart: Long,
             @Query("timeEnd") timeEnd: Long
     ): Observable<CandlesResponse>
 }

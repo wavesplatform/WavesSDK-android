@@ -2,6 +2,10 @@ package com.wavesplatform.sdk.utils
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Settings for work of SDK with nodes and other Waves net-services.
+ * It contains urls and time correction
+ */
 class Environment(
         @SerializedName("server") var server: Server,
         @SerializedName("timestampServerDiff") var timestampServerDiff: Long) {
@@ -45,6 +49,8 @@ class Environment(
 
     companion object {
         val DEFAULT = Environment(server = Server.MainNet, timestampServerDiff = 0L)
+        val MAIN_NET = DEFAULT
+        val TEST_NET = Environment(server = Server.TestNet, timestampServerDiff = 0L)
     }
 
     sealed class Server {

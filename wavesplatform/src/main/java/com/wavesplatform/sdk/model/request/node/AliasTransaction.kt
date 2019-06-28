@@ -9,23 +9,32 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.WavesPlatform
+import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.utils.arrayWithSize
 import java.nio.charset.Charset
 
-class AliasTransaction(@SerializedName("aliasBytes") var alias: String = "")
+/**
+ * The alias transaction creates short readable alias for address
+ */
+class AliasTransaction(
+        /**
+         * Alias, short name for address in Waves blockchain.
+         * Alias bytes must be in [4;30]
+         * Alphabet: -.0123456789@_abcdefghijklmnopqrstuvwxyz
+         */
+        @SerializedName("alias") var alias: String = "")
     : BaseTransaction(CREATE_ALIAS) {
 
     override fun toBytes(): ByteArray {
         return try {
             Bytes.concat(
                     byteArrayOf(type.toByte()),
-                    byteArrayOf(WavesPlatform.getEnvironment().scheme),
+                    byteArrayOf(version.toByte()),
                     Base58.decode(senderPublicKey),
                     Bytes.concat(
                             byteArrayOf(version.toByte()),
-                            byteArrayOf(WavesPlatform.getEnvironment().scheme),
+                            byteArrayOf(WavesSdk.getEnvironment().scheme),
                             alias.toByteArray(
                                     Charset.forName("UTF-8")).arrayWithSize()
                     ).arrayWithSize(),

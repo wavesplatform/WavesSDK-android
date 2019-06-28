@@ -2,14 +2,16 @@ package com.wavesplatform.sdk.utils
 
 import android.util.Patterns
 import com.google.common.primitives.Bytes
+import com.google.common.primitives.Ints
 import com.google.common.primitives.Shorts
-import com.wavesplatform.sdk.model.response.*
-import com.wavesplatform.sdk.model.response.data.AssetInfoResponse
+import com.wavesplatform.sdk.crypto.AESUtil
+import com.wavesplatform.sdk.model.response.ErrorResponse
 import com.wavesplatform.sdk.model.response.node.OrderResponse
 import org.spongycastle.util.encoders.Hex
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.security.SecureRandom
+import kotlin.math.abs
 
 
 fun String.isWaves(): Boolean {
@@ -35,6 +37,10 @@ fun String.isWavesId(): Boolean {
 
 fun ByteArray.arrayWithSize(): ByteArray {
     return Bytes.concat(Shorts.toByteArray(size.toShort()), this)
+}
+
+fun ByteArray.arrayWithIntSize(): ByteArray {
+    return Bytes.concat(Ints.toByteArray(size), this)
 }
 
 fun String.clearBalance(): String {
@@ -88,17 +94,8 @@ fun ErrorResponse.isSmartError(): Boolean {
     return this.error in 305..308
 }
 
-fun AssetInfoResponse.getTicker(): String {
-
-    if (this.id.isWavesId()) {
-        return WavesConstants.WAVES_ASSET_INFO.name
-    }
-
-    return this.ticker ?: this.name
-}
-
 fun getScaledAmount(amount: Long, decimals: Int): String {
-    val absAmount = Math.abs(amount)
+    val absAmount = abs(amount)
     val value = BigDecimal.valueOf(absAmount, decimals)
     if (amount == 0L) {
         return "0"
@@ -123,4 +120,16 @@ fun randomString(): String {
     val random = SecureRandom()
     random.nextBytes(bytes)
     return String(Hex.encode(bytes), charset("UTF-8"))
+}
+
+fun aesEncrypt(cleartext: String?,
+               password: String?,
+               iterations: Int = AESUtil.DEFAULT_PBKDF2_ITERATIONS_V2): String {
+    return AESUtil.encrypt(cleartext, password, iterations)
+}
+
+fun aesDecrypt(cipherText: String?,
+               password: String?,
+               iterations: Int = AESUtil.DEFAULT_PBKDF2_ITERATIONS_V2): String {
+    return AESUtil.decrypt(cipherText, password, iterations)
 }

@@ -9,16 +9,15 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.IOException
 
-class NetworkException internal constructor(
-    message: String?,
-    /** The request URL which produced the error.  */
+class NetworkException internal constructor(message: String?,
+                                            /** The request URL which produced the error.  */
     val url: String?,
-    /** Response object containing status code, headers, body, etc.  */
+                                            /** Response object containing status code, headers, body, etc.  */
     val response: Response<*>?,
-    /** The event kind which triggered this error.  */
+                                            /** The event kind which triggered this error.  */
     val kind: Kind,
-    exception: Throwable?,
-    /** The Retrofit this request was executed on  */
+                                            exception: Throwable?,
+                                            /** The Retrofit this request was executed on  */
     private val retrofit: Retrofit?
 ) : RuntimeException(message, exception) {
 

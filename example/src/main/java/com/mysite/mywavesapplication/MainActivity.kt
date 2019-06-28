@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.wavesplatform.sdk.WavesPlatform
+import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.net.OnErrorListener
 import com.wavesplatform.sdk.net.NetworkException
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             val newSeed = WavesCrypto.randomSeed()
             seedTextView.text = "New seed is: $newSeed"
 
-            val address = WavesCrypto.addressBySeed(newSeed)
+            val address = WavesCrypto.addressBySeed(newSeed, "W")
 
             // Create request to Node service about address balance
             getWavesBalance(address)
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleServiceErrors() {
-        WavesPlatform.service().addOnErrorListener(object : OnErrorListener {
+        WavesSdk.service().addOnErrorListener(object : OnErrorListener {
             override fun onError(exception: NetworkException) {
                 // Handle NetworkException here
             }
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getWavesBalance(address: String) {
         compositeDisposable.add(
-            WavesPlatform.service().getNode()
+            WavesSdk.service().getNode()
                 .wavesBalance(address)
                 .compose(RxUtil.applyObservableDefaultSchedulers())
                 .subscribe({ wavesBalance ->

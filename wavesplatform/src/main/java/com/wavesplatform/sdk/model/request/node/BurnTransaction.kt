@@ -9,17 +9,21 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.WavesPlatform
 import com.wavesplatform.sdk.crypto.Base58
 
+/**
+ * The burn transaction irreversible deletes amount of some asset
+ * It's impossible to burn WAVES with the burn transaction.
+ */
 class BurnTransaction(
+        /**
+         * Id of burnable asset in Waves blockchain, different for main and test net
+         */
         @SerializedName("assetId") val assetId: String,
+        /**
+         * Amount of asset to burn in satoshi
+         */
         @SerializedName("quantity") var quantity: Long) : BaseTransaction(BURN) {
-
-    @SerializedName("chainId")
-    val chainId: Byte = WavesPlatform.getEnvironment().scheme
-    @SerializedName("id")
-    var id: String? = null
 
     override fun toBytes(): ByteArray {
         return try {
