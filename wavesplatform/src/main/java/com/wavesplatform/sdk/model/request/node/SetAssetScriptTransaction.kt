@@ -9,7 +9,7 @@ import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.arrayWithSize
 
 /**
- * Set asset script transaction (set script to asset)
+ * Set asset script transaction (set script to account)
  * An asset script is a script that is attached to an asset with a set asset script transaction.
  * An asset with the attached script is called a smart asset.
  * You can attach a script to an asset only during the creation of the asset.

@@ -208,13 +208,10 @@ interface WavesCrypto {
         }
 
         override fun addressByPublicKey(publicKey: PublicKey, chainId: String?): Address {
-            return when {
-                chainId == null ->
-                    addressFromPublicKey(Base58.decode(publicKey))
-                chainId.length == 1 ->
-                    addressFromPublicKey(Base58.decode(publicKey), chainId[0].toByte())
-                else ->
-                    "Unknown address"
+            return if (chainId.isNullOrEmpty()) {
+                addressFromPublicKey(Base58.decode(publicKey))
+            } else {
+                addressFromPublicKey(Base58.decode(publicKey), chainId.toByte())
             }
         }
 

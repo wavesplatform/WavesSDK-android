@@ -64,7 +64,7 @@ abstract class BaseTransaction(
      * [WavesCrypto.MAIN_NET_CHAIN_ID] for main network
      */
     @SerializedName("chainId")
-    var chainId: Byte = WavesSdk.getEnvironment().scheme
+    var chainId: Byte = WavesSdk.getEnvironment().chainId
 
     /**
      * @return bytes to sign of the transaction

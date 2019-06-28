@@ -17,25 +17,25 @@ class Environment(
     @SerializedName("matcherUrl")
     var matcherUrl: String = ""
     @SerializedName("scheme")
-    var scheme: Byte = 'W'.toByte()
+    var chainId: Byte = 'W'.toByte()
 
     init {
         when (server) {
             Server.MainNet -> {
-                this.scheme = 'W'.toByte()
+                this.chainId = 'W'.toByte()
                 this.dataUrl = WavesConstants.URL_DATA
                 this.nodeUrl = WavesConstants.URL_NODE
                 this.matcherUrl = WavesConstants.URL_MATCHER
             }
             Server.TestNet -> {
-                this.scheme = 'T'.toByte()
+                this.chainId = 'T'.toByte()
                 this.dataUrl = WavesConstants.URL_DATA_TEST
                 this.nodeUrl = WavesConstants.URL_NODE_TEST
                 this.matcherUrl = WavesConstants.URL_MATCHER_TEST
             }
             is Server.Custom -> {
                 val serverCustom = server as Server.Custom
-                this.scheme = serverCustom.scheme
+                this.chainId = serverCustom.scheme
                 this.dataUrl = serverCustom.data
                 this.nodeUrl = serverCustom.node
                 this.matcherUrl = serverCustom.matcher

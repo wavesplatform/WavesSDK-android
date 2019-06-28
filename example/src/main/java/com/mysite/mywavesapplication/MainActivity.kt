@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             val newSeed = WavesCrypto.randomSeed()
             seedTextView.text = "New seed is: $newSeed"
 
-            val address = WavesCrypto.addressBySeed(newSeed, "W")
+            val address = WavesCrypto.addressBySeed(newSeed, WavesSdk.getEnvironment().chainId.toString())
 
             // Create request to Node service about address balance
             getWavesBalance(address)

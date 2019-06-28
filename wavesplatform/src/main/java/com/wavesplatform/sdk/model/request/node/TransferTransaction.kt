@@ -93,7 +93,7 @@ class TransferTransaction(
         fun getRecipientBytes(recipient: String): ByteArray {
             return if (recipient.length <= 30) {
                 Bytes.concat(byteArrayOf(WavesConstants.VERSION.toByte()),
-                        byteArrayOf(WavesSdk.getEnvironment().scheme),
+                        byteArrayOf(WavesSdk.getEnvironment().chainId),
                         recipient.parseAlias().toByteArray(Charset.forName("UTF-8")).arrayWithSize())
             } else {
                 Base58.decode(recipient)

@@ -9,9 +9,9 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        WavesSdk.init(this)
+        //WavesSdk.init(this)
 
         // or use Environment.TEST_NET for switch to Test-Net
-        // WavesSdk.init(this, Environment.TEST_NET)
+         WavesSdk.init(this, Environment.TEST_NET)
     }
 }

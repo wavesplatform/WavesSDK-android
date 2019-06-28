@@ -1,5 +1,7 @@
 package com.wavesplatform.sdk.model.request.node
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
@@ -9,6 +11,7 @@ import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
+import kotlinx.android.parcel.Parcelize
 import java.nio.charset.Charset
 
 /**
@@ -158,24 +161,45 @@ class DataTransaction(
     /**
      * Data transaction a entity type.
      */
-    class Data(key: String, type: String, value: Any) {
-
+    class Data(
         /**
          * Data transaction key
          */
         @SerializedName("key")
-        var key: String? = key
+        var key: String?,
 
         /**
          * Data transaction type can be only "string", "boolean", "integer", "binary"
          */
         @SerializedName("type")
-        var type: String? = type
+        var type: String?,
 
         /**
          * Data transaction value can be string, boolean, Long, and binary string as Base64
          */
         @SerializedName("value")
-        var value: Any? = value
+        var value: Any?) : Parcelable {
+
+        private constructor(parcel: Parcel) : this(
+            key = parcel.readString(),
+            type = parcel.readString(),
+            value = parcel.readValue(Any::class.java.classLoader)
+        )
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(key)
+            parcel.writeString(type)
+            parcel.writeValue(value)
+        }
+
+        override fun describeContents() = 0
+
+        companion object {
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<Data> {
+                override fun createFromParcel(parcel: Parcel) = Data(parcel)
+                override fun newArray(size: Int) = arrayOfNulls<Data>(size)
+            }
+        }
     }
 }

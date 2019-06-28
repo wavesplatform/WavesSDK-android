@@ -34,7 +34,7 @@ class AliasTransaction(
                     Base58.decode(senderPublicKey),
                     Bytes.concat(
                             byteArrayOf(version.toByte()),
-                            byteArrayOf(WavesSdk.getEnvironment().scheme),
+                            byteArrayOf(chainId),
                             alias.toByteArray(
                                     Charset.forName("UTF-8")).arrayWithSize()
                     ).arrayWithSize(),
