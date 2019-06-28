@@ -1,6 +1,8 @@
-# WavesSDK for Android
+# Easy start with WavesSDK for Android
 
-1. Add waves and in necessary rxjava libs to your app-project in "app/build.gradle" - file
+All source-cod available in "example" - module
+
+1. Add waves and in necessary Rx-Java libs to your app-project in "app/build.gradle" - file
 
 ```groovy
 dependencies {
@@ -13,7 +15,7 @@ dependencies {
 }
 ```
 
-2. Add uses-permisson about Internet in "app/src/main/manifest.xml" - file of project
+2. Add uses-permission about Internet in "app/src/main/manifest.xml" - file of project
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -59,7 +61,6 @@ fun seedPhraseGeneration() {
 ```
 
 You can see about other methods in WavesCrypto.
-
 
 5. Now let's see how we can work with the blockchain.
 
