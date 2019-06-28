@@ -2,26 +2,26 @@
 
 Collection of functions to work with Waves basic types and crypto primitives used by Waves.
 
-##Main definitions
+## Main definitions
 
-######Seed or seed-phrase
+###### Seed or seed-phrase
 list of words which store all the information needed to recover a private key. Usually it generate from prepared 2048 words list by BIP39 mnemonic code and look like "same era morning alarm must faculty wealth sister wise myth install party fabric unaware depart" but can be any string with any length.
 
-######Private key or secret key
+###### Private key or secret key
 it's a string or byte array is paired with a public key to set off algorithms for text encryption and decryption. It is created as part of public key cryptography during asymmetric-key encryption and used to decrypt and transform a message to a readable format. Public and private keys are paired for secure communication. It's give access to account! Loss or publicity of it can lead to loss of control of the funds registered to the blockchain address.
 
-######Public-key
+###### Public-key
 t's a string or byte array, open or public part of pair public and private keys. Public key can be compute from private key only by owner. And only owner can create signatures by his private key. Everyone who have signature can verify it and owner by public key. Everyone can create address in blockchain by public key with Base58 encode.
 
-######Base64
+###### Base64
 binary-to-text and reverse encoding function function used to represent binary data in an ASCII string format by translating it into a radix-64 representation. The implementation uses A–Z, a–z, and 0–9 for the first 62 values and '+', '/' characters. In Waves blockchain it often uses for different attachments and aliases.
 
-######Base58
+###### Base58
 binary-to-text and reverse encoding function used to represent large integers as alphanumeric text. Compared to Base64 the following similar-looking letters are omitted: * 0 (zero), O (capital o), I (capital i) and l (lower case L) as well as the non-alphanumeric characters '+', '/'. 
 
 Crypto-methods blake2b, keccak and sha256 needs for creation private key from seed.
 
-##Methods list:
+## Methods list:
 
 * blake2b(input: Bytes): Bytes
 * keccak(input: Bytes): Bytes
