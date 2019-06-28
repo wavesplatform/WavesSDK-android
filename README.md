@@ -7,32 +7,24 @@
 WavesSDK – it is mobile libraries for easy and simple co-working Waves blockchain platform and any mobile app
 
 ## Easy start with WavesSDK
-[This Android-SDK](https://github.com/wavesplatform/WavesSDK-android)
-[iOS-SDK](https://github.com/wavesplatform/WavesSDK-iOS)
+* [Android-SDK](wavesplatform/docs/easy_start.md)
+* [iOS-SDK](https://github.com/wavesplatform/WavesSDK-iOS)
 
 ## Libraries are divided into 3 main parts:
-Waves Crypto – section responsible for generating seed-phrases, converting it into public and private keys, obtaining address, verifying, translating bytes into a string and reverse, signing the data with a private key and other. All things that prepare to interact with crypto part of blockchain
-Waves Models – models of transactions and other data transfer objects for work with Waves Services, also it is release signing data with private key
-Waves Services – net services for sending transactions and getting data from blockchain
+
+* [Waves Crypto](wavesplatform/docs/waves_crypto.md) – section responsible for generating seed-phrases, converting it into public and private keys, obtaining address, verifying, translating bytes into a string and reverse, signing the data with a private key and other. All things that prepare to interact with crypto part of blockchain
+* [Waves Models](wavesplatform/docs/waves_models.md) – models of transactions and other data transfer objects for work with Waves Services, also it is release signing data with private key
+* [Waves Services](wavesplatform/docs/waves_services.md) – net services for sending transactions and getting data from blockchain
 
 ## Links:
 * [wavesplatform.com](https://wavesplatform.com)
-
 * [Client Mainnet](https://client.wavesplatform.com) – client of Waves blockchain on Main Net
-
 * [Explorer](https://wavesexplorer.com) – Waves platform transactions explorer
-
 * [Client Testnet](https://testnet.wavesplatform.com) – client for testing in copy of real Waves blockchain, it also called Test Net
-
 * [Explorer Testnet](https://wavesexplorer.com/testnet) – Waves platform transactions explorer
 
 ## Testing
 You can use [Explorer Testnet](https://wavesexplorer.com/testnet) for testing your app with libs. You can add test-Waves to your balance at the explorer in side menu from Faucet. And you can check any sent transactions on Wavesexplorer in Main or Test Net
-
-## Easy Start
-
-[Easy Start](wavesplatform/docs/easy_start.md)
-
 
 ## Blockchain for the people
 
