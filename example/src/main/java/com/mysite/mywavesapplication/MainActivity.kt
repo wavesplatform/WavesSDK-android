@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             InvokeScriptTransaction.Arg("binary", "base64:VGVzdA=="))
 
         val call = InvokeScriptTransaction.Call(
-            function = "stateChange",
+            function = "testarg",
             args = args
         )
 

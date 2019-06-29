@@ -60,8 +60,7 @@ class InvokeScriptTransaction(
 
     override fun sign(seed: String): String {
         version = 1
-        signature = super.sign(seed)
-        return signature ?: ""
+        return super.sign(seed)
     }
 
     private fun functionCallArray(): ByteArray {
@@ -130,7 +129,7 @@ class InvokeScriptTransaction(
         for (paymentItem in payment) {
             val amount = Longs.toByteArray(paymentItem.amount)
             val assetId = if (paymentItem.assetId.isNullOrEmpty()) {
-                byteArrayOf(1)
+                byteArrayOf(0)
             } else {
                 SignUtil.arrayOption(paymentItem.assetId!!)
             }
