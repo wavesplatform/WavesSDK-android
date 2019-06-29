@@ -79,7 +79,12 @@ class DataTransaction(
                         keyArray = oneData.key!!
                                 .toByteArray(Charset.forName("UTF-8"))
                                 .arrayWithSize()
-                        integerValue(INTEGER_DATA_TYPE, oneData.value as Long)
+                        val longValue: Long = if (oneData.value is Int) {
+                            (oneData.value as Int).toLong()
+                        } else {
+                            oneData.value as Long
+                        }
+                        integerValue(INTEGER_DATA_TYPE, longValue)
                     }
                     "boolean" -> {
                         keyArray = oneData.key!!
@@ -92,7 +97,8 @@ class DataTransaction(
                                 .toByteArray(Charset.forName("UTF-8"))
                                 .arrayWithSize()
                         binaryValue(BINARY_DATA_TYPE, (oneData.value as String)
-                                .replace("base64:", ""))
+                                .replace("base64:", "")
+                        )
                     }
                     else -> {
                         throw Error("There is no the data type")
@@ -175,7 +181,11 @@ class DataTransaction(
         var type: String?,
 
         /**
-         * Data transaction value can be string, boolean, Long, and binary string as Base64
+         * Data transaction value can be one of four types:
+         * [Long] for integer(0),
+         * [Boolean] for boolean(1),
+         * [String] for binary(2)
+         * and [String] string(3). You can use "base64:binaryString" and just "binaryString". Can't be empty string
          */
         @SerializedName("value")
         var value: Any?) : Parcelable {

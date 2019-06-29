@@ -187,15 +187,20 @@ class InvokeScriptTransaction(
             @SerializedName("args") var args: List<Arg> = mutableListOf()) : Parcelable
 
     /**
-     * Argumens for the [Call.function] in [Call]
+     * Arguments for the [Call.function] in [Call]
      */
     class Arg(
             /**
-             * Type can be of four types - integer(0), boolean(1), binary array(2) and string(3).
+             * Type can be of four types - integer(0), boolean(1), binary(2) and string(3).
              */
             @SerializedName("type") var type: String?,
             /**
-             * Value can of four types - integer(0), boolean(1), binary array(2) and string(3).
+             * Argument value can be one of four types:
+             * [Long] for integer(0),
+             * [Boolean] for boolean(1),
+             * [String] for binary(2)
+             * and [String] string(3). You can use "base64:binaryString" and just "binaryString". Can't be empty string
+             *
              * And it depends on type.
              */
             @SerializedName("value") var value: Any?) : Parcelable {
