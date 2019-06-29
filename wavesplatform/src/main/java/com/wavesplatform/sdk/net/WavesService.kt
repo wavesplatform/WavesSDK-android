@@ -180,6 +180,7 @@ class WavesService(private var context: Context) {
 
     private fun createGsonFactory(): GsonConverterFactory {
         return GsonConverterFactory.create(GsonBuilder()
+                .serializeNulls()
                 .setLenient()
                 .setPrettyPrinting()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
