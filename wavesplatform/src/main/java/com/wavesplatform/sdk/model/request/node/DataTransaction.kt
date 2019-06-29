@@ -67,18 +67,14 @@ class DataTransaction(
         val allDataArray = if (data.isNotEmpty()) {
             var keyValueChainArray = byteArrayOf()
             for (oneData in data) {
-                val keyArray: ByteArray
+                val keyArray = oneData.key!!
+                    .toByteArray(Charset.forName("UTF-8"))
+                    .arrayWithSize()
                 val valueArray = when (oneData.type) {
                     "string" -> {
-                        keyArray = oneData.key!!
-                                .toByteArray(Charset.forName("UTF-8"))
-                                .arrayWithSize()
                         stringValue(STRING_DATA_TYPE, oneData.value as String)
                     }
                     "integer" -> {
-                        keyArray = oneData.key!!
-                                .toByteArray(Charset.forName("UTF-8"))
-                                .arrayWithSize()
                         val longValue: Long = if (oneData.value is Int) {
                             (oneData.value as Int).toLong()
                         } else {
@@ -87,18 +83,11 @@ class DataTransaction(
                         integerValue(INTEGER_DATA_TYPE, longValue)
                     }
                     "boolean" -> {
-                        keyArray = oneData.key!!
-                                .toByteArray(Charset.forName("UTF-8"))
-                                .arrayWithSize()
                         booleanValue(BOOLEAN_DATA_TYPE, oneData.value as Boolean)
                     }
                     "binary" -> {
-                        keyArray = oneData.key!!
-                                .toByteArray(Charset.forName("UTF-8"))
-                                .arrayWithSize()
                         binaryValue(BINARY_DATA_TYPE, (oneData.value as String)
-                                .replace("base64:", "")
-                        )
+                                .replace("base64:", ""))
                     }
                     else -> {
                         throw Error("There is no the data type")
