@@ -75,7 +75,8 @@ class WavesCryptoTest {
     fun base64() {
         Assert.assertEquals(WavesCrypto.base64decode(WavesCrypto.base64encode(RANDOM_BYTES)).contentEquals(RANDOM_BYTES),
             true)
-        Assert.assertEquals(WavesCrypto.base64encode(WavesCrypto.base64decode(ADDRESS)), ADDRESS)
+        Assert.assertEquals(WavesCrypto.base64encode(WavesCrypto.base64decode("base64$RANDOM_STRING=")),
+            "base64$RANDOM_STRING")
     }
 
     companion object {
@@ -86,5 +87,6 @@ class WavesCryptoTest {
         const val PRIVATE_KEY = "4HimGuCggEJ7m19aGMGLBVsqyaSnsk1zsjLWiFimQM3Q"
         const val TEST_NET_CHAIN_ID = WavesCrypto.TEST_NET_CHAIN_ID.toString()
         val RANDOM_BYTES = byteArrayOf(56, 127, 57, -24, 0, 77, 33, -14, 14, 69, 55, 5, 110, -1, 12)
+        val RANDOM_STRING = "slll000OOOjdgnlfsjdgnsqwertyulslkdmzxcvbnm"
     }
 }
