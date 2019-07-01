@@ -34,7 +34,7 @@ class TransferTransaction(
      */
     @SerializedName("recipient") var recipient: String,
     /**
-     * Amount of Waves in satoshi
+     * Amount of asset in satoshi
      */
     @SerializedName("amount") var amount: Long,
     /**

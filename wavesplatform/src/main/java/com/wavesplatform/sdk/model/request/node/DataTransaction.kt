@@ -15,7 +15,7 @@ import kotlinx.android.parcel.Parcelize
 import java.nio.charset.Charset
 
 /**
- * The data transaction stores data in account data storage of the blockchain.
+ * The Data transaction stores data in account data storage of the blockchain.
  *
  * The storage contains data recorded using a data transaction or an invoke script transaction.
  * The maximum length of the data array is 100 elements.
@@ -154,17 +154,17 @@ class DataTransaction(
     }
 
     /**
-     * Data transaction a entity type.
+     * Data of Data transaction.
      */
     class Data(
         /**
-         * Data transaction key
+         * Key of data of Data transaction
          */
         @SerializedName("key")
         var key: String?,
 
         /**
-         * Data transaction type can be only "string", "boolean", "integer", "binary"
+         * Type of data of Data transaction type can be only "string", "boolean", "integer", "binary"
          */
         @SerializedName("type")
         var type: String?,

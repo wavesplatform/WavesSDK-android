@@ -15,7 +15,7 @@ import com.wavesplatform.sdk.utils.arrayWithSize
 import java.nio.charset.Charset
 
 /**
- * The alias transaction creates short readable alias for address
+ * The Alias transaction creates short readable alias for address
  */
 class AliasTransaction(
         /**

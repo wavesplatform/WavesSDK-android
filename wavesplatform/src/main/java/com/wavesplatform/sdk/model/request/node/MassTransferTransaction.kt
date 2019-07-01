@@ -15,7 +15,7 @@ import kotlinx.android.parcel.Parcelize
 
 
 /**
- * Mass-Transfer transaction sends a lot of transactions of asset for recipients set
+ * The Mass-Transfer transaction sends a lot of transactions of asset for recipients set
  *
  * Transfer transaction is used to combine several ordinary transfer transactions
  * that share single sender and asset ID (it has a list of recipients,

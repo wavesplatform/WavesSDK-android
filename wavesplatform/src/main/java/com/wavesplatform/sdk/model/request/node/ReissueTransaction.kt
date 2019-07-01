@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.crypto.Base58
 
 /**
- * Reissue transaction is used to give the ability to reissue more tokens of an asset
+ * The Reissue transaction is used to give the ability to reissue more tokens of an asset
  * by specifying the amount and the asset id. Only quantity and reissuable can be new values
  */
 class ReissueTransaction(

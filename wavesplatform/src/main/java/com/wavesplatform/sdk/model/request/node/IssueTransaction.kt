@@ -20,7 +20,7 @@ import com.wavesplatform.sdk.utils.scriptBytes
 import java.nio.charset.Charset
 
 /**
- * Issue transaction add a new asset in blockchain.
+ * The Issue transaction add a new asset in blockchain.
  *
  * Issue transaction is used to give the user the possibility to issue his/her own tokens
  * on Waves blockchain. The user can define the exact amount of the issued tokens

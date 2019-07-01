@@ -13,7 +13,7 @@ import kotlinx.android.parcel.Parcelize
 import java.nio.charset.Charset
 
 
-/***
+/**
  * Invoke script transaction is a transaction that invokes functions of the dApp script.
  * dApp contains compiled functions  developed with [Waves Ride IDE]({https://ide.wavesplatform.com/)
  * You can invoke one of them by name with some arguments.
@@ -32,7 +32,7 @@ class InvokeScriptTransaction(
      */
     @SerializedName("call") var call: Call? = null,
     /**
-     * Payment for function of dApp. Now it works with only one payment.
+     * Payments for function of dApp. Now it works with only one payment.
      */
     @SerializedName("payment") var payment: List<Payment> = mutableListOf()
 ) : BaseTransaction(SCRIPT_INVOCATION) {
