@@ -17,6 +17,8 @@ import java.nio.charset.Charset
  * Invoke script transaction is a transaction that invokes functions of the dApp script.
  * dApp contains compiled functions  developed with [Waves Ride IDE]({https://ide.wavesplatform.com/)
  * You can invoke one of them by name with some arguments.
+ *
+ * [dApp creation Wiki]({https://docs.wavesplatform.com/en/smart-contracts/writing-dapps.html)
  */
 class InvokeScriptTransaction(
     /**

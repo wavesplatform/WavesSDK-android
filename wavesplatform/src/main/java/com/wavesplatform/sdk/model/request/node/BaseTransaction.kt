@@ -29,6 +29,7 @@ abstract class BaseTransaction(
     /**
      * A transaction fee is a fee that an account owner pays to send a transaction.
      * Transaction fee in WAVELET
+     * [Wiki about Fee](https://docs.wavesplatform.com/en/blockchain/transaction-fee.html)
      */
     @SerializedName("fee")
     var fee: Long = 0L

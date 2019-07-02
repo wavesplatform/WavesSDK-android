@@ -17,7 +17,7 @@ import com.wavesplatform.sdk.crypto.Base58
  */
 class ReissueTransaction(
         /**
-         * Id of asset that should be changed
+         * Id of your asset that should be changed
          */
         @SerializedName("assetId") val assetId: String,
         /**

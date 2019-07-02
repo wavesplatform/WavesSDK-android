@@ -26,13 +26,14 @@ import com.wavesplatform.sdk.utils.scriptBytes
  */
 class SetAssetScriptTransaction(
     /**
-     * Selected for script asset Id
+     * Selected your asset Id for script
      */
     @SerializedName("assetId") var assetId: String,
     /**
      * Base64 binary string with Waves Ride script
      * You can use "base64:compiledScriptStringInBase64" and just "compiledScriptStringInBase64".
      * Can't be empty string
+     * You can set asset script only on your asset
      */
     @SerializedName("script") var script: String
 ) : BaseTransaction(ASSET_SCRIPT) {
