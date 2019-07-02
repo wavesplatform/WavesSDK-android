@@ -47,7 +47,6 @@ internal class HostSelectionInterceptor(initServers: Environment) : Interceptor 
                 .build()
 
             request = request.newBuilder()
-                .header("User-Agent", "AndroidSdk")
                 .url(newUrl)
                 .build()
         }
