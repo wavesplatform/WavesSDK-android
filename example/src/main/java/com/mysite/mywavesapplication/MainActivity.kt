@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             val newSeed = WavesCrypto.randomSeed()
             seedTextView.text = "New seed is: $newSeed"
 
-            val address = WavesCrypto.addressBySeed(newSeed, WavesSdk.getEnvironment().chainId.toString())
+            val address = WavesCrypto.addressBySeed(SEED, WavesSdk.getEnvironment().chainId.toString())
 
             // Create request to Node service about address balance
             getWavesBalance(address)
@@ -56,8 +56,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun getWavesBalance(address: String) {
         compositeDisposable.add(
-            WavesSdk.service().getNode()
-                .addressesBalance(address)
+            WavesSdk.service()
+                .getNode() // You can choose different Waves services: node, matcher and data service
+                .addressesBalance(address) // Here methods of service
                 .compose(RxUtil.applyObservableDefaultSchedulers())
                 .subscribe({ wavesBalance ->
                     // Do something on success, now we have wavesBalance.balance in satoshi in Long
@@ -95,6 +96,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val SEED = "tomorrow puppy car cabin treat ticket weapon soda slush camp idea mountain name erupt broom"
+        const val SEED = ""
     }
 }
