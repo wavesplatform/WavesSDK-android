@@ -43,12 +43,13 @@ internal class HostSelectionInterceptor(initServers: Environment) : Interceptor 
             }
 
             val newUrl = request.url().newBuilder()
-                    .host(host)
-                    .build()
+                .host(host)
+                .build()
 
             request = request.newBuilder()
-                    .url(newUrl)
-                    .build()
+                .header("User-Agent", "AndroidSdk")
+                .url(newUrl)
+                .build()
         }
         return chain.proceed(request)
     }
