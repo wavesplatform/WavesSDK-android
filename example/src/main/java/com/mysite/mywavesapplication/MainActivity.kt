@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         // First you must init() WavesSdk in Application and add Internet permission
+        // Put your seed in const [MainActivity.Companion.SEED] from https://testnet.wavesplatform.com
+        // or https://client.wavesplatform.com
 
         fab.setOnClickListener {
             // Generate or add your seed
