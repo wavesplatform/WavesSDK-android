@@ -359,6 +359,6 @@ class WavesServiceTest {
     }
 
     companion object {
-        const val SEED = ""
+        const val SEED = "tomorrow puppy car cabin treat ticket weapon soda slush camp idea mountain name erupt broom"
     }
 }
