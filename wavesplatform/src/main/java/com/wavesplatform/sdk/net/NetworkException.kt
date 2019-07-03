@@ -49,6 +49,26 @@ class NetworkException internal constructor(
         UNEXPECTED
     }
 
+    /**
+     * HTTP response body converted to specified `type`. `null` if there is no
+     * response.
+     *
+     * @throws IOException if unable to convert the body to the specified `type`.
+     * *
+     * * public void onError(Throwable throwable) {
+     * NetworkException error = (NetworkException) throwable;
+     * LoginErrorResponse response = error.getBodyAs(LoginErrorResponse.class);
+     * //...
+     * }
+     */
+    fun <T> getErrorBodyAs(type: Class<T>): T? {
+        if (response?.errorBody() == null) {
+            return null
+        }
+        val converter = retrofit?.responseBodyConverter<T>(type, arrayOfNulls<Annotation>(0))
+        return converter?.convert(response.errorBody())
+    }
+
     companion object {
 
         fun httpError(url: String, response: Response<*>, retrofit: Retrofit): NetworkException {
