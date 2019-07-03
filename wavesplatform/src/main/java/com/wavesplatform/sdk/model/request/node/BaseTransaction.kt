@@ -68,7 +68,7 @@ abstract class BaseTransaction(
     var chainId: Byte = WavesSdk.getEnvironment().chainId
 
     /**
-     * @return bytes to sign of the transaction
+     * Gets bytes array to sign of the transaction
      */
     abstract fun toBytes(): ByteArray
 
