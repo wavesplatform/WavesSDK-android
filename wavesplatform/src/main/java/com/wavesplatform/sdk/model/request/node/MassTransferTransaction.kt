@@ -92,6 +92,9 @@ class MassTransferTransaction(
         return Bytes.concat(lengthBytes, recipientAmountChainArray)
     }
 
+    /**
+     * The item of the Mass-transfer transaction
+     */
     @Parcelize
     class Transfer(
             /**

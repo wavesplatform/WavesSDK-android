@@ -42,15 +42,15 @@ data class CreateOrderRequest(
      */
     @SerializedName("price") var price: Long = 0L,
     /**
-     * Amount of Waves in satoshi
+     * Amount of asset in satoshi
      */
     @SerializedName("amount") var amount: Long = 0L,
     /**
-     * Unix time of sending of transaction to blockchain
+     * Unix time of sending of transaction to blockchain, must be in current time +/- 1.5 hour
      */
     @SerializedName("timestamp") var timestamp: Long = WavesSdk.getEnvironment().getTime(),
     /**
-     * Unix time of expiration of transaction
+     * Unix time of expiration of transaction to blockchain
      */
     @SerializedName("expiration") var expiration: Long = 0L,
     /**

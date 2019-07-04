@@ -183,8 +183,8 @@ class InvokeScriptTransaction(
          * Argument value can be one of four types:
          * [Long] for integer(0),
          * [Boolean] for boolean(1),
-         * [String] for binary(2)
-         * and [String] string(3). You can use "base64:binaryString" and just "binaryString". Can't be empty string
+         * [String] for binary(2) You can use "base64:binaryString" and just "binaryString". Can't be empty string
+         * and [String] string(3).
          *
          * And it depends on type.
          */
