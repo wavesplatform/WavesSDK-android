@@ -13,6 +13,9 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
+/**
+ * Development test for checking Node transactions. Not for auto-testing
+ */
 @LargeTest
 class WavesServiceTest {
 
