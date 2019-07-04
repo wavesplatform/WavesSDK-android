@@ -1,6 +1,7 @@
-package com.wavesplatform.net.service
+package com.wavesplatform.sdk.net.service
 
 import android.support.test.InstrumentationRegistry
+import android.support.test.filters.LargeTest
 import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.*
@@ -8,15 +9,20 @@ import com.wavesplatform.sdk.utils.Environment
 import com.wavesplatform.sdk.utils.RxUtil
 import com.wavesplatform.sdk.utils.WavesConstants
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
+@LargeTest
 class WavesServiceTest {
+
+    @Before
+    fun initWavesSdk() {
+        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
+    }
 
     @Test
     fun sendTransferTransactionTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transaction = TransferTransaction(
             assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
             recipient = "3Mq6WcupmXPVAzEB8DmXXiiT3kNFynebu6h",
@@ -43,8 +49,6 @@ class WavesServiceTest {
 
     @Test
     fun sendInvokeTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val args = mutableListOf(
             InvokeScriptTransaction.Arg("string", "Some string!"),
             InvokeScriptTransaction.Arg("integer", 128L),
@@ -86,8 +90,6 @@ class WavesServiceTest {
 
     @Test
     fun sendAliasTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = AliasTransaction("letnyayapechalka")
 
         transferTransaction.sign(seed = SEED)
@@ -107,8 +109,6 @@ class WavesServiceTest {
 
     @Test
     fun sendBurnTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = BurnTransaction("EZvjPdTR6YEpvAx2fkYGtN8vLZrWo3cYCMJ2BX8DTP9k", 1)
 
         transferTransaction.sign(seed = SEED)
@@ -128,8 +128,6 @@ class WavesServiceTest {
 
     @Test
     fun sendLeasingTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = LeaseTransaction("3Mq6WcupmXPVAzEB8DmXXiiT3kNFynebu6h", 1)
 
         transferTransaction.sign(seed = SEED)
@@ -149,8 +147,6 @@ class WavesServiceTest {
 
     @Test
     fun sendCancelLeasingTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = LeaseCancelTransaction("C8TYbzvYv7qRPfPFzbHaCrKmM5pwHKHUMGWZeGBCJaFL")
 
         transferTransaction.sign(seed = SEED)
@@ -170,15 +166,13 @@ class WavesServiceTest {
 
     @Test
     fun sendDataTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = DataTransaction(mutableListOf(
             DataTransaction.Data("key0", "string", "This is Data TX"),
             DataTransaction.Data("key1", "integer", 100),
             DataTransaction.Data("key2", "integer", -100),
             DataTransaction.Data("key3", "boolean", true),
             DataTransaction.Data("key4", "boolean", false),
-            DataTransaction.Data("key5", "binary", "SGVsbG8h")
+            DataTransaction.Data("key5", "binary", "SGVsbG8h") // base64 binary string
         ))
 
         transferTransaction.sign(seed = SEED)
@@ -199,8 +193,6 @@ class WavesServiceTest {
 
     @Test
     fun sendIssueTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = IssueTransaction(
             "New Asset",
             "Details of Asset",
@@ -229,8 +221,6 @@ class WavesServiceTest {
 
     @Test
     fun sendReissueTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = ReissueTransaction(
             "5HiZ9n8oEBL495nMrpg57As7ujMwqmFn2hU3nYqv1Qx9",
             100_000_000L,
@@ -256,8 +246,6 @@ class WavesServiceTest {
 
     @Test
     fun sendMassTransferTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transfers = mutableListOf(
             MassTransferTransaction.Transfer("3Mps7CZqB9nUbEirYyCMMoA7VbqrxLvJFSB", 1),
             MassTransferTransaction.Transfer("3Mq6WcupmXPVAzEB8DmXXiiT3kNFynebu6h", 1))
@@ -286,8 +274,6 @@ class WavesServiceTest {
 
     @Test
     fun sendSponsorshipTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = SponsorshipTransaction(
             "BHar7QeZLmHkGqQnvBRWjyHaNKJUstYBaDrPQ64cjJL9",
             2) // 0 for cancel
@@ -311,8 +297,6 @@ class WavesServiceTest {
 
     @Test
     fun sendSetAssetScriptTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transferTransaction = SetAssetScriptTransaction(
             "FxmduD1XBq45inE2EoBoE3fuQZEuhsenWjBcAr8X3Pp8",
             "AweHXCN1") // scripts: AwZd0cYf = true and AweHXCN1 = false (You can't it change anymore)
@@ -336,8 +320,6 @@ class WavesServiceTest {
 
     @Test
     fun sendSetScriptTransactionsTest() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
-
         val transaction = SetScriptTransaction(
             null) // script: AwZd0cYf = true
 

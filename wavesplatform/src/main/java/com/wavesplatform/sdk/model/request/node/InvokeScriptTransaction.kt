@@ -47,7 +47,7 @@ class InvokeScriptTransaction(
                 byteArrayOf(version.toByte()),
                 byteArrayOf(chainId),
                 Base58.decode(senderPublicKey),
-                TransferTransaction.getRecipientBytes(dApp),
+                SignUtil.recipientBytes(dApp, version.toByte(), chainId),
                 functionCallArray(),
                 paymentsArray(), // now it works with only one
                 Longs.toByteArray(fee),
