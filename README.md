@@ -2,19 +2,21 @@
 
 [**Website**](https://wavesplatform.com/) | [**Discord**](https://discord.gg/cnFmDyA) | [**Forum**](https://forum.wavesplatform.com/) | [**Support**](https://support.wavesplatform.com/) | [**Documentation**](https://docs.wavesplatform.com)
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*zrXgB0XYRjOWfFk8vk8dkQ.png" width="700" height="366" border="0" />
+<img src="https://s3.eu-central-1.amazonaws.com/it-1639.waves.mobile.pictures/social/v1/bannerSDKAndroid.png" width="800" height="400" border="0" />
 
 ## Easy start with WavesSDK
-* [Android](https://github.com/wavesplatform/WavesSDK-android/wiki/Get-started-with-WavesSDK-for-Android)
-* [iOS](https://github.com/wavesplatform/WavesSDK-iOS/wiki/Get-started-with-WavesSDK-for-iOS)
+* [Waves SDK for Android](https://github.com/wavesplatform/WavesSDK-android/wiki/Get-started-with-WavesSDK-for-Android)
+* [Waves SDK for iOS](https://github.com/wavesplatform/WavesSDK-iOS/wiki/Get-started-with-WavesSDK-for-iOS)
 
-## Library contains 3 main parts:
-
+## Library contains 3 main parts
 * [Waves Crypto](https://github.com/wavesplatform/WavesSDK-android/wiki/Waves-Crypto) – section responsible for generating seed-phrases, converting it into public and private keys, obtaining address, verifying, translating bytes into a string and reverse, signing the data with a private key and other. All things that prepare to interact with crypto part of blockchain
 * [Waves Models](https://github.com/wavesplatform/WavesSDK-android/wiki/Waves-Models) – models of transactions and other data transfer objects for work with Waves Services, also it is release signing data with private key
 * [Waves Services](https://github.com/wavesplatform/WavesSDK-android/wiki/Waves-Services) – net services for sending transactions and getting data from blockchain
 
-## Links:
+## Testing
+You can use [Explorer Testnet](https://wavesexplorer.com/testnet) for testing your app with libs. You can add test-Waves to your balance at the explorer in side menu from Faucet. And you can check any sent transactions on Wavesexplorer in MainNet or TestNet
+
+## Links
 * [Client Mainnet](https://client.wavesplatform.com) – client of Waves blockchain on Main Net
 * [Explorer Mainnet](https://wavesexplorer.com) – Waves platform transactions explorer
 * [Client Testnet](https://testnet.wavesplatform.com) – client for testing in copy of real Waves blockchain, it also called Test Net
@@ -22,11 +24,7 @@
 * [Documentation](https://docs.wavesplatform.com/en/) – Waves official documentation
 * [Waves Ride IDE](https://ide.wavesplatform.com/) – IDE for RIDE smart contracts
 
-## Testing
-You can use [Explorer Testnet](https://wavesexplorer.com/testnet) for testing your app with libs. You can add test-Waves to your balance at the explorer in side menu from Faucet. And you can check any sent transactions on Wavesexplorer in Main or Test Net
-
 ## Blockchain for the people
-
 Keep up with the latest news and articles, and find out all about events happening on the [Waves Platform](https://wavesplatform.com/).
 
 * [Waves Wiki](https://docs.wavesplatform.com/)
