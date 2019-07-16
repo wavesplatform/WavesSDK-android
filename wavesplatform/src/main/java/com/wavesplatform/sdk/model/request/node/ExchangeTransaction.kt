@@ -6,7 +6,6 @@ import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.crypto.Base58
-import com.wavesplatform.sdk.model.response.node.transaction.ExchangeTransactionResponse
 import com.wavesplatform.sdk.utils.arrayWithSize
 import kotlinx.android.parcel.Parcelize
 
@@ -58,8 +57,8 @@ internal class ExchangeTransaction(
         return try {
             Bytes.concat(
                     byteArrayOf(0.toByte()),
-                    byteArrayOf(type.toByte()),
-                    byteArrayOf(version.toByte()),
+                    byteArrayOf(type),
+                    byteArrayOf(version),
                     Base58.decode(senderPublicKey),
                     orderArray(order1),
                     orderArray(order2),
@@ -97,12 +96,12 @@ internal class ExchangeTransaction(
                         .arrayWithSize(),
                 byteArrayOf(2),
                 Bytes.concat(
-                        byteArrayOf(version.toByte()),
+                        byteArrayOf(version),
                         schema1,
                         byteArrayOf(1),
                         Base58.decode(order.proofs[0]))
                         .arrayWithSize(),
-                byteArrayOf(version.toByte()),
+                byteArrayOf(version),
                 byteArrayOf(4)
         )
     }

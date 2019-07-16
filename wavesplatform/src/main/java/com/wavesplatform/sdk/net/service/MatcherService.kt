@@ -8,9 +8,10 @@ package com.wavesplatform.sdk.net.service
 import com.google.gson.internal.LinkedTreeMap
 import com.wavesplatform.sdk.model.request.matcher.CancelOrderRequest
 import com.wavesplatform.sdk.model.request.matcher.CreateOrderRequest
-import com.wavesplatform.sdk.model.response.matcher.MarketsResponse
-import com.wavesplatform.sdk.model.response.matcher.OrderBookResponse
 import com.wavesplatform.sdk.model.response.matcher.AssetPairOrderResponse
+import com.wavesplatform.sdk.model.response.matcher.MarketsResponse
+import com.wavesplatform.sdk.model.response.matcher.MatcherSettingsResponse
+import com.wavesplatform.sdk.model.response.matcher.OrderBookResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -43,8 +44,8 @@ interface MatcherService {
      */
     @GET("matcher/orderbook/{amountAsset}/{priceAsset}")
     fun orderBook(
-            @Path("amountAsset") amountAsset: String?,
-            @Path("priceAsset") priceAsset: String?
+        @Path("amountAsset") amountAsset: String?,
+        @Path("priceAsset") priceAsset: String?
     ): Observable<OrderBookResponse>
 
     /**
@@ -90,4 +91,11 @@ interface MatcherService {
      */
     @GET("matcher")
     fun matcherPublicKey(): Observable<String>
+
+
+    @GET("matcher/settings/rates")
+    fun getMatcherSettingsRates(): Observable<MutableMap<String, Double>>
+
+    @GET("matcher/settings")
+    fun getMatcherSettings(): Observable<MatcherSettingsResponse>
 }

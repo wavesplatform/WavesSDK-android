@@ -9,7 +9,6 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.utils.arrayWithSize
 import java.nio.charset.Charset
@@ -29,11 +28,11 @@ class AliasTransaction(
     override fun toBytes(): ByteArray {
         return try {
             Bytes.concat(
-                    byteArrayOf(type.toByte()),
-                    byteArrayOf(version.toByte()),
+                    byteArrayOf(type),
+                    byteArrayOf(version),
                     Base58.decode(senderPublicKey),
                     Bytes.concat(
-                            byteArrayOf(version.toByte()),
+                            byteArrayOf(version),
                             byteArrayOf(chainId),
                             alias.toByteArray(
                                     Charset.forName("UTF-8")).arrayWithSize()

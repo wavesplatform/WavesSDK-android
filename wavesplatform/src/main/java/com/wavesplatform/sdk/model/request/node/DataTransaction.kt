@@ -11,7 +11,6 @@ import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
-import kotlinx.android.parcel.Parcelize
 import java.nio.charset.Charset
 
 /**
@@ -51,8 +50,8 @@ class DataTransaction(
 
     override fun toBytes(): ByteArray {
         return try {
-            Bytes.concat(byteArrayOf(type.toByte()),
-                    byteArrayOf(version.toByte()),
+            Bytes.concat(byteArrayOf(type),
+                    byteArrayOf(version),
                     Base58.decode(senderPublicKey),
                     dataBytes(),
                     Longs.toByteArray(timestamp),
