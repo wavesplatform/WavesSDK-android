@@ -21,8 +21,9 @@ import java.security.SecureRandom
 
 object AESUtil {
 
+    const val MODE_CBC = 0
+    const val MODE_OFB = 1
     private const val DEFAULT_PBKDF2_ITERATIONS_V2 = 5000
-    private const val MODE_CBC = 0
     private const val AESB_LOCK_SIZE = 4
     private const val KEY_BIT_LEN = 256
 

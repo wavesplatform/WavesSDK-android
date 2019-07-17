@@ -150,6 +150,17 @@ interface WavesCrypto {
      */
     fun verifyAddress(address: Address, chainId: String? = null, publicKey: PublicKey? = null): Boolean
 
+
+    /**
+     *
+     */
+    fun aesEncrypt(data: String, secret: String): String
+
+    /**
+     *
+     */
+    fun aesDecrypt(encryptedData: String, secret: String): String
+
     companion object : WavesCrypto {
 
         const val PUBLIC_KEY_LENGTH = 32
@@ -275,6 +286,14 @@ interface WavesCrypto {
             } catch (e: Exception) {
                 false
             }
+        }
+
+        override fun aesEncrypt(data: String, secret: String) : String {
+            return AESUtil.encrypt(data, secret)
+        }
+
+        override fun aesDecrypt(encryptedData: String, secret: String): String {
+            return AESUtil.decrypt(encryptedData, secret)
         }
     }
 }

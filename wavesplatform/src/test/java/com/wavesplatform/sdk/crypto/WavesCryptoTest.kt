@@ -79,6 +79,13 @@ class WavesCryptoTest {
             "base64$RANDOM_STRING")
     }
 
+    @Test
+    fun aesEncryptDecrypt() {
+        val cipherText = AESUtil.encrypt("Hello!", "11111111")
+        val clearText = AESUtil.decrypt(cipherText, "11111111")
+        Assert.assertEquals(clearText, "Hello!")
+    }
+
     companion object {
         const val SEED =
             "chronic comic else cool seat filter amount banner bottom spice cup figure exact elephant copper"
