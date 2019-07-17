@@ -125,15 +125,13 @@ fun randomString(): String {
 }
 
 fun aesEncrypt(cleartext: String?,
-               password: String?,
-               iterations: Int = AESUtil.DEFAULT_PBKDF2_ITERATIONS_V2): String {
-    return AESUtil.encrypt(cleartext, password, iterations)
+               password: String?): String {
+    return AESUtil.encrypt(cleartext, password)
 }
 
 fun aesDecrypt(cipherText: String?,
-               password: String?,
-               iterations: Int = AESUtil.DEFAULT_PBKDF2_ITERATIONS_V2): String {
-    return AESUtil.decrypt(cipherText, password, iterations)
+               password: String?): String {
+    return AESUtil.decrypt(cipherText, password)
 }
 
 fun scriptBytes(script: String?): ByteArray {

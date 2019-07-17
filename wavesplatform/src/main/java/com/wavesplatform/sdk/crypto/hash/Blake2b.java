@@ -22,12 +22,11 @@ import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Arrays;
 
-/**  */
 public interface Blake2b {
     // ---------------------------------------------------------------------
     // Specification
     // ---------------------------------------------------------------------
-    public interface Spec {
+    interface Spec {
         /** pblock size of blake2b */
         int param_bytes 		= 64;
 
