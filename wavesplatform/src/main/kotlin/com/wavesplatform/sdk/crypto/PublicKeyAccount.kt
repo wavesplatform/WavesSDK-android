@@ -5,7 +5,7 @@
 
 package com.wavesplatform.sdk.crypto
 
-import com.wavesplatform.sdk.utils.addressFromPublicKey
+import com.wavesplatform.sdk.crypto.WavesCrypto.Companion.addressFromPublicKey
 
 class PublicKeyAccount @Throws(InvalidPublicKey::class)
 constructor(val publicKeyStr: String) {
@@ -18,7 +18,7 @@ constructor(val publicKeyStr: String) {
     init {
         if (publicKeyStr.length > KeyStringLength) throw InvalidPublicKey()
         try {
-            this.publicKey = Base58.decode(publicKeyStr)
+            this.publicKey = WavesCrypto.base58decode(publicKeyStr)
         } catch (invalidBase58: Base58.InvalidBase58) {
             throw InvalidPublicKey()
         }

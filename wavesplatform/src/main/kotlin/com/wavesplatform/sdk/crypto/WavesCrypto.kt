@@ -1,9 +1,6 @@
 package com.wavesplatform.sdk.crypto
 
-import com.wavesplatform.sdk.utils.*
 import org.apache.commons.codec.binary.Base64
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import java.util.*
 
 typealias Bytes = ByteArray
@@ -150,14 +147,47 @@ interface WavesCrypto {
      */
     fun verifyAddress(address: Address, chainId: String? = null, publicKey: PublicKey? = null): Boolean
 
+
+    /**
+     *
+     */
+    fun aesEncrypt(data: String, secret: String): String
+
+    /**
+     *
+     */
+    fun aesDecrypt(encryptedData: String, secret: String): String
+
     companion object : WavesCrypto {
 
         const val PUBLIC_KEY_LENGTH = 32
         const val PRIVATE_KEY_LENGTH = 32
         const val SIGNATURE_LENGTH = 64
 
+        const val ADDRESS_VERSION: Byte = 1
+        const val CHECK_SUM_LENGTH = 4
+        const val HASH_LENGTH = 20
+        const val ADDRESS_LENGTH = 1 + 1 + CHECK_SUM_LENGTH + HASH_LENGTH
+
         const val MAIN_NET_CHAIN_ID: Byte = 87
         const val TEST_NET_CHAIN_ID: Byte = 84
+
+        fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = MAIN_NET_CHAIN_ID)
+                : String {
+            return try {
+                val publicKeyHash = Hash.keccak(publicKey).copyOf(HASH_LENGTH)
+                val withoutChecksum = com.google.common.primitives.Bytes.concat(
+                    byteArrayOf(ADDRESS_VERSION, scheme),
+                    publicKeyHash)
+                Base58.encode(com.google.common.primitives.Bytes.concat(withoutChecksum, calcCheckSum(withoutChecksum)))
+            } catch (e: Exception) {
+                "Unknown address"
+            }
+        }
+
+        fun calcCheckSum(bytes: ByteArray): ByteArray {
+            return Arrays.copyOfRange(Hash.keccak(bytes), 0, CHECK_SUM_LENGTH)
+        }
 
         override fun blake2b(input: Bytes): Bytes {
             return Hash.blake2b(input)
@@ -209,9 +239,9 @@ interface WavesCrypto {
 
         override fun addressByPublicKey(publicKey: PublicKey, chainId: String?): Address {
             return if (chainId.isNullOrEmpty()) {
-                addressFromPublicKey(Base58.decode(publicKey))
+                addressFromPublicKey(base58decode(publicKey))
             } else {
-                addressFromPublicKey(Base58.decode(publicKey), chainId.toByte())
+                addressFromPublicKey(base58decode(publicKey), chainId.toByte())
             }
         }
 
@@ -246,7 +276,7 @@ interface WavesCrypto {
                 return false
             }
 
-            val bytes = Base58.decode(address)
+            val bytes = base58decode(address)
 
             if (!chainId.isNullOrEmpty()) {
                 try {
@@ -275,6 +305,14 @@ interface WavesCrypto {
             } catch (e: Exception) {
                 false
             }
+        }
+
+        override fun aesEncrypt(data: String, secret: String) : String {
+            return AESUtil.encrypt(data, secret)
+        }
+
+        override fun aesDecrypt(encryptedData: String, secret: String): String {
+            return AESUtil.decrypt(encryptedData, secret)
         }
     }
 }

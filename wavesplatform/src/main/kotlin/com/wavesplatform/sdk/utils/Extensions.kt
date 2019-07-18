@@ -124,18 +124,6 @@ fun randomString(): String {
     return String(Hex.encode(bytes), charset("UTF-8"))
 }
 
-fun aesEncrypt(cleartext: String?,
-               password: String?,
-               iterations: Int = AESUtil.DEFAULT_PBKDF2_ITERATIONS_V2): String {
-    return AESUtil.encrypt(cleartext, password, iterations)
-}
-
-fun aesDecrypt(cipherText: String?,
-               password: String?,
-               iterations: Int = AESUtil.DEFAULT_PBKDF2_ITERATIONS_V2): String {
-    return AESUtil.decrypt(cipherText, password, iterations)
-}
-
 fun scriptBytes(script: String?): ByteArray {
     return when {
         script == null -> byteArrayOf(0)
