@@ -9,7 +9,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.arrayWithSize
 import java.nio.charset.Charset
 
@@ -30,7 +30,7 @@ class AliasTransaction(
             Bytes.concat(
                     byteArrayOf(type),
                     byteArrayOf(version),
-                    Base58.decode(senderPublicKey),
+                    WavesCrypto.base58decode(senderPublicKey),
                     Bytes.concat(
                             byteArrayOf(version),
                             byteArrayOf(chainId),

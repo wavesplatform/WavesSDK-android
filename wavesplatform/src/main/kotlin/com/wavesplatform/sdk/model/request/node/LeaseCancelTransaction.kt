@@ -9,7 +9,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 
 /**
  * The cancel leasing transaction reverse [LeaseTransaction].
@@ -28,10 +28,10 @@ class LeaseCancelTransaction(
             Bytes.concat(byteArrayOf(type),
                     byteArrayOf(version),
                     byteArrayOf(chainId),
-                    Base58.decode(senderPublicKey),
+                    WavesCrypto.base58decode(senderPublicKey),
                     Longs.toByteArray(fee),
                     Longs.toByteArray(timestamp),
-                    Base58.decode(leaseId)
+                    WavesCrypto.base58decode(leaseId)
             )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Cancel Leasing Transaction", e)

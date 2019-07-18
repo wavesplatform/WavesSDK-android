@@ -10,7 +10,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.arrayWithSize
 import com.wavesplatform.sdk.utils.isAlias
 import com.wavesplatform.sdk.utils.parseAlias
@@ -39,7 +39,7 @@ class LeaseTransaction(
             Bytes.concat(byteArrayOf(type),
                     byteArrayOf(version),
                     byteArrayOf(0.toByte()),
-                    Base58.decode(senderPublicKey),
+                    WavesCrypto.base58decode(senderPublicKey),
                     resolveRecipientBytes(recipient.isAlias()),
                     Longs.toByteArray(amount),
                     Longs.toByteArray(fee),
@@ -57,7 +57,7 @@ class LeaseTransaction(
                     recipient.parseAlias().toByteArray(
                             Charset.forName("UTF-8")).arrayWithSize())
         } else {
-            Base58.decode(recipient)
+            WavesCrypto.base58decode(recipient)
         }
     }
 }

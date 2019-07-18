@@ -9,7 +9,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 
 /**
  * The Reissue transaction is used to give the ability to reissue more tokens of an asset
@@ -48,8 +48,8 @@ class ReissueTransaction(
                     byteArrayOf(type),
                     byteArrayOf(version),
                     byteArrayOf(chainId),
-                    Base58.decode(senderPublicKey),
-                    Base58.decode(assetId),
+                    WavesCrypto.base58decode(senderPublicKey),
+                    WavesCrypto.base58decode(assetId),
                     Longs.toByteArray(quantity),
                     reissuableBytes,
                     Longs.toByteArray(fee),

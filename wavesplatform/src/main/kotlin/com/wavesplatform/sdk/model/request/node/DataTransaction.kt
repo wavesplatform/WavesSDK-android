@@ -7,7 +7,6 @@ import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.common.primitives.Shorts
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
@@ -52,7 +51,7 @@ class DataTransaction(
         return try {
             Bytes.concat(byteArrayOf(type),
                     byteArrayOf(version),
-                    Base58.decode(senderPublicKey),
+                    WavesCrypto.base58decode(senderPublicKey),
                     dataBytes(),
                     Longs.toByteArray(timestamp),
                     Longs.toByteArray(fee))

@@ -5,7 +5,7 @@ import android.os.Parcelable
 import android.util.Log
 import com.google.common.primitives.*
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
@@ -46,7 +46,7 @@ class InvokeScriptTransaction(
                 byteArrayOf(type),
                 byteArrayOf(version),
                 byteArrayOf(chainId),
-                Base58.decode(senderPublicKey),
+                WavesCrypto.base58decode(senderPublicKey),
                 SignUtil.recipientBytes(dApp, version, chainId),
                 functionCallArray(),
                 paymentsArray(), // now it works with only one

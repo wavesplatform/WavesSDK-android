@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.scriptBytes
 
 /**
@@ -47,7 +47,7 @@ class SetScriptTransaction(
                 byteArrayOf(type),
                 byteArrayOf(version),
                 byteArrayOf(chainId),
-                Base58.decode(senderPublicKey),
+                WavesCrypto.base58decode(senderPublicKey),
                 scriptBytes(script),
                 Longs.toByteArray(fee),
                 Longs.toByteArray(timestamp)
