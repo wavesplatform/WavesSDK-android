@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WavesSDK-android.iml" filepath="$PROJECT_DIR$/WavesSDK-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kotlinLibCrypto/kotlinLibCrypto.iml" filepath="$PROJECT_DIR$/kotlinLibCrypto/kotlinLibCrypto.iml" />
       <module fileurl="file://$PROJECT_DIR$/wavesplatform/wavesplatform.iml" filepath="$PROJECT_DIR$/wavesplatform/wavesplatform.iml" />
     </modules>
   </component>

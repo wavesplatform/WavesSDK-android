@@ -10,8 +10,7 @@ import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.WavesSdk
-import com.wavesplatform.sdk.crypto.Base58
-import com.wavesplatform.sdk.crypto.CryptoProvider
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.response.matcher.OrderBookResponse
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.WavesConstants
@@ -95,8 +94,8 @@ data class CreateOrderRequest(
             }
             Bytes.concat(
                     byteArrayOf(version),
-                    Base58.decode(senderPublicKey),
-                    Base58.decode(matcherPublicKey),
+                    WavesCrypto.base58decode(senderPublicKey),
+                    WavesCrypto.base58decode(matcherPublicKey),
                     assetPair.toBytes(),
                     byteArrayOf(orderTypeByte),
                     Longs.toByteArray(price),
@@ -124,6 +123,7 @@ data class CreateOrderRequest(
     }
 
     fun sign(privateKey: ByteArray) {
-        proofs = mutableListOf(Base58.encode(CryptoProvider.sign(privateKey, toBytes())))
+        proofs = mutableListOf(WavesCrypto.base58encode(
+            WavesCrypto.signBytesWithPrivateKey(toBytes(), WavesCrypto.base58encode(privateKey))))
     }
 }

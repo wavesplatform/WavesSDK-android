@@ -1,1 +1,1 @@
-include ':wavesplatform', ':example'
+include ':wavesplatform', ':example', ':kotlinLibCrypto'

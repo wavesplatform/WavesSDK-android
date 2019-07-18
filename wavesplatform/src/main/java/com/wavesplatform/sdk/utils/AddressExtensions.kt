@@ -1,9 +1,7 @@
 package com.wavesplatform.sdk.utils
 
-import com.google.common.primitives.Bytes
 import com.wavesplatform.sdk.WavesSdk
-import com.wavesplatform.sdk.crypto.Base58
-import com.wavesplatform.sdk.crypto.Hash
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import java.util.*
 
 const val ADDRESS_VERSION: Byte = 1
@@ -15,12 +13,12 @@ const val WAVES_PREFIX = "waves://"
 fun String?.isValidWavesAddress(): Boolean {
     if (this.isNullOrEmpty()) return false
     return try {
-        val bytes = Base58.decode(this)
+        val bytes = WavesCrypto.base58decode(this)
         if (bytes.size == ADDRESS_LENGTH &&
                 bytes[0] == ADDRESS_VERSION &&
                 bytes[1] == WavesSdk.getEnvironment().chainId) {
             val checkSum = Arrays.copyOfRange(bytes, bytes.size - CHECK_SUM_LENGTH, bytes.size)
-            val checkSumGenerated = calcCheckSum(bytes.copyOf(bytes.size - CHECK_SUM_LENGTH))
+            val checkSumGenerated = WavesCrypto.calcCheckSum(bytes.copyOf(bytes.size - CHECK_SUM_LENGTH))
             Arrays.equals(checkSum, checkSumGenerated)
         } else {
             false
@@ -40,25 +38,4 @@ fun String.makeAsAlias(): String {
 
 fun String.parseAlias(): String {
     return this.substringAfterLast(":")
-}
-
-fun calcCheckSum(bytes: ByteArray): ByteArray {
-    return Arrays.copyOfRange(Hash.keccak(bytes), 0, CHECK_SUM_LENGTH)
-}
-
-fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = WavesSdk.getEnvironment().chainId)
-        : String {
-    return try {
-        val publicKeyHash = Hash.keccak(publicKey).copyOf(HASH_LENGTH)
-        val withoutChecksum = Bytes.concat(
-                byteArrayOf(ADDRESS_VERSION, scheme),
-                publicKeyHash)
-        Base58.encode(Bytes.concat(withoutChecksum, calcCheckSum(withoutChecksum)))
-    } catch (e: Exception) {
-        "Unknown address"
-    }
-}
-
-fun addressFromPublicKey(publicKey: String): String {
-    return addressFromPublicKey(Base58.decode(publicKey))
 }

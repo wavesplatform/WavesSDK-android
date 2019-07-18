@@ -9,7 +9,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 
 /**
  * The Burn transaction irreversible deletes amount of some asset
@@ -31,8 +31,8 @@ class BurnTransaction(
                     byteArrayOf(type),
                     byteArrayOf(version),
                     byteArrayOf(chainId),
-                    Base58.decode(senderPublicKey),
-                    Base58.decode(assetId),
+                    WavesCrypto.base58decode(senderPublicKey),
+                    WavesCrypto.base58decode(assetId),
                     Longs.toByteArray(quantity),
                     Longs.toByteArray(fee),
                     Longs.toByteArray(timestamp))

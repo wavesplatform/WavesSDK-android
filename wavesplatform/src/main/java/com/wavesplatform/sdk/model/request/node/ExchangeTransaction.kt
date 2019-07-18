@@ -5,7 +5,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.utils.arrayWithSize
 import kotlinx.android.parcel.Parcelize
 
@@ -59,7 +59,7 @@ internal class ExchangeTransaction(
                     byteArrayOf(0.toByte()),
                     byteArrayOf(type),
                     byteArrayOf(version),
-                    Base58.decode(senderPublicKey),
+                    WavesCrypto.base58decode(senderPublicKey),
                     orderArray(order1),
                     orderArray(order2),
                     Longs.toByteArray(fee),
@@ -76,10 +76,10 @@ internal class ExchangeTransaction(
 
     private fun orderArray(order: Order): ByteArray {
         val schema1 = Bytes.concat(
-                Base58.decode(order.senderPublicKey),
-                Base58.decode(order.matcherPublicKey),
-                Base58.decode(order.assetPair.amountAsset),
-                Base58.decode(order.assetPair.priceAsset),
+                WavesCrypto.base58decode(order.senderPublicKey),
+                WavesCrypto.base58decode(order.matcherPublicKey),
+                WavesCrypto.base58decode(order.assetPair.amountAsset),
+                WavesCrypto.base58decode(order.assetPair.priceAsset),
                 byteArrayOf(order.orderType[0].toByte()),
                 Longs.toByteArray(order.price),
                 Longs.toByteArray(order.amount),
@@ -92,14 +92,14 @@ internal class ExchangeTransaction(
                 Bytes.concat(
                         byteArrayOf(1),
                         schema1,
-                        Base58.decode(order.proofs[0]))
+                        WavesCrypto.base58decode(order.proofs[0]))
                         .arrayWithSize(),
                 byteArrayOf(2),
                 Bytes.concat(
                         byteArrayOf(version),
                         schema1,
                         byteArrayOf(1),
-                        Base58.decode(order.proofs[0]))
+                        WavesCrypto.base58decode(order.proofs[0]))
                         .arrayWithSize(),
                 byteArrayOf(version),
                 byteArrayOf(4)

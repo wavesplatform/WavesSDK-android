@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 
 /**
  * Sponsorship transaction (or is Autonomous Assets)
@@ -58,8 +58,8 @@ class SponsorshipTransaction(
         return try {
             Bytes.concat(byteArrayOf(type),
                     byteArrayOf(version),
-                    Base58.decode(senderPublicKey),
-                    Base58.decode(assetId),
+                    WavesCrypto.base58decode(senderPublicKey),
+                    WavesCrypto.base58decode(assetId),
                     Longs.toByteArray(minSponsoredAssetFee ?: 0),
                     Longs.toByteArray(fee),
                     Longs.toByteArray(timestamp))

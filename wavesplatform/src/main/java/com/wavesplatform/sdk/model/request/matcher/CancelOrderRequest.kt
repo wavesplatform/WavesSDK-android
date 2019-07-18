@@ -9,8 +9,7 @@ import android.util.Log
 
 import com.google.common.primitives.Bytes
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
-import com.wavesplatform.sdk.crypto.CryptoProvider
+import com.wavesplatform.sdk.crypto.WavesCrypto
 
 /**
  * Cancel Order Request in DEX-matcher, decentralized exchange of Waves.
@@ -36,8 +35,8 @@ class CancelOrderRequest(
     private fun toBytes(): ByteArray {
         return try {
             Bytes.concat(
-                    Base58.decode(sender),
-                    Base58.decode(orderId)
+                    WavesCrypto.base58decode(sender),
+                    WavesCrypto.base58decode(orderId)
             )
         } catch (e: Exception) {
             Log.e("Wallet", "Couldn't create CancelOrderRequest bytes", e)
@@ -46,6 +45,7 @@ class CancelOrderRequest(
     }
 
     fun sign(privateKey: ByteArray) {
-        signature = Base58.encode(CryptoProvider.sign(privateKey, toBytes()))
+        signature = WavesCrypto.base58encode(
+            WavesCrypto.signBytesWithPrivateKey(toBytes(), WavesCrypto.base58encode(privateKey)))
     }
 }

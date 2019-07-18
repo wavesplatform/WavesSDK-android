@@ -6,7 +6,7 @@ import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.common.primitives.Shorts
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
+import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.TransferTransaction.Companion.MAX_ATTACHMENT_SIZE
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.SignUtil.attachmentBytes
@@ -71,7 +71,7 @@ class MassTransferTransaction(
             Bytes.concat(
                 byteArrayOf(type),
                 byteArrayOf(version),
-                Base58.decode(senderPublicKey),
+                WavesCrypto.base58decode(senderPublicKey),
                 assetIdArray,
                 transfersArray(),
                 Longs.toByteArray(timestamp),

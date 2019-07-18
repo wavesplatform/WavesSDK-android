@@ -9,7 +9,6 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.IssueTransaction.Companion.MAX_ASSET_NAME_LENGTH
 import com.wavesplatform.sdk.model.request.node.IssueTransaction.Companion.MAX_DECIMALS
@@ -95,7 +94,7 @@ class IssueTransaction(
                 byteArrayOf(type),
                 byteArrayOf(version),
                 byteArrayOf(chainId),
-                Base58.decode(senderPublicKey),
+                WavesCrypto.base58decode(senderPublicKey),
                 name.toByteArray(Charset.forName("UTF-8")).arrayWithSize(),
                 description.toByteArray(Charset.forName("UTF-8")).arrayWithSize(),
                 Longs.toByteArray(quantity),
