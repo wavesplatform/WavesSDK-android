@@ -175,11 +175,7 @@ interface WavesCrypto {
         fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = MAIN_NET_CHAIN_ID)
                 : String {
             return try {
-<<<<<<< HEAD:wavesplatform/src/main/java/com/wavesplatform/sdk/crypto/WavesCrypto.kt
                 val publicKeyHash = keccak(publicKey).copyOf(HASH_LENGTH)
-=======
-                val publicKeyHash = Hash.keccak(publicKey).copyOf(HASH_LENGTH)
->>>>>>> aaf5fdd77b681f5b8a3bbc1e4dd3421d44c64277:wavesplatform/src/main/kotlin/com/wavesplatform/sdk/crypto/WavesCrypto.kt
                 val withoutChecksum = com.google.common.primitives.Bytes.concat(
                     byteArrayOf(ADDRESS_VERSION, scheme),
                     publicKeyHash)
