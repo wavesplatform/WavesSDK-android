@@ -1,16 +1,16 @@
 // $Id: Keccak256.java 189 2010-05-14 21:21:46Z tp $
 
-package com.wavesplatform.sdk.crypto.hash;
+package com.wavesplatform.sdk.crypto.hash
 
 /**
- * <p>This class implements the Keccak-256 digest algorithm under the
- * {@link Digest} API.</p>
+ * This class implements the Keccak-256 digest algorithm under the
+ * [Digest] API.
  *
  * <pre>
  * ==========================(LICENSE BEGIN)============================
  *
  * Copyright (c) 2007-2010  Projet RNRT SAPHIR
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -18,10 +18,10 @@ package com.wavesplatform.sdk.crypto.hash;
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -31,30 +31,25 @@ package com.wavesplatform.sdk.crypto.hash;
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * ===========================(LICENSE END)=============================
- * </pre>
+</pre> *
  *
  * @version   $Revision: 189 $
  * @author    Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
  */
 
-public class Keccak256 extends KeccakCore {
+/**
+ * Create the engine.
+ */
+class Keccak256 : KeccakCore() {
 
-	/**
-	 * Create the engine.
-	 */
-	public Keccak256()
-	{
-	}
+    /** @see Digest
+     */
+    override val digestLength: Int
+        get() = 32
 
-	/** @see Digest */
-	public Digest copy()
-	{
-		return copyState(new Keccak256());
-	}
-
-	/** @see Digest */
-	public int getDigestLength()
-	{
-		return 32;
-	}
+    /** @see Digest
+     */
+    override fun copy(): Digest {
+        return copyState(Keccak256())
+    }
 }

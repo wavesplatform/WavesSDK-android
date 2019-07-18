@@ -47,7 +47,9 @@ object SignUtil {
             Bytes.concat(
                 byteArrayOf(version),
                 byteArrayOf(chainId),
-                recipient.parseAlias().toByteArray(Charset.forName("UTF-8")).arrayWithSize()
+                recipient.parseAlias()
+                        .toByteArray(Charset.forName("UTF-8"))
+                        .arrayWithSize()
             )
         } else {
             WavesCrypto.base58decode(recipient)
