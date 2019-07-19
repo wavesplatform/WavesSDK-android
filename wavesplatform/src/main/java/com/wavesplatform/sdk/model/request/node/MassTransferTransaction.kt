@@ -76,7 +76,7 @@ class MassTransferTransaction(
                 transfersArray(),
                 Longs.toByteArray(timestamp),
                 Longs.toByteArray(fee),
-                attachmentBytes(attachment)
+                attachmentBytes(SignUtil.textFromBase58(attachment))
             )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Mass Transfer Transaction", e)

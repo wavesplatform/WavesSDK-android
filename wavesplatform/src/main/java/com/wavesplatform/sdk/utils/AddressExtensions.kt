@@ -31,7 +31,12 @@ fun String.isAlias(): Boolean {
 }
 
 fun String.makeAsAlias(): String {
-    return "alias:${WavesSdk.getEnvironment().chainId.toChar()}:$this"
+    val prefix = "alias:${WavesSdk.getEnvironment().chainId.toChar()}:"
+    return if (this.startsWith(prefix)) {
+        this
+    } else {
+        prefix + this
+    }
 }
 
 fun String.parseAlias(): String {

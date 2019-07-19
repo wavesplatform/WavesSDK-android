@@ -9,16 +9,17 @@ import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
+import com.wavesplatform.sdk.crypto.Base58
 import com.wavesplatform.sdk.crypto.WavesCrypto
-import com.wavesplatform.sdk.utils.SignUtil
-import com.wavesplatform.sdk.utils.parseAlias
+import com.wavesplatform.sdk.utils.*
+import java.nio.charset.Charset
 
 /**
  * Transfer transaction sends amount of asset on address.
  * It is used to transfer a specific amount of an asset (WAVES by default)
  * to the recipient (by address or alias).
  */
-class TransferTransaction(
+open class TransferTransaction(
     /**
      * Id of transferable asset in Waves blockchain, different for main and test net
      */
@@ -50,8 +51,6 @@ class TransferTransaction(
     }
 
     override fun toBytes(): ByteArray {
-        recipient = recipient.parseAlias()
-
         return try {
             Bytes.concat(
                 byteArrayOf(type),
@@ -62,15 +61,19 @@ class TransferTransaction(
                 Longs.toByteArray(timestamp),
                 Longs.toByteArray(amount),
                 Longs.toByteArray(fee),
-                SignUtil.recipientBytes(recipient, version, chainId),
-                SignUtil.attachmentBytes(attachment)
-            )
+                SignUtil.recipientBytes(recipient.parseAlias(), version, chainId),
+                SignUtil.attachmentBytes(SignUtil.textFromBase58(attachment))
+                )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Transfer Transaction", e)
             ByteArray(0)
         }
     }
 
+    override fun sign(seed: String): String {
+        signature = super.sign(seed)
+        return signature ?: ""
+    }
 
     companion object {
 
