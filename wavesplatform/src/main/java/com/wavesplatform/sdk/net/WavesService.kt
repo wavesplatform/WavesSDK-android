@@ -1,6 +1,8 @@
 package com.wavesplatform.sdk.net
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.provider.Settings
 import android.util.Log
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
@@ -126,16 +128,16 @@ class WavesService(private var context: Context) {
                 .writeTimeout(timeout, TimeUnit.SECONDS)
                 .addInterceptor(receivedCookiesInterceptor())
                 .addInterceptor(addCookiesInterceptor())
+                .addInterceptor(addUserAgentInterceptor())
                 .addInterceptor(
                         LoggingInterceptor.Builder()
                                 .loggable(BuildConfig.DEBUG)
-                                .setLevel(Level.BASIC)
+                                .setLevel(Level.HEADERS)
                                 .log(Log.INFO)
                                 .request("Request")
                                 .response("Response")
                                 .build()
                 )
-
         return okHttpClientBuilder.build()
     }
 
@@ -152,6 +154,22 @@ class WavesService(private var context: Context) {
                 this.cookies = cookies
             }
             originalResponse
+        }
+    }
+
+    @SuppressLint("HardwareIds")
+    private fun addUserAgentInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            val deviceId = Settings.Secure.getString(context.contentResolver,
+                    Settings.Secure.ANDROID_ID)
+            val request = chain.request().newBuilder()
+                    .header("User-Agent",
+                            "${System.getProperty("http.agent")} " +
+                                    "App-ID/${context.packageName} " +
+                                    "User-ID/$deviceId " +
+                                    "WavesSDK/(${BuildConfig.VERSION_NAME})")
+                    .build()
+            chain.proceed(request)
         }
     }
 
