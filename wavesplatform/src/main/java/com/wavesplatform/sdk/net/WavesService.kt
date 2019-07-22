@@ -165,8 +165,8 @@ class WavesService(private var context: Context) {
             val request = chain.request().newBuilder()
                     .header("User-Agent",
                             "${System.getProperty("http.agent")} " +
-                                    "App-ID/${context.packageName} " +
-                                    "User-ID/$deviceId " +
+                                    "AppId/${context.packageName} " +
+                                    "DeviceId/$deviceId " +
                                     "WavesSDK/(${BuildConfig.VERSION_NAME})")
                     .build()
             chain.proceed(request)
