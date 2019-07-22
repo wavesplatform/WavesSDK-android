@@ -151,12 +151,12 @@ interface WavesCrypto {
     /**
      *
      */
-    fun aesEncrypt(data: String, secret: String): String
+    fun aesEncrypt(data: String?, secret: String?): String
 
     /**
      *
      */
-    fun aesDecrypt(encryptedData: String, secret: String): String
+    fun aesDecrypt(encryptedData: String?, secret: String?): String
 
     companion object : WavesCrypto {
 
@@ -307,11 +307,11 @@ interface WavesCrypto {
             }
         }
 
-        override fun aesEncrypt(data: String, secret: String) : String {
+        override fun aesEncrypt(data: String?, secret: String?) : String {
             return AESUtil.encrypt(data, secret)
         }
 
-        override fun aesDecrypt(encryptedData: String, secret: String): String {
+        override fun aesDecrypt(encryptedData: String?, secret: String?): String {
             return AESUtil.decrypt(encryptedData, secret)
         }
     }
