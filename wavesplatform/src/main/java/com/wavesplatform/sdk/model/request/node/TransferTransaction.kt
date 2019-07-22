@@ -62,7 +62,7 @@ open class TransferTransaction(
                 Longs.toByteArray(amount),
                 Longs.toByteArray(fee),
                 SignUtil.recipientBytes(recipient.parseAlias(), version, chainId),
-                SignUtil.attachmentBytes(SignUtil.textFromBase58(attachment))
+                SignUtil.attachmentBytes(attachment)
                 )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Transfer Transaction", e)

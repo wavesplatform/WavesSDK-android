@@ -39,11 +39,11 @@ object SignUtil {
     }
 
 
-    fun attachmentBytes(attachment: String): ByteArray {
-        return if (attachment.isEmpty()) {
+    fun attachmentBytes(base58Attachment: String): ByteArray {
+        return if (base58Attachment.isEmpty()) {
             byteArrayOf(0, 0)
         } else {
-            attachment.toByteArray(CHARSET).arrayWithSize()
+            textFromBase58(base58Attachment).toByteArray(CHARSET).arrayWithSize()
         }
     }
 
