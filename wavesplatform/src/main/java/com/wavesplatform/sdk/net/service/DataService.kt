@@ -44,6 +44,27 @@ interface DataService {
               @Path("priceAsset") priceAsset: String?): Observable<PairResponse>
 
     /**
+     * DEX volume, change24, last trade price
+     * 1) Get list of pairs info by serialized pairs list
+     * 2) Get all list of pairs info by limit (sort by volume in WAVES)
+     *
+     * @param pairs Get pair info by amount and price assets
+     * @param searchByAsset For searching pairs, that have the {searchByAsset} in asset names,
+     * tickers, id of one asset of the pair.
+     * @param searchByAssets For searching pairs, that have the {searchByAssets} in asset names,
+     * tickers, id of one asset of the pair.
+     * @param matchExactly Whether to search assets of pairs exactly or not.
+     * Parameter position is corresponds to asset position.
+     * @param limit How many pairs to await in response.
+     */
+    @GET("v0/pairs")
+    fun pairs(@Query("pairs") pairs: String?,
+              @Query("search_by_asset") searchByAsset: String?,
+              @Query("search_by_assets") searchByAssets: List<String>?,
+              @Query("match_exactly") matchExactly: Boolean?,
+              @Query("limit") limit: Int = 100): Observable<SearchPairResponse>
+
+    /**
      * Get a list of exchange transactions by applying filters
      */
     @GET("v0/transactions/exchange")

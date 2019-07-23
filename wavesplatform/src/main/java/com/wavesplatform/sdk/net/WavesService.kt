@@ -132,7 +132,7 @@ class WavesService(private var context: Context) {
                 .addInterceptor(
                         LoggingInterceptor.Builder()
                                 .loggable(BuildConfig.DEBUG)
-                                .setLevel(Level.HEADERS)
+                                .setLevel(Level.BASIC)
                                 .log(Log.INFO)
                                 .request("Request")
                                 .response("Response")
