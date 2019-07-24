@@ -30,6 +30,10 @@ class AssetPairOrderResponse {
     var assetPair: AssetPairResponse? = null
     @SerializedName("sectionTimestamp")
     var sectionTimestamp: Long = 0
+    @SerializedName("fee")
+    var fee: Long? = null
+    @SerializedName("feeAsset")
+    var feeAsset: String? = null
 
     class AssetPairResponse {
         @SerializedName("amountAsset")
