@@ -7,6 +7,7 @@ import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.*
 import com.wavesplatform.sdk.utils.Environment
 import com.wavesplatform.sdk.utils.RxUtil
+import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.WavesConstants
 import org.junit.Assert
 import org.junit.Before
@@ -31,7 +32,7 @@ class WavesServiceTest {
             recipient = "3Mq6WcupmXPVAzEB8DmXXiiT3kNFynebu6h",
             amount = 1,
             fee = WavesConstants.WAVES_MIN_FEE,
-            attachment = WavesCrypto.base58encode("Hello!".toByteArray()),
+            attachment = SignUtil.textToBase58("Hello-!"),
             feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
         )
 
@@ -256,7 +257,7 @@ class WavesServiceTest {
         val transferTransaction = MassTransferTransaction(
             "BHar7QeZLmHkGqQnvBRWjyHaNKJUstYBaDrPQ64cjJL9",
             transfers = transfers,
-            attachment = WavesCrypto.base58encode("Hello attachment!".toByteArray()))
+            attachment = SignUtil.textToBase58("Hello attachment!"))
 
         transferTransaction.fee = 200000
 

@@ -12,6 +12,16 @@ import java.nio.charset.Charset
 
 object SignUtil {
 
+    private val CHARSET = charset("UTF-8")
+
+    fun textToBase58(attachmentPlainText: String?): String {
+        return WavesCrypto.base58encode((attachmentPlainText ?: "").toByteArray(CHARSET))
+    }
+
+    fun textFromBase58(base58Text: String): String {
+        return WavesCrypto.base58decode(base58Text).toString(CHARSET)
+    }
+
     fun arrayWithSize(s: String?): ByteArray {
         return if (s != null && s.isNotEmpty()) {
             val b = WavesCrypto.base58decode(s)
@@ -29,11 +39,11 @@ object SignUtil {
     }
 
 
-    fun attachmentBytes(attachment: String): ByteArray {
-        return if (attachment.isEmpty()) {
+    fun attachmentBytes(base58Attachment: String): ByteArray {
+        return if (base58Attachment.isEmpty()) {
             byteArrayOf(0, 0)
         } else {
-            WavesCrypto.base58decode(attachment).arrayWithSize()
+            textFromBase58(base58Attachment).toByteArray(CHARSET).arrayWithSize()
         }
     }
 
@@ -43,7 +53,7 @@ object SignUtil {
                 byteArrayOf(version),
                 byteArrayOf(chainId),
                 recipient.parseAlias()
-                        .toByteArray(Charset.forName("UTF-8"))
+                        .toByteArray(CHARSET)
                         .arrayWithSize()
             )
         } else {
