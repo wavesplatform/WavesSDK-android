@@ -36,7 +36,7 @@ android {
             consumerProguardFiles 'proguard-rules.pro'
         }
         debug {
-            multiDexEnabled false
+            multiDexEnabled true
         }
     }
 }
