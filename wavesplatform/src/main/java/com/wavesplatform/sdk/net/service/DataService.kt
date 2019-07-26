@@ -5,11 +5,10 @@
 
 package com.wavesplatform.sdk.net.service
 
+import com.wavesplatform.sdk.model.request.data.PairRequest
 import com.wavesplatform.sdk.model.response.data.*
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * The goal of this service is to provide a simple
@@ -63,6 +62,12 @@ interface DataService {
               @Query("search_by_assets") searchByAssets: List<String>?,
               @Query("match_exactly") matchExactly: Boolean?,
               @Query("limit") limit: Int = 100): Observable<SearchPairResponse>
+
+    /**
+     * DEX volume, change24, last trade price. See pairs with Get-request
+     */
+    @POST("v0/pairs")
+    fun pairs(@Body request: PairRequest): Observable<SearchPairResponse>
 
     /**
      * Get a list of exchange transactions by applying filters

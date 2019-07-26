@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 
+/**
+ * If Search it returns the list op DEX pairs with amountAsset and priceAsset
+ * If it Request with special pairs order, it's return order list same length
+ * with data if pair exist and null if not
+ */
 @Parcelize
 data class SearchPairResponse(
         @SerializedName("__type") var type: String = "list",
@@ -14,8 +19,8 @@ data class SearchPairResponse(
     data class Pair(
             @SerializedName("__type") var type: String = "pair",
             @SerializedName("data") var data: Data? = null,
-            @SerializedName("amountAsset") var amountAsset: String,
-            @SerializedName("priceAsset") var priceAsset: String) : Parcelable {
+            @SerializedName("amountAsset") var amountAsset: String?,
+            @SerializedName("priceAsset") var priceAsset: String?) : Parcelable {
 
         @Parcelize
         data class Data(
