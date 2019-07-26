@@ -58,7 +58,7 @@ interface DataService {
      * @param limit How many pairs to await in response.
      */
     @GET("v0/pairs")
-    fun pairs(@Query("pairs") pairs: String?,
+    fun pairs(@Query("pairs") pairs: List<String>?,
               @Query("search_by_asset") searchByAsset: String?,
               @Query("search_by_assets") searchByAssets: List<String>?,
               @Query("match_exactly") matchExactly: Boolean?,
