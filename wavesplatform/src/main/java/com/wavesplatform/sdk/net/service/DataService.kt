@@ -89,6 +89,7 @@ interface DataService {
             @Path("priceAsset") priceAsset: String?,
             @Query("interval") interval: String,
             @Query("timeStart") timeStart: Long,
-            @Query("timeEnd") timeEnd: Long
+            @Query("timeEnd") timeEnd: Long,
+            @Query("matcher") matcher: String? = null
     ): Observable<CandlesResponse>
 }
