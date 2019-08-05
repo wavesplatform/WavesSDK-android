@@ -24,14 +24,14 @@ data class SearchPairResponse(
 
         @Parcelize
         data class Data(
-                @SerializedName("firstPrice") var firstPrice: BigDecimal = BigDecimal(0),
-                @SerializedName("lastPrice") var lastPrice: BigDecimal = BigDecimal(0),
-                @SerializedName("low") var low: BigDecimal = BigDecimal(0),
-                @SerializedName("high") var high: BigDecimal = BigDecimal(0),
-                @SerializedName("weightedAveragePrice") var weightedAveragePrice: BigDecimal = BigDecimal(0),
-                @SerializedName("volume") var volume: BigDecimal = BigDecimal(0),
-                @SerializedName("quoteVolume") var quoteVolume: BigDecimal? = BigDecimal(0),
-                @SerializedName("volumeWaves") var volumeWaves: BigDecimal? = BigDecimal(0),
+                @SerializedName("firstPrice") var firstPrice: Double = 0.0,
+                @SerializedName("lastPrice") var lastPrice: Double = 0.0,
+                @SerializedName("low") var low: Double = 0.0,
+                @SerializedName("high") var high: Double = 0.0,
+                @SerializedName("weightedAveragePrice") var weightedAveragePrice: Double = 0.0,
+                @SerializedName("volume") var volume: Double = 0.0,
+                @SerializedName("quoteVolume") var quoteVolume: Double? = 0.0,
+                @SerializedName("volumeWaves") var volumeWaves: Double? = 0.0,
                 @SerializedName("txsCount") var txsCount: Long? = null) : Parcelable
     }
 }
