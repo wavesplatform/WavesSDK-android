@@ -91,26 +91,27 @@ class WavesService(private var context: Context) {
     }
 
     private fun createService(
-            baseUrl: String,
-            adapterFactory: CallAdapter.Factory = RxJava2CallAdapterFactory.create()): Retrofit {
+        baseUrl: String,
+        adapterFactory: CallAdapter.Factory = RxJava2CallAdapterFactory.create()
+    ): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(addSlash(baseUrl))
-                .client(createClient())
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addCallAdapterFactory(adapterFactory)
-                .addConverterFactory(createGsonFactory())
-                .build()
+            .baseUrl(addSlash(baseUrl))
+            .client(createClient())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addCallAdapterFactory(adapterFactory)
+            .addConverterFactory(createGsonFactory())
+            .build()
     }
 
     internal fun createServices() {
         nodeService = createService(addSlash(WavesSdk.getEnvironment().nodeUrl), adapterFactory)
-                .create(NodeService::class.java)
+            .create(NodeService::class.java)
 
         dataService = createService(addSlash(WavesSdk.getEnvironment().dataUrl), adapterFactory)
-                .create(DataService::class.java)
+            .create(DataService::class.java)
 
         matcherService = createService(addSlash(WavesSdk.getEnvironment().matcherUrl), adapterFactory)
-                .create(MatcherService::class.java)
+            .create(MatcherService::class.java)
     }
 
     private fun addSlash(url: String): String {
@@ -123,21 +124,23 @@ class WavesService(private var context: Context) {
 
     private fun createClient(timeout: Long = 30L): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
-                .cache(createCache())
-                .readTimeout(timeout, TimeUnit.SECONDS)
-                .writeTimeout(timeout, TimeUnit.SECONDS)
-                .addInterceptor(receivedCookiesInterceptor())
-                .addInterceptor(addCookiesInterceptor())
-                .addInterceptor(addUserAgentInterceptor())
-                .addInterceptor(
-                        LoggingInterceptor.Builder()
-                                .loggable(BuildConfig.DEBUG)
-                                .setLevel(Level.BASIC)
-                                .log(Log.INFO)
-                                .request("Request")
-                                .response("Response")
-                                .build()
-                )
+            .cache(createCache())
+            .readTimeout(timeout, TimeUnit.SECONDS)
+            .writeTimeout(timeout, TimeUnit.SECONDS)
+            .addInterceptor(receivedCookiesInterceptor())
+            .addInterceptor(addCookiesInterceptor())
+            .addInterceptor(addUserAgentInterceptor())
+        if (BuildConfig.DEBUG) {
+            okHttpClientBuilder.addInterceptor(
+                LoggingInterceptor.Builder()
+                    .loggable(BuildConfig.DEBUG)
+                    .setLevel(Level.BASIC)
+                    .log(Log.INFO)
+                    .request("Request")
+                    .response("Response")
+                    .build()
+            )
+        }
         return okHttpClientBuilder.build()
     }
 
@@ -145,12 +148,12 @@ class WavesService(private var context: Context) {
         return Interceptor { chain ->
             val originalResponse = chain.proceed(chain.request())
             if (originalResponse.request().url().url().toString()
-                            .contains(WavesConstants.URL_NODE)
-                    && originalResponse.headers("Set-Cookie").isNotEmpty()
-                    && this.cookies.isEmpty()
+                    .contains(WavesConstants.URL_NODE)
+                && originalResponse.headers("Set-Cookie").isNotEmpty()
+                && this.cookies.isEmpty()
             ) {
                 val cookies = originalResponse.headers("Set-Cookie")
-                        .toHashSet()
+                    .toHashSet()
                 this.cookies = cookies
             }
             originalResponse
@@ -160,15 +163,19 @@ class WavesService(private var context: Context) {
     @SuppressLint("HardwareIds")
     private fun addUserAgentInterceptor(): Interceptor {
         return Interceptor { chain ->
-            val deviceId = Settings.Secure.getString(context.contentResolver,
-                    Settings.Secure.ANDROID_ID)
+            val deviceId = Settings.Secure.getString(
+                context.contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
             val request = chain.request().newBuilder()
-                    .header("User-Agent",
-                            "${System.getProperty("http.agent")} " +
-                                    "AppId/${context.packageName} " +
-                                    "DeviceId/$deviceId " +
-                                    "WavesSDK/(${BuildConfig.VERSION_NAME})")
-                    .build()
+                .header(
+                    "User-Agent",
+                    "${System.getProperty("http.agent")} " +
+                            "AppId/${context.packageName} " +
+                            "DeviceId/$deviceId " +
+                            "WavesSDK/(${BuildConfig.VERSION_NAME})"
+                )
+                .build()
             chain.proceed(request)
         }
     }
@@ -176,7 +183,7 @@ class WavesService(private var context: Context) {
     private fun addCookiesInterceptor(): Interceptor {
         return Interceptor { chain ->
             if (this.cookies.isNotEmpty() && chain.request().url().url().toString()
-                            .contains(WavesConstants.URL_NODE)
+                    .contains(WavesConstants.URL_NODE)
             ) {
                 val builder = chain.request().newBuilder()
                 this.cookies.forEach {
@@ -197,13 +204,13 @@ class WavesService(private var context: Context) {
 
     private fun createGsonFactory(): GsonConverterFactory {
         return GsonConverterFactory.create(
-                GsonBuilder()
-                        .serializeNulls()
-                        .setLenient()
-                        .setPrettyPrinting()
-                        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                        .create()
+            GsonBuilder()
+                .serializeNulls()
+                .setLenient()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .create()
         )
     }
 }
