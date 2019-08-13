@@ -62,7 +62,8 @@ interface DataService {
               @Query("search_by_asset") searchByAsset: String?,
               @Query("search_by_assets") searchByAssets: List<String>?,
               @Query("match_exactly") matchExactly: Boolean?,
-              @Query("limit") limit: Int = 100): Observable<SearchPairResponse>
+              @Query("limit") limit: Int = 100,
+              @Query("matcher") matcher: String? = null): Observable<SearchPairResponse>
 
     /**
      * DEX volume, change24, last trade price. See pairs with Get-request
