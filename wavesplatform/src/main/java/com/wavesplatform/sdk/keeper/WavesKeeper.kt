@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.support.annotation.RestrictTo
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import com.wavesplatform.sdk.keeper.interfaces.Keeper
@@ -20,6 +21,7 @@ import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransactionResponse
 import com.wavesplatform.sdk.keeper.model.DApp
 import com.wavesplatform.sdk.keeper.model.KeeperActionType
+import com.wavesplatform.sdk.keeper.model.KeeperProcessData
 import com.wavesplatform.sdk.keeper.model.KeeperResult
 import com.wavesplatform.sdk.model.request.node.DataTransaction
 import com.wavesplatform.sdk.model.request.node.InvokeScriptTransaction
@@ -33,9 +35,9 @@ import com.wavesplatform.sdk.utils.startActivityForResult
 
 class WavesKeeper(private var context: Context) : Keeper {
 
-    fun configureDApp(context: Context,
-                      dAppName: String,
-                      dAppIconUrl: String) {
+    override fun configureDApp(context: Context,
+                               dAppName: String,
+                               dAppIconUrl: String) {
         DApp(dAppName, dAppIconUrl).save(getPreferences(context))
     }
 
@@ -49,6 +51,56 @@ class WavesKeeper(private var context: Context) : Keeper {
                                                       transaction: KeeperTransaction,
                                                       callback: KeeperCallback<T>) {
         processIntent(activity, KeeperActionType.SEND, transaction, callback)
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override fun finishSign(activity: FragmentActivity, transaction: KeeperTransaction) {
+        activity.apply {
+            val intent = Intent().apply {
+                putExtras(Bundle().apply {
+                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, KeeperActionType.SIGN.name)
+                    putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
+                })
+            }
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override fun finishSend(activity: FragmentActivity, transaction: KeeperTransactionResponse) {
+        activity.apply {
+            val intent = Intent().apply {
+                putExtras(Bundle().apply {
+                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, KeeperActionType.SEND.name)
+                    putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
+                })
+            }
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override fun processData(intent: Intent): KeeperProcessData? {
+        if (intent.action != WAVES_APP_KEEPER_ACTION || intent.extras == null) {
+            return null
+        }
+
+        intent.extras?.let { bundle ->
+            val action = KeeperActionType.valueOf(
+                    bundle.getString(KeeperKeys.ActionKeys.ACTION_TYPE)
+                            ?: KeeperActionType.SIGN.name)
+
+            val dApp = DApp(bundle.getString(KeeperKeys.DAppKeys.NAME),
+                    bundle.getString(KeeperKeys.DAppKeys.ICON_URL))
+
+            val transaction = bundle.getParcelable<KeeperTransaction>(KeeperKeys.TransactionKeys.TRANSACTION)
+
+            return KeeperProcessData(action, dApp, transaction)
+        }
+
+        return null
     }
 
     private fun <T> processIntent(activity: FragmentActivity,
