@@ -2,6 +2,7 @@ package com.wavesplatform.sdk.model.response.node.transaction
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.wavesplatform.sdk.keeper.interfaces.KeeperTransactionResponse
 import com.wavesplatform.sdk.model.request.node.BaseTransaction
 import kotlinx.android.parcel.Parcelize
 
@@ -19,4 +20,4 @@ class TransferTransactionResponse(@SerializedName("assetId")
                                   var attachment: String = "",
                                   @SerializedName("feeAssetId")
                                   var feeAssetId: String = "")
-    : BaseTransactionResponse(type = BaseTransaction.TRANSFER), Parcelable
+    : BaseTransactionResponse(type = BaseTransaction.TRANSFER), Parcelable, KeeperTransactionResponse

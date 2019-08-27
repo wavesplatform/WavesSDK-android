@@ -5,10 +5,8 @@
 
 package com.wavesplatform.sdk.keeper.model
 
-import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
-
 sealed class KeeperResult {
-    class Success<T : KeeperTransaction>(val transaction: T?) : KeeperResult()
+    class Success<T>(val transaction: T?) : KeeperResult()
     class Error(val message: String?, val errorCode: Int) : KeeperResult()
 
     companion object {

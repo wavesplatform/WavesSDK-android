@@ -5,7 +5,7 @@
 
 package com.wavesplatform.sdk.keeper.model
 
-enum class KeeperActionType(var type: String) {
-    SEND("send"),
-    SIGN("sign");
+enum class KeeperActionType {
+    SEND,
+    SIGN;
 }

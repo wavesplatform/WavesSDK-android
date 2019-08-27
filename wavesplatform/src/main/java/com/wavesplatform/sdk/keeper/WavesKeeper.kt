@@ -17,12 +17,16 @@ import android.util.Log
 import com.wavesplatform.sdk.keeper.interfaces.Keeper
 import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
+import com.wavesplatform.sdk.keeper.interfaces.KeeperTransactionResponse
 import com.wavesplatform.sdk.keeper.model.DApp
 import com.wavesplatform.sdk.keeper.model.KeeperActionType
 import com.wavesplatform.sdk.keeper.model.KeeperResult
 import com.wavesplatform.sdk.model.request.node.DataTransaction
 import com.wavesplatform.sdk.model.request.node.InvokeScriptTransaction
 import com.wavesplatform.sdk.model.request.node.TransferTransaction
+import com.wavesplatform.sdk.model.response.node.transaction.DataTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.InvokeScriptTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.TransferTransactionResponse
 import com.wavesplatform.sdk.utils.isAppInstalled
 import com.wavesplatform.sdk.utils.isIntentAvailable
 import com.wavesplatform.sdk.utils.startActivityForResult
@@ -41,15 +45,16 @@ class WavesKeeper(private var context: Context) : Keeper {
         processIntent(activity, KeeperActionType.SIGN, transaction, callback)
     }
 
-    override fun <T : KeeperTransaction> send(activity: FragmentActivity,
-                                              transaction: KeeperTransaction, callback: KeeperCallback<T>) {
+    override fun <T : KeeperTransactionResponse> send(activity: FragmentActivity,
+                                                      transaction: KeeperTransaction,
+                                                      callback: KeeperCallback<T>) {
         processIntent(activity, KeeperActionType.SEND, transaction, callback)
     }
 
-    private fun <T : KeeperTransaction> processIntent(activity: FragmentActivity,
-                                                      type: KeeperActionType,
-                                                      transaction: KeeperTransaction,
-                                                      callback: KeeperCallback<T>) {
+    private fun <T> processIntent(activity: FragmentActivity,
+                                  type: KeeperActionType,
+                                  transaction: KeeperTransaction,
+                                  callback: KeeperCallback<T>) {
         if (context.isAppInstalled(WAVES_APP_PACKAGE_ID)
                 && context.isIntentAvailable(WAVES_APP_KEEPER_ACTION)) {
             startKeeperActivity(activity, createParams(activity, type, transaction), callback)
@@ -58,8 +63,8 @@ class WavesKeeper(private var context: Context) : Keeper {
         }
     }
 
-    private fun <T : KeeperTransaction> startKeeperActivity(activity: FragmentActivity, params: Bundle,
-                                                            callback: KeeperCallback<T>) {
+    private fun <T> startKeeperActivity(activity: FragmentActivity, params: Bundle,
+                                        callback: KeeperCallback<T>) {
         val intent = Intent(WAVES_APP_KEEPER_ACTION, null).apply {
             setPackage(WAVES_APP_PACKAGE_ID)
             putExtras(params)
@@ -79,12 +84,12 @@ class WavesKeeper(private var context: Context) : Keeper {
             val dApp = DApp.restore(getPreferences(activity))
             putString(KeeperKeys.DAppKeys.NAME, dApp.name)
             putString(KeeperKeys.DAppKeys.ICON_URL, dApp.iconUrl)
-            putString(KeeperKeys.ActionKeys.ACTION_TYPE, type.type)
+            putString(KeeperKeys.ActionKeys.ACTION_TYPE, type.name)
             putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
         }
     }
 
-    private fun <T : KeeperTransaction> checkAndPass(callback: KeeperCallback<T>?, result: KeeperResult?) {
+    private fun <T> checkAndPass(callback: KeeperCallback<T>?, result: KeeperResult?) {
         when (result) {
             is KeeperResult.Success<*> -> {
                 callback?.onSuccess(result as KeeperResult.Success<T>)
@@ -99,13 +104,30 @@ class WavesKeeper(private var context: Context) : Keeper {
         return when {
             // Success flow
             result.extras != null && !result.hasExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE) -> {
-                val transaction = result.getParcelableExtra<KeeperTransaction>(KeeperKeys.TransactionKeys.TRANSACTION)
-                when (transaction) {
-                    is DataTransaction -> KeeperResult.Success(transaction)
-                    is TransferTransaction -> KeeperResult.Success(transaction)
-                    is InvokeScriptTransaction -> KeeperResult.Success(transaction)
-                    else -> null
+                val action = KeeperActionType.valueOf(
+                        result.getStringExtra(KeeperKeys.ActionKeys.ACTION_TYPE)
+                                ?: KeeperActionType.SIGN.name)
+                when (action) {
+                    KeeperActionType.SIGN -> {
+                        when (val transaction =
+                                result.getParcelableExtra<KeeperTransaction>(KeeperKeys.TransactionKeys.TRANSACTION)) {
+                            is DataTransaction -> KeeperResult.Success(transaction)
+                            is TransferTransaction -> KeeperResult.Success(transaction)
+                            is InvokeScriptTransaction -> KeeperResult.Success(transaction)
+                            else -> null
 
+                        }
+                    }
+                    KeeperActionType.SEND -> {
+                        when (val transaction =
+                                result.getParcelableExtra<KeeperTransactionResponse>(KeeperKeys.TransactionKeys.TRANSACTION)) {
+                            is DataTransactionResponse -> KeeperResult.Success(transaction)
+                            is TransferTransactionResponse -> KeeperResult.Success(transaction)
+                            is InvokeScriptTransactionResponse -> KeeperResult.Success(transaction)
+                            else -> null
+
+                        }
+                    }
                 }
             }
             // Error flow

@@ -7,7 +7,7 @@ package com.wavesplatform.sdk.keeper.interfaces
 
 import com.wavesplatform.sdk.keeper.model.KeeperResult
 
-interface KeeperCallback<T : KeeperTransaction> {
+interface KeeperCallback<T> {
     fun onSuccess(result: KeeperResult.Success<T>?)
     fun onFailed(result: KeeperResult.Error)
 }
