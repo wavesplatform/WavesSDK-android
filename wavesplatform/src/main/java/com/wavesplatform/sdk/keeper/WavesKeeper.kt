@@ -65,6 +65,16 @@ class WavesKeeper(private var context: Context) : Keeper {
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override fun finishSignWithError(activity: FragmentActivity, error: String) {
+        processFinishWithError(activity, KeeperActionType.SIGN, error)
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override fun finishSendWithError(activity: FragmentActivity, error: String) {
+        processFinishWithError(activity, KeeperActionType.SEND, error)
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun processData(intent: Intent): KeeperProcessData? {
         if (intent.action != WAVES_APP_KEEPER_ACTION || intent.extras == null) {
             return null
@@ -84,6 +94,21 @@ class WavesKeeper(private var context: Context) : Keeper {
         }
 
         return null
+    }
+
+    private fun processFinishWithError(activity: FragmentActivity,
+                                       actionType: KeeperActionType,
+                                       error: String) {
+        activity.apply {
+            val intent = Intent().apply {
+                putExtras(Bundle().apply {
+                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, actionType.name)
+                    putString(KeeperKeys.ResultKeys.ERROR_MESSAGE, error)
+                })
+            }
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
 
     private fun <T : Parcelable> processFinish(activity: FragmentActivity, actionType: KeeperActionType, transaction: T) {
@@ -150,8 +175,12 @@ class WavesKeeper(private var context: Context) : Keeper {
 
     private fun processResult(result: Intent, success: Boolean): KeeperResult? {
         return when {
+            // Canceled flow
+            result.extras == null && !success -> {
+                KeeperResult.Error("Action Cancelled", KeeperResult.CANCELED)
+            }
             // Success flow
-            result.extras != null && !result.hasExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE) -> {
+            result.extras != null && !result.hasExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE) && success -> {
                 val action = KeeperActionType.valueOf(
                         result.getStringExtra(KeeperKeys.ActionKeys.ACTION_TYPE)
                                 ?: KeeperActionType.SIGN.name)
@@ -173,18 +202,13 @@ class WavesKeeper(private var context: Context) : Keeper {
                             is TransferTransactionResponse -> KeeperResult.Success(transaction)
                             is InvokeScriptTransactionResponse -> KeeperResult.Success(transaction)
                             else -> null
-
                         }
                     }
                 }
             }
             // Error flow
-            result.extras != null && result.hasExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE) -> {
+            result.extras != null && result.hasExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE) && success -> {
                 KeeperResult.Error(result.getStringExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE), KeeperResult.UNKNOWN_ERROR)
-            }
-            // Canceled flow
-            result.extras == null && !success -> {
-                KeeperResult.Error(result.getStringExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE), KeeperResult.CANCELED)
             }
             // Unknown flow
             else -> null

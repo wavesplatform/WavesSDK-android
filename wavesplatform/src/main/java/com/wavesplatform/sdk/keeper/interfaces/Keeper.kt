@@ -24,7 +24,6 @@ interface Keeper {
                                              transaction: KeeperTransaction,
                                              callback: KeeperCallback<T>)
 
-
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun finishSign(activity: FragmentActivity,
                    transaction: KeeperTransaction)
@@ -32,6 +31,14 @@ interface Keeper {
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun finishSend(activity: FragmentActivity,
                    transaction: KeeperTransactionResponse)
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun finishSignWithError(activity: FragmentActivity,
+                            error: String)
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun finishSendWithError(activity: FragmentActivity,
+                            error: String)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun processData(intent: Intent): KeeperProcessData?

@@ -6,8 +6,8 @@
 package com.wavesplatform.sdk.keeper.model
 
 sealed class KeeperResult {
-    class Success<T>(val transaction: T?) : KeeperResult()
-    class Error(val message: String?, val errorCode: Int) : KeeperResult()
+    data class Success<T>(val transaction: T?) : KeeperResult()
+    data class Error(val message: String?, val errorCode: Int) : KeeperResult()
 
     companion object {
         const val CANCELED = 1
