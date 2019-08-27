@@ -5,12 +5,9 @@
 
 package com.wavesplatform.sdk.keeper.interfaces
 
-interface KeeperCallback {
-    fun onSuccess(data: String?)
-    fun onFailed(errorCode: Int)
+import com.wavesplatform.sdk.keeper.model.KeeperResult
 
-    companion object {
-        const val CANCELED = 1
-        const val UNKNOWN_ERROR = 2
-    }
+interface KeeperCallback<T : KeeperTransaction> {
+    fun onSuccess(result: KeeperResult.Success<T>?)
+    fun onFailed(result: KeeperResult.Error)
 }

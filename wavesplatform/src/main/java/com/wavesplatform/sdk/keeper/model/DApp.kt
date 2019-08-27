@@ -13,15 +13,15 @@ data class DApp(var name: String?, var iconUrl: String?) {
     fun save(preferences: SharedPreferences) {
         preferences
                 .edit()
-                .putString(KeeperKeys.DApp.NAME, name)
-                .putString(KeeperKeys.DApp.ICON_URL, iconUrl)
+                .putString(KeeperKeys.DAppKeys.NAME, name)
+                .putString(KeeperKeys.DAppKeys.ICON_URL, iconUrl)
                 .apply()
     }
 
     companion object {
         fun restore(preferences: SharedPreferences): DApp {
-            return DApp(preferences.getString(KeeperKeys.DApp.NAME, ""),
-                    preferences.getString(KeeperKeys.DApp.ICON_URL, ""))
+            return DApp(preferences.getString(KeeperKeys.DAppKeys.NAME, ""),
+                    preferences.getString(KeeperKeys.DAppKeys.ICON_URL, ""))
         }
     }
 }

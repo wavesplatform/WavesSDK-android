@@ -5,9 +5,9 @@
 
 package com.wavesplatform.sdk.keeper.interfaces
 
-import android.app.Activity
+import android.support.v4.app.FragmentActivity
 
 interface Keeper {
-    fun sign(activity: Activity, transaction: KeeperTransaction, callback: KeeperCallback)
-    fun send(activity: Activity, transaction: KeeperTransaction, callback: KeeperCallback)
+    fun <T: KeeperTransaction> sign(activity: FragmentActivity, transaction: KeeperTransaction, callback: KeeperCallback<T>)
+    fun <T: KeeperTransaction> send(activity: FragmentActivity, transaction: KeeperTransaction, callback: KeeperCallback<T>)
 }

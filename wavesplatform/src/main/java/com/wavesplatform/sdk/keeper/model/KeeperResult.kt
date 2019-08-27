@@ -5,11 +5,14 @@
 
 package com.wavesplatform.sdk.keeper.model
 
-class KeeperResult @JvmOverloads constructor(val data: String?, val errorCode: Int = 0) {
+import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 
-    val isSuccess: Boolean
-        get() = !isError
+sealed class KeeperResult {
+    class Success<T : KeeperTransaction>(val transaction: T?) : KeeperResult()
+    class Error(val message: String?, val errorCode: Int) : KeeperResult()
 
-    val isError: Boolean
-        get() = errorCode != 0
+    companion object {
+        const val CANCELED = 1
+        const val UNKNOWN_ERROR = 2
+    }
 }

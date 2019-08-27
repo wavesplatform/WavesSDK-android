@@ -6,16 +6,20 @@
 package com.wavesplatform.sdk.keeper
 
 object KeeperKeys {
-    object DApp {
+    object DAppKeys {
         const val NAME = "key_dapp_name"
         const val ICON_URL = "key_dapp_icon_url"
     }
 
-    object KeeperAction {
+    object ActionKeys {
         const val ACTION_TYPE = "key_action_type"
     }
 
-    object Transaction {
+    object TransactionKeys {
         const val TRANSACTION = "key_transaction"
+    }
+
+    object ResultKeys {
+        const val ERROR_MESSAGE = "key_error_msg"
     }
 }
