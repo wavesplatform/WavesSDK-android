@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentManager
 
 typealias OnActivityResult = (success: Boolean, data: Intent) -> Unit
 
-data class Result(
+data class ActivityResult(
         private var onActivityResult: OnActivityResult?,
         private var fragmentManager: FragmentManager?
 ) {

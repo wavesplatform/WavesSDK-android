@@ -20,8 +20,14 @@ data class DApp(var name: String?, var iconUrl: String?) {
 
     companion object {
         fun restore(preferences: SharedPreferences): DApp {
-            return DApp(preferences.getString(KeeperKeys.DAppKeys.NAME, ""),
+            val dApp = DApp(preferences.getString(KeeperKeys.DAppKeys.NAME, ""),
                     preferences.getString(KeeperKeys.DAppKeys.ICON_URL, ""))
+
+            check(!(dApp.name.isNullOrBlank() || dApp.iconUrl.isNullOrEmpty())) {
+                "You must configure dApp with WavesSdk.keeper().configureDApp() before use Keeper"
+            }
+
+            return dApp
         }
     }
 }

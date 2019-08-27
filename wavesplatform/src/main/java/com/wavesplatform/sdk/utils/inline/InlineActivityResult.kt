@@ -9,7 +9,7 @@ import android.content.Intent
 import android.support.v4.app.FragmentManager
 
 class InlineActivityResult {
-    private var pending: MutableMap<Int, Result> = mutableMapOf()
+    private var pending: MutableMap<Int, ActivityResult> = mutableMapOf()
 
     fun start(
             fragmentManager: FragmentManager,
@@ -21,7 +21,7 @@ class InlineActivityResult {
             "There is already a pending request for requestCode $requestCode."
         }
 
-        pending[requestCode] = Result(onActivityResult = onActivityResult, fragmentManager = fragmentManager)
+        pending[requestCode] = ActivityResult(onActivityResult = onActivityResult, fragmentManager = fragmentManager)
         val fragment = ActivityResultFragment.newInstance(launchIntent = intent, requestCode = requestCode)
 
         fragmentManager

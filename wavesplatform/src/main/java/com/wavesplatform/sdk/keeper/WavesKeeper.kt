@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.annotation.RestrictTo
 import android.support.v4.app.FragmentActivity
 import android.util.Log
@@ -55,30 +56,12 @@ class WavesKeeper(private var context: Context) : Keeper {
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun finishSign(activity: FragmentActivity, transaction: KeeperTransaction) {
-        activity.apply {
-            val intent = Intent().apply {
-                putExtras(Bundle().apply {
-                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, KeeperActionType.SIGN.name)
-                    putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
-                })
-            }
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-        }
+        processFinish(activity, KeeperActionType.SIGN, transaction)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun finishSend(activity: FragmentActivity, transaction: KeeperTransactionResponse) {
-        activity.apply {
-            val intent = Intent().apply {
-                putExtras(Bundle().apply {
-                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, KeeperActionType.SEND.name)
-                    putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
-                })
-            }
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-        }
+        processFinish(activity, KeeperActionType.SEND, transaction)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -101,6 +84,19 @@ class WavesKeeper(private var context: Context) : Keeper {
         }
 
         return null
+    }
+
+    private fun <T : Parcelable> processFinish(activity: FragmentActivity, actionType: KeeperActionType, transaction: T) {
+        activity.apply {
+            val intent = Intent().apply {
+                putExtras(Bundle().apply {
+                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, actionType.name)
+                    putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
+                })
+            }
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
 
     private fun <T> processIntent(activity: FragmentActivity,
