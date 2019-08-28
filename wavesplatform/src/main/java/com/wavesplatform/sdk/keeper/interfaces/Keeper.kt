@@ -42,4 +42,7 @@ interface Keeper {
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun processData(intent: Intent): KeeperProcessData?
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun isKeeperIntent(intent: Intent): Boolean
 }
