@@ -33,12 +33,12 @@ interface Keeper {
                    transaction: KeeperTransactionResponse)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishSignWithError(activity: FragmentActivity,
-                            error: String)
+    fun finishSign(activity: FragmentActivity,
+                   error: String)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishSendWithError(activity: FragmentActivity,
-                            error: String)
+    fun finishSend(activity: FragmentActivity,
+                   error: String)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun processData(intent: Intent): KeeperProcessData?

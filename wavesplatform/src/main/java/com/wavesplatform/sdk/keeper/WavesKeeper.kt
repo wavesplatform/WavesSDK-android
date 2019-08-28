@@ -65,12 +65,12 @@ class WavesKeeper(private var context: Context) : Keeper {
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishSignWithError(activity: FragmentActivity, error: String) {
+    override fun finishSign(activity: FragmentActivity, error: String) {
         processFinishWithError(activity, KeeperActionType.SIGN, error)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishSendWithError(activity: FragmentActivity, error: String) {
+    override fun finishSend(activity: FragmentActivity, error: String) {
         processFinishWithError(activity, KeeperActionType.SEND, error)
     }
 
