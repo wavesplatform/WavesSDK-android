@@ -20,10 +20,7 @@ import com.wavesplatform.sdk.keeper.interfaces.Keeper
 import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransactionResponse
-import com.wavesplatform.sdk.keeper.model.DApp
-import com.wavesplatform.sdk.keeper.model.KeeperActionType
-import com.wavesplatform.sdk.keeper.model.KeeperProcessData
-import com.wavesplatform.sdk.keeper.model.KeeperResult
+import com.wavesplatform.sdk.keeper.model.*
 import com.wavesplatform.sdk.model.request.node.DataTransaction
 import com.wavesplatform.sdk.model.request.node.InvokeScriptTransaction
 import com.wavesplatform.sdk.model.request.node.TransferTransaction
@@ -35,6 +32,7 @@ import com.wavesplatform.sdk.utils.isIntentAvailable
 import com.wavesplatform.sdk.utils.startActivityForResult
 
 class WavesKeeper(private var context: Context) : Keeper {
+    private var keeperDataHolder: KeeperDataHolder? = null
 
     override fun configureDApp(context: Context,
                                dAppName: String,
@@ -90,7 +88,11 @@ class WavesKeeper(private var context: Context) : Keeper {
 
             val transaction = bundle.getParcelable<KeeperTransaction>(KeeperKeys.TransactionKeys.TRANSACTION)
 
-            return KeeperProcessData(action, dApp, transaction)
+
+            val processData = KeeperProcessData(action, dApp, transaction)
+            keeperDataHolder = KeeperDataHolder(processData)
+
+            return processData
         }
 
         return null
@@ -98,7 +100,13 @@ class WavesKeeper(private var context: Context) : Keeper {
 
     override fun isKeeperIntent(intent: Intent): Boolean {
         return (intent.action == WAVES_APP_KEEPER_ACTION && intent.extras != null)
-                || (intent.extras != null && intent.hasExtra(KeeperKeys.ActionKeys.ACTION_TYPE))
+                || (intent.extras != null && intent.hasExtra(KeeperKeys.ActionKeys.ACTION_TYPE)
+                || keeperDataHolder != null)
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override fun keeperDataHolder(): KeeperDataHolder? {
+        return keeperDataHolder
     }
 
     private fun processFinishWithError(activity: FragmentActivity,

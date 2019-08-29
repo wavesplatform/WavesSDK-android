@@ -9,5 +9,5 @@ import com.wavesplatform.sdk.keeper.model.KeeperResult
 
 interface KeeperCallback<T> {
     fun onSuccess(result: KeeperResult.Success<T>)
-    fun onFailed(result: KeeperResult.Error)
+    fun onFailed(error: KeeperResult.Error)
 }
