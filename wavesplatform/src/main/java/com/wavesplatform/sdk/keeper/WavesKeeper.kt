@@ -241,7 +241,7 @@ class WavesKeeper(private var context: Context) : Keeper {
     private fun getPreferences(context: Context): SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
 
     companion object {
-        private const val WAVES_APP_PACKAGE_ID = "com.wavesplatform.wallet.dev"
+        private const val WAVES_APP_PACKAGE_ID = "com.wavesplatform.wallet"
         private const val PREFERENCE_NAME = "com.wavesplatform.wallet.keeper_prefs"
         private const val WAVES_APP_KEEPER_ACTION = "com.wavesplatform.wallet.action.KEEPER"
         private const val WAVES_APP_REQUEST_CODE = 196
