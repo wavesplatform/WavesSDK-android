@@ -32,7 +32,7 @@ abstract class BaseTransaction(
      * [Wiki about Fee](https://docs.wavesplatform.com/en/blockchain/transaction-fee.html)
      */
     @SerializedName("fee")
-    var fee: Long = 0L
+    open var fee: Long = 0L
 
     /**
      * Version number of the data structure of the transaction.

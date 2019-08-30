@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.common.primitives.*
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.crypto.WavesCrypto
+import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
@@ -20,6 +21,7 @@ import java.nio.charset.Charset
  *
  * [dApp creation Wiki]({https://docs.wavesplatform.com/en/smart-contracts/writing-dapps.html)
  */
+@Parcelize
 class InvokeScriptTransaction(
     /**
      * Asset id instead Waves for transaction commission withdrawal
@@ -37,7 +39,7 @@ class InvokeScriptTransaction(
      * Payments for function of dApp. Now it works with only one payment.
      */
     @SerializedName("payment") var payment: List<Payment> = mutableListOf()
-) : BaseTransaction(SCRIPT_INVOCATION) {
+) : BaseTransaction(SCRIPT_INVOCATION), KeeperTransaction {
 
     override fun toBytes(): ByteArray {
 

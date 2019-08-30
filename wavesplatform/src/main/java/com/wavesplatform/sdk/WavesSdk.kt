@@ -1,6 +1,7 @@
 package com.wavesplatform.sdk
 
 import android.content.Context
+import com.wavesplatform.sdk.keeper.WavesKeeper
 import com.wavesplatform.sdk.net.WavesService
 import com.wavesplatform.sdk.utils.Environment
 
@@ -39,6 +40,7 @@ class WavesSdk {
 
     internal lateinit var environment: Environment
     internal lateinit var service: WavesService
+    internal lateinit var keeper: WavesKeeper
 
     companion object {
 
@@ -63,6 +65,7 @@ class WavesSdk {
             instance = WavesSdk()
             instance!!.environment = environment
             instance!!.service = WavesService(context)
+            instance!!.keeper = WavesKeeper(context)
         }
 
         /**
@@ -72,6 +75,11 @@ class WavesSdk {
         @JvmStatic
         fun service(): WavesService {
             return get().service
+        }
+
+        @JvmStatic
+        fun keeper(): WavesKeeper {
+            return get().keeper
         }
 
         /**
