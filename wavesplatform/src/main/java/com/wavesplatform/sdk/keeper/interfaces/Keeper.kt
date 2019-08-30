@@ -42,6 +42,9 @@ interface Keeper {
                    error: String)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun finishRejected(activity: FragmentActivity)
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun processData(intent: Intent): KeeperProcessData?
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)

@@ -73,6 +73,14 @@ class WavesKeeper(private var context: Context) : Keeper {
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override fun finishRejected(activity: FragmentActivity) {
+        activity.apply {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun processData(intent: Intent): KeeperProcessData? {
         if (!isKeeperIntent(intent)) {
             return null
@@ -190,7 +198,7 @@ class WavesKeeper(private var context: Context) : Keeper {
         return when {
             // Canceled flow
             result.extras == null && !success -> {
-                KeeperResult.Error("Action Cancelled", KeeperResult.CANCELED)
+                KeeperResult.Error("Action Rejected", KeeperResult.REJECTED)
             }
             // Success flow
             result.extras != null && !result.hasExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE) && success -> {
