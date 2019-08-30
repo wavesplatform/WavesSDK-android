@@ -36,22 +36,19 @@ data class CandlesResponse(
                 @SerializedName("open")
                 var openValue: Double? = 0.0,
                 @SerializedName("time")
-                var time: Date = Date(),
+                var time: String = "",
                 @SerializedName("txsCount")
                 var txsCount: Int? = 0,
                 @SerializedName("volume")
                 var volume: Double? = 0.0) : Parcelable {
 
-            companion object {
+            private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
 
-                private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
-
-                fun getTimeInLong(time: String?): Long {
-                    if (time.isNullOrEmpty()) {
-                        return 0L
-                    }
-                    return dateFormat.parse(time)?.time ?: 0L
-                }
+            fun getTimeInMillis(): Long {
+                dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+                val date = dateFormat.parse(time)
+                dateFormat.timeZone = TimeZone.getDefault()
+                return dateFormat.parse(dateFormat.format(date)).time
             }
         }
     }
