@@ -53,30 +53,23 @@ class WavesKeeper(private var context: Context) : Keeper {
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishSign(activity: FragmentActivity, transaction: KeeperTransaction) {
-        processFinish(activity, KeeperActionType.SIGN, transaction)
-    }
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishSend(activity: FragmentActivity, transaction: KeeperTransactionResponse) {
-        processFinish(activity, KeeperActionType.SEND, transaction)
-    }
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishSign(activity: FragmentActivity, error: String) {
-        processFinishWithError(activity, KeeperActionType.SIGN, error)
-    }
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishSend(activity: FragmentActivity, error: String) {
-        processFinishWithError(activity, KeeperActionType.SEND, error)
-    }
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishRejected(activity: FragmentActivity) {
-        activity.apply {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
+    override fun finishProcess(activity: FragmentActivity, result: KeeperIntentResult) {
+        when (result) {
+            is KeeperIntentResult.SuccessSignResult -> {
+                processFinish(activity, KeeperActionType.SIGN, result.transaction)
+            }
+            is KeeperIntentResult.SuccessSendResult -> {
+                processFinish(activity, KeeperActionType.SEND, result.transaction)
+            }
+            is KeeperIntentResult.ErrorSignResult -> {
+                processFinishWithError(activity, KeeperActionType.SIGN, result.error)
+            }
+            is KeeperIntentResult.ErrorSendResult -> {
+                processFinishWithError(activity, KeeperActionType.SEND, result.error)
+            }
+            is KeeperIntentResult.RejectedResult -> {
+                processReject(activity)
+            }
         }
     }
 
@@ -106,6 +99,7 @@ class WavesKeeper(private var context: Context) : Keeper {
         return null
     }
 
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun isKeeperIntent(intent: Intent): Boolean {
         return (intent.action == WAVES_APP_KEEPER_ACTION && intent.extras != null)
                 || (intent.extras != null && intent.hasExtra(KeeperKeys.ActionKeys.ACTION_TYPE)
@@ -128,6 +122,13 @@ class WavesKeeper(private var context: Context) : Keeper {
                 })
             }
             setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+    }
+
+    private fun processReject(activity: FragmentActivity) {
+        activity.apply {
+            setResult(Activity.RESULT_CANCELED)
             finish()
         }
     }
