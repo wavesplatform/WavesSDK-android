@@ -11,13 +11,13 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 class TransferTransactionResponse(@SerializedName("assetId")
-                                  var assetId: String = "",
+                                  var assetId: String? = "",
                                   @SerializedName("recipient")
                                   var recipient: String = "",
                                   @SerializedName("amount")
                                   var amount: Long = 0L,
                                   @SerializedName("attachment")
-                                  var attachment: String = "",
+                                  var attachment: String? = "",
                                   @SerializedName("feeAssetId")
-                                  var feeAssetId: String = "")
+                                  var feeAssetId: String? = "")
     : BaseTransactionResponse(type = BaseTransaction.TRANSFER), Parcelable, KeeperTransactionResponse

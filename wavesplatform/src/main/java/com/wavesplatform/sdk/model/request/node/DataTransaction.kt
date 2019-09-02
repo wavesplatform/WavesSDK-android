@@ -64,6 +64,10 @@ class DataTransaction(
         }
     }
 
+    fun getDataSize(): Int {
+        return dataBytes().size
+    }
+
     private fun dataBytes(): ByteArray {
         val allDataArray = if (data.isNotEmpty()) {
             var keyValueChainArray = byteArrayOf()
