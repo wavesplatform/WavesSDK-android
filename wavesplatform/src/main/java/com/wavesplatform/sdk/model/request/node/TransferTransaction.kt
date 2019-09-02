@@ -21,32 +21,38 @@ import kotlin.reflect.KClass
  * to the recipient (by address or alias).
  */
 @Parcelize
-open class TransferTransaction(
-        /**
-         * Id of transferable asset in Waves blockchain, different for main and test net
-         */
-        @SerializedName("assetId") var assetId: String,
-        /**
-         * Address or alias of Waves blockchain
-         */
-        @SerializedName("recipient") var recipient: String,
-        /**
-         * Amount of asset in satoshi
-         */
-        @SerializedName("amount") var amount: Long,
-        /**
-         * Fee for transaction in satoshi
-         */
-        override var fee: Long = 0,
-        /**
-         * Additional info [0,140] bytes of string encoded in Base58
-         */
-        @SerializedName("attachment") var attachment: String,
-        /**
-         * Asset id instead Waves for transaction commission withdrawal
-         */
-        @SerializedName("feeAssetId") var feeAssetId: String = ""
-) : BaseTransaction(TRANSFER), KeeperTransaction {
+open class TransferTransaction() : BaseTransaction(TRANSFER), KeeperTransaction {
+
+    /**
+     * Id of transferable asset in Waves blockchain, different for main and test net
+     */
+    @SerializedName("assetId") var assetId: String = ""
+    /**
+     * Address or alias of Waves blockchain
+     */
+    @SerializedName("recipient") var recipient: String = ""
+    /**
+     * Amount of asset in satoshi
+     */
+    @SerializedName("amount") var amount: Long = 0
+    /**
+     * Additional info [0,140] bytes of string encoded in Base58
+     */
+    @SerializedName("attachment") var attachment: String = ""
+    /**
+     * Asset id instead Waves for transaction commission withdrawal
+     */
+    @SerializedName("feeAssetId") var feeAssetId: String = ""
+
+    constructor(assetId: String, recipient: String, amount: Long, fee: Long, attachment: String,
+                feeAssetId: String = "") : this() {
+        this.assetId = assetId
+        this.recipient = recipient
+        this.amount = amount
+        this.fee = fee
+        this.attachment = attachment
+        this.feeAssetId = feeAssetId
+    }
 
     override fun toBytes(): ByteArray {
         return try {
