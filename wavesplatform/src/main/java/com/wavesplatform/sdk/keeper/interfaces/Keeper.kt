@@ -10,6 +10,7 @@ import android.content.Intent
 import android.support.annotation.RestrictTo
 import android.support.v4.app.FragmentActivity
 import com.wavesplatform.sdk.keeper.model.KeeperDataHolder
+import com.wavesplatform.sdk.keeper.model.KeeperIntentResult
 import com.wavesplatform.sdk.keeper.model.KeeperProcessData
 
 interface Keeper {
@@ -26,20 +27,8 @@ interface Keeper {
                                              callback: KeeperCallback<T>)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishSign(activity: FragmentActivity,
-                   transaction: KeeperTransaction)
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishSend(activity: FragmentActivity,
-                   transaction: KeeperTransactionResponse)
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishSign(activity: FragmentActivity,
-                   error: String)
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishSend(activity: FragmentActivity,
-                   error: String)
+    fun finishProcess(activity: FragmentActivity,
+                      result: KeeperIntentResult)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun processData(intent: Intent): KeeperProcessData?

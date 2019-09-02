@@ -10,7 +10,7 @@ sealed class KeeperResult {
     data class Error(val message: String?, val code: Int) : KeeperResult()
 
     companion object {
-        const val CANCELED = 1
+        const val REJECTED = 1
         const val UNKNOWN_ERROR = 2
     }
 }
