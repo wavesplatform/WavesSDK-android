@@ -8,7 +8,10 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
+import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
+import com.wavesplatform.sdk.keeper.model.KeeperResult
 import com.wavesplatform.sdk.model.request.node.*
+import com.wavesplatform.sdk.model.response.node.transaction.DataTransactionResponse
 import com.wavesplatform.sdk.net.OnErrorListener
 import com.wavesplatform.sdk.net.NetworkException
 import com.wavesplatform.sdk.utils.RxUtil
@@ -43,6 +46,32 @@ class MainActivity : AppCompatActivity() {
             getWavesBalance(address)
 
             // Examples of transactions available in [WavesServiceTest]
+        }
+
+        fab_d_app.setOnClickListener {
+            // You must configure dApp if you want to use Waves Keeper. Look at App
+            // Try to send data-transaction via mobile Keeper
+
+            val data = ArrayList<DataTransaction.Data>()
+            data.add(DataTransaction.Data("key0", "string", "This is Data TX"))
+            data.add(DataTransaction.Data("key1", "integer", 100))
+            data.add(DataTransaction.Data("key2", "integer", -100))
+            data.add(DataTransaction.Data("key3", "boolean", true))
+            data.add(DataTransaction.Data("key4", "boolean", false))
+            data.add(DataTransaction.Data("key5", "binary", "SGVsbG8h")) // base64 binary string
+            val dataTransaction = DataTransaction(data)
+
+            WavesSdk
+                .keeper()
+                .send(this, dataTransaction, object : KeeperCallback<DataTransactionResponse> {
+                        override fun onSuccess(result: KeeperResult.Success<DataTransactionResponse>) {
+                            Log.d("KEEPERTEST", result.toString())
+                        }
+
+                        override fun onFailed(result: KeeperResult.Error) {
+                            Log.d("KEEPERTEST", result.toString())
+                        }
+                    })
         }
 
         handleServiceErrors()
