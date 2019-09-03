@@ -150,7 +150,8 @@ class WavesKeeper(private var context: Context) : Keeper {
                                   type: KeeperActionType,
                                   transaction: KeeperTransaction,
                                   callback: KeeperCallback<T>) {
-        if (context.isAppInstalled(WAVES_APP_PACKAGE_ID)
+        if ((context.isAppInstalled(WAVES_APP_PACKAGE_ID)
+                        || context.isAppInstalled(WAVES_DEV_APP_PACKAGE_ID))
                 && context.isIntentAvailable(WAVES_APP_KEEPER_ACTION)) {
             startKeeperActivity(activity, createParams(activity, type, transaction), callback)
         } else {
@@ -161,7 +162,11 @@ class WavesKeeper(private var context: Context) : Keeper {
     private fun <T> startKeeperActivity(activity: FragmentActivity, params: Bundle,
                                         callback: KeeperCallback<T>) {
         val intent = Intent(WAVES_APP_KEEPER_ACTION, null).apply {
-            setPackage(WAVES_APP_PACKAGE_ID)
+            if (context.isAppInstalled(WAVES_DEV_APP_PACKAGE_ID)) {
+                setPackage(WAVES_DEV_APP_PACKAGE_ID)
+            } else {
+                setPackage(WAVES_APP_PACKAGE_ID)
+            }
             putExtras(params)
         }
 
@@ -251,6 +256,7 @@ class WavesKeeper(private var context: Context) : Keeper {
 
     companion object {
         private const val WAVES_APP_PACKAGE_ID = "com.wavesplatform.wallet"
+        private const val WAVES_DEV_APP_PACKAGE_ID = "com.wavesplatform.wallet.dev"
         private const val PREFERENCE_NAME = "com.wavesplatform.wallet.keeper_prefs"
         private const val WAVES_APP_KEEPER_ACTION = "com.wavesplatform.wallet.action.KEEPER"
         private const val WAVES_APP_REQUEST_CODE = 196

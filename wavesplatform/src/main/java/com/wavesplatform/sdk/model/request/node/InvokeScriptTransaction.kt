@@ -22,7 +22,7 @@ import java.nio.charset.Charset
  * [dApp creation Wiki]({https://docs.wavesplatform.com/en/smart-contracts/writing-dapps.html)
  */
 @Parcelize
-class InvokeScriptTransaction(
+data class InvokeScriptTransaction(
     /**
      * Asset id instead Waves for transaction commission withdrawal
      */
@@ -120,10 +120,10 @@ class InvokeScriptTransaction(
     }
 
     private fun getIntegerBytes(arg: Arg, array: ByteArray): ByteArray {
-        val longValue: Long = if (arg.value is Int) {
-            (arg.value as Int).toLong()
-        } else {
-            arg.value as Long
+        val longValue: Long = when {
+            arg.value is Int -> (arg.value as Int).toLong()
+            arg.value is Double -> (arg.value as Double).toLong()
+            else -> arg.value as Long
         }
         return Bytes.concat(array, DataTransaction.integerValue(0, longValue))
     }

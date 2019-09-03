@@ -11,9 +11,9 @@ import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
-import com.wavesplatform.sdk.utils.*
+import com.wavesplatform.sdk.utils.SignUtil
+import com.wavesplatform.sdk.utils.parseAlias
 import kotlinx.android.parcel.Parcelize
-import kotlin.reflect.KClass
 
 /**
  * Transfer transaction sends amount of asset on address.
@@ -21,38 +21,28 @@ import kotlin.reflect.KClass
  * to the recipient (by address or alias).
  */
 @Parcelize
-open class TransferTransaction() : BaseTransaction(TRANSFER), KeeperTransaction {
+open class TransferTransaction(
+        /**
+         * Id of transferable asset in Waves blockchain, different for main and test net
+         */
+        @SerializedName("assetId") var assetId: String = "",
+        /**
+         * Address or alias of Waves blockchain
+         */
+        @SerializedName("recipient") var recipient: String = "",
+        /**
+         * Amount of asset in satoshi
+         */
+        @SerializedName("amount") var amount: Long = 0,
+        /**
+         * Additional info [0,140] bytes of string encoded in Base58
+         */
+        @SerializedName("attachment") var attachment: String = "",
+        /**
+         * Asset id instead Waves for transaction commission withdrawal
+         */
+        @SerializedName("feeAssetId") var feeAssetId: String = "") : BaseTransaction(TRANSFER), KeeperTransaction {
 
-    /**
-     * Id of transferable asset in Waves blockchain, different for main and test net
-     */
-    @SerializedName("assetId") var assetId: String = ""
-    /**
-     * Address or alias of Waves blockchain
-     */
-    @SerializedName("recipient") var recipient: String = ""
-    /**
-     * Amount of asset in satoshi
-     */
-    @SerializedName("amount") var amount: Long = 0
-    /**
-     * Additional info [0,140] bytes of string encoded in Base58
-     */
-    @SerializedName("attachment") var attachment: String = ""
-    /**
-     * Asset id instead Waves for transaction commission withdrawal
-     */
-    @SerializedName("feeAssetId") var feeAssetId: String = ""
-
-    constructor(assetId: String, recipient: String, amount: Long, fee: Long, attachment: String,
-                feeAssetId: String = "") : this() {
-        this.assetId = assetId
-        this.recipient = recipient
-        this.amount = amount
-        this.fee = fee
-        this.attachment = attachment
-        this.feeAssetId = feeAssetId
-    }
 
     override fun toBytes(): ByteArray {
         return try {

@@ -26,7 +26,7 @@ import java.nio.charset.Charset
  * Fee depends of data transaction length (0.001 per 1kb)
  */
 @Parcelize
-class DataTransaction(
+data class DataTransaction(
         /**
          * Data as JSON-string as byte array
          * The value of the key field is a UTF-8 encoded string
@@ -80,10 +80,10 @@ class DataTransaction(
                         stringValue(STRING_DATA_TYPE, oneData.value as String)
                     }
                     "integer" -> {
-                        val longValue: Long = if (oneData.value is Int) {
-                            (oneData.value as Int).toLong()
-                        } else {
-                            oneData.value as Long
+                        val longValue: Long = when {
+                            oneData.value is Int -> (oneData.value as Int).toLong()
+                            oneData.value is Double -> (oneData.value as Double).toLong()
+                            else -> oneData.value as Long
                         }
                         integerValue(INTEGER_DATA_TYPE, longValue)
                     }
