@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             data.add(DataTransaction.Data("key5", "binary", "SGVsbG8h")) // base64 binary string
             val dataTransaction = DataTransaction(data)
 
+            // Send
             WavesSdk
                 .keeper()
                 .send(this, dataTransaction, object : KeeperCallback<DataTransactionResponse> {
@@ -68,10 +69,24 @@ class MainActivity : AppCompatActivity() {
                             Log.d("KEEPERTEST", result.toString())
                         }
 
-                        override fun onFailed(result: KeeperResult.Error) {
-                            Log.d("KEEPERTEST", result.toString())
+                        override fun onFailed(error: KeeperResult.Error) {
+                            Log.d("KEEPERTEST", error.toString())
                         }
                     })
+
+            // Or sign
+            /*WavesSdk
+                .keeper()
+                .sign(this, dataTransaction, object : KeeperCallback<DataTransaction> {
+                    override fun onSuccess(result: KeeperResult.Success<DataTransaction>) {
+                        Log.d("KEEPERTEST", result.toString())
+                    }
+
+                    override fun onFailed(error: KeeperResult.Error) {
+                        Log.d("KEEPERTEST", error.toString())
+                    }
+
+                })*/
         }
 
         handleServiceErrors()
