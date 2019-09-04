@@ -10,11 +10,13 @@ import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
 import com.wavesplatform.sdk.keeper.model.KeeperResult
-import com.wavesplatform.sdk.model.request.node.*
-import com.wavesplatform.sdk.model.response.node.transaction.DataTransactionResponse
-import com.wavesplatform.sdk.net.OnErrorListener
+import com.wavesplatform.sdk.model.request.node.DataTransaction
+import com.wavesplatform.sdk.model.request.node.TransferTransaction
+import com.wavesplatform.sdk.model.response.node.transaction.TransferTransactionResponse
 import com.wavesplatform.sdk.net.NetworkException
+import com.wavesplatform.sdk.net.OnErrorListener
 import com.wavesplatform.sdk.utils.RxUtil
+import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.WavesConstants
 import com.wavesplatform.sdk.utils.getScaledAmount
 import io.reactivex.disposables.CompositeDisposable
@@ -40,7 +42,8 @@ class MainActivity : AppCompatActivity() {
             val newSeed = WavesCrypto.randomSeed()
             seedTextView.text = "New seed is: $newSeed"
 
-            val address = WavesCrypto.addressBySeed(SEED, WavesSdk.getEnvironment().chainId.toString())
+            val address =
+                WavesCrypto.addressBySeed(SEED, WavesSdk.getEnvironment().chainId.toString())
 
             // Create request to Node service about address balance
             getWavesBalance(address)
@@ -48,45 +51,52 @@ class MainActivity : AppCompatActivity() {
             // Examples of transactions available in [WavesServiceTest]
         }
 
-        fab_d_app.setOnClickListener {
-            // You must configure dApp if you want to use Waves Keeper. Look at App
-            // Try to send data-transaction via mobile Keeper
 
-            val data = ArrayList<DataTransaction.Data>()
-            data.add(DataTransaction.Data("key0", "string", "This is Data TX"))
-            data.add(DataTransaction.Data("key1", "integer", 100))
-            data.add(DataTransaction.Data("key2", "integer", -100))
-            data.add(DataTransaction.Data("key3", "boolean", true))
-            data.add(DataTransaction.Data("key4", "boolean", false))
-            data.add(DataTransaction.Data("key5", "binary", "SGVsbG8h")) // base64 binary string
-            val dataTransaction = DataTransaction(data)
 
-            // Send
-            WavesSdk
-                .keeper()
-                .send(this, dataTransaction, object : KeeperCallback<DataTransactionResponse> {
-                        override fun onSuccess(result: KeeperResult.Success<DataTransactionResponse>) {
-                            Log.d("KEEPERTEST", result.toString())
-                        }
+        // You must configure dApp if you want to use Waves Keeper. Look at App
+        // Try to send or sign data-transaction via mobile Keeper
 
-                        override fun onFailed(error: KeeperResult.Error) {
-                            Log.d("KEEPERTEST", error.toString())
-                        }
-                    })
+        val dataTransaction = DataTransaction(mutableListOf(
+            DataTransaction.Data("key0", "string", "This is Data TX"),
+            DataTransaction.Data("key1", "integer", 100),
+            DataTransaction.Data("key2", "integer", -100),
+            DataTransaction.Data("key3", "boolean", true),
+            DataTransaction.Data("key4", "boolean", false),
+            DataTransaction.Data("key5", "binary", "SGVsbG8h")))
 
-            // Or sign
-            /*WavesSdk
-                .keeper()
-                .sign(this, dataTransaction, object : KeeperCallback<DataTransaction> {
-                    override fun onSuccess(result: KeeperResult.Success<DataTransaction>) {
+        val transaction = TransferTransaction(
+            assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
+            recipient = "3P8ys7s9r61Dapp8wZ94NBJjhmPHcBVBkMf",
+            amount = 1,
+            attachment = SignUtil.textToBase58("Hello-!"),
+            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
+        )
+        transaction.fee = WavesConstants.WAVES_MIN_FEE
+
+        fab_d_app_send.setOnClickListener {
+            WavesSdk.keeper()
+                .send(this, transaction, object : KeeperCallback<TransferTransactionResponse> {
+                    override fun onSuccess(result: KeeperResult.Success<TransferTransactionResponse>) {
                         Log.d("KEEPERTEST", result.toString())
+                        Log.d("KEEPERTEST", "TXID: " + result.transaction?.id)
                     }
 
                     override fun onFailed(error: KeeperResult.Error) {
                         Log.d("KEEPERTEST", error.toString())
                     }
+                })
+        }
 
-                })*/
+        fab_d_app_sign.setOnClickListener {
+            WavesSdk.keeper().sign(this, transaction, object : KeeperCallback<TransferTransaction> {
+                override fun onSuccess(result: KeeperResult.Success<TransferTransaction>) {
+                    Log.d("KEEPERTEST", result.toString())
+                }
+
+                override fun onFailed(error: KeeperResult.Error) {
+                    Log.d("KEEPERTEST", error.toString())
+                }
+            })
         }
 
         handleServiceErrors()
@@ -111,7 +121,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(
                         this@MainActivity,
                         "Balance is : ${getScaledAmount(wavesBalance.balance, 8)} Waves",
-                        Toast.LENGTH_SHORT)
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }, { error ->
                     // Do something on fail
