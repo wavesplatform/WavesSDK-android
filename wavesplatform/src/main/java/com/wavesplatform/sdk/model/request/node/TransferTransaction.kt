@@ -5,48 +5,45 @@
 
 package com.wavesplatform.sdk.model.request.node
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
-import com.wavesplatform.sdk.utils.*
-import kotlinx.android.parcel.Parcelize
-import kotlin.reflect.KClass
+import com.wavesplatform.sdk.utils.SignUtil
+import com.wavesplatform.sdk.utils.parseAlias
 
 /**
  * Transfer transaction sends amount of asset on address.
  * It is used to transfer a specific amount of an asset (WAVES by default)
  * to the recipient (by address or alias).
  */
-@Parcelize
 open class TransferTransaction(
         /**
          * Id of transferable asset in Waves blockchain, different for main and test net
          */
-        @SerializedName("assetId") var assetId: String,
+        @SerializedName("assetId") var assetId: String = "",
         /**
          * Address or alias of Waves blockchain
          */
-        @SerializedName("recipient") var recipient: String,
+        @SerializedName("recipient") var recipient: String = "",
         /**
          * Amount of asset in satoshi
          */
-        @SerializedName("amount") var amount: Long,
-        /**
-         * Fee for transaction in satoshi
-         */
-        override var fee: Long = 0,
+        @SerializedName("amount") var amount: Long = 0,
         /**
          * Additional info [0,140] bytes of string encoded in Base58
          */
-        @SerializedName("attachment") var attachment: String,
+        @SerializedName("attachment") var attachment: String = "",
         /**
          * Asset id instead Waves for transaction commission withdrawal
          */
-        @SerializedName("feeAssetId") var feeAssetId: String = ""
-) : BaseTransaction(TRANSFER), KeeperTransaction {
+        @SerializedName("feeAssetId") var feeAssetId: String = "")
+    : BaseTransaction(TRANSFER), Parcelable, KeeperTransaction {
+
 
     override fun toBytes(): ByteArray {
         return try {
@@ -73,7 +70,47 @@ open class TransferTransaction(
         return signature ?: ""
     }
 
+    private constructor(parcel: Parcel) : this() {
+        assetId = parcel.readString() ?: ""
+        recipient = parcel.readString() ?: ""
+        amount = parcel.readLong()
+        attachment = parcel.readString() ?: ""
+        feeAssetId = parcel.readString() ?: ""
+
+        senderPublicKey = parcel.readString() ?: ""
+        timestamp = parcel.readLong()
+        fee = parcel.readLong()
+        version = parcel.readByte()
+        parcel.readStringList(proofs)
+        signature = parcel.readString() ?: ""
+        chainId = parcel.readByte()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(assetId)
+        parcel.writeString(recipient)
+        parcel.writeLong(amount)
+        parcel.writeString(attachment)
+        parcel.writeString(feeAssetId)
+
+        parcel.writeString(senderPublicKey)
+        parcel.writeLong(timestamp)
+        parcel.writeLong(fee)
+        parcel.writeByte(version)
+        parcel.writeStringList(proofs)
+        parcel.writeString(signature)
+        parcel.writeByte(chainId)
+    }
+
+    override fun describeContents() = 0
+
     companion object {
+
+        @JvmField
+        val CREATOR = object : Parcelable.Creator<TransferTransaction> {
+            override fun createFromParcel(parcel: Parcel) = TransferTransaction(parcel)
+            override fun newArray(size: Int) = arrayOfNulls<TransferTransaction>(size)
+        }
 
         fun getAttachmentSize(attachment: String?): Int {
             if (attachment == null) {

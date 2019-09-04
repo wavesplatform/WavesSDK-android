@@ -21,7 +21,6 @@ import java.nio.charset.Charset
  *
  * [dApp creation Wiki]({https://docs.wavesplatform.com/en/smart-contracts/writing-dapps.html)
  */
-@Parcelize
 class InvokeScriptTransaction(
     /**
      * Asset id instead Waves for transaction commission withdrawal
@@ -39,7 +38,7 @@ class InvokeScriptTransaction(
      * Payments for function of dApp. Now it works with only one payment.
      */
     @SerializedName("payment") var payment: List<Payment> = mutableListOf()
-) : BaseTransaction(SCRIPT_INVOCATION), KeeperTransaction {
+) : BaseTransaction(SCRIPT_INVOCATION), Parcelable, KeeperTransaction {
 
     override fun toBytes(): ByteArray {
 
@@ -65,6 +64,40 @@ class InvokeScriptTransaction(
     override fun sign(seed: String): String {
         version = 1
         return super.sign(seed)
+    }
+
+    constructor(parcel: Parcel) : this(
+            feeAssetId = parcel.readString() ?: "",
+            dApp = parcel.readString() ?: "",
+            call = parcel.readParcelable(Call::class.java.classLoader),
+            payment = getPayment(parcel)) {
+
+        senderPublicKey = parcel.readString() ?: ""
+        timestamp = parcel.readLong()
+        fee = parcel.readLong()
+        version = parcel.readByte()
+        parcel.readStringList(proofs)
+        signature = parcel.readString() ?: ""
+        chainId = parcel.readByte()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(feeAssetId)
+        parcel.writeString(dApp)
+        parcel.writeParcelable(call, flags)
+        parcel.writeTypedList(payment)
+
+        parcel.writeString(senderPublicKey)
+        parcel.writeLong(timestamp)
+        parcel.writeLong(fee)
+        parcel.writeByte(version)
+        parcel.writeStringList(proofs)
+        parcel.writeString(signature)
+        parcel.writeByte(chainId)
+    }
+
+    override fun describeContents(): Int {
+        return 0
     }
 
     private fun functionCallArray(): ByteArray {
@@ -120,10 +153,10 @@ class InvokeScriptTransaction(
     }
 
     private fun getIntegerBytes(arg: Arg, array: ByteArray): ByteArray {
-        val longValue: Long = if (arg.value is Int) {
-            (arg.value as Int).toLong()
-        } else {
-            arg.value as Long
+        val longValue: Long = when {
+            arg.value is Int -> (arg.value as Int).toLong()
+            arg.value is Double -> (arg.value as Double).toLong()
+            else -> arg.value as Long
         }
         return Bytes.concat(array, DataTransaction.integerValue(0, longValue))
     }
@@ -143,10 +176,25 @@ class InvokeScriptTransaction(
         return Bytes.concat(lengthBytes, array.arrayWithSize())
     }
 
+    companion object CREATOR : Parcelable.Creator<InvokeScriptTransaction> {
+        override fun createFromParcel(parcel: Parcel): InvokeScriptTransaction {
+            return InvokeScriptTransaction(parcel)
+        }
+
+        override fun newArray(size: Int): Array<InvokeScriptTransaction?> {
+            return arrayOfNulls(size)
+        }
+
+        fun getPayment(parcel: Parcel): List<Payment>  {
+            val tempPayment = mutableListOf<Payment>()
+            parcel.readTypedList(tempPayment, Payment.CREATOR)
+            return tempPayment
+        }
+    }
+
     /**
      * Payment for function of dApp. Now it works with only one payment.
      */
-    @Parcelize
     class Payment(
         /**
          * Amount in satoshi
@@ -156,7 +204,31 @@ class InvokeScriptTransaction(
          * Asset Id in Waves blockchain
          */
         @SerializedName("assetId") var assetId: String? = null
-    ) : Parcelable
+    ) : Parcelable {
+
+        constructor(parcel: Parcel) : this(
+                parcel.readLong(),
+                parcel.readString())
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeLong(amount)
+            parcel.writeString(assetId)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<Payment> {
+            override fun createFromParcel(parcel: Parcel): Payment {
+                return Payment(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Payment?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 
     /**
      * Call the function from dApp (address or alias) with typed arguments

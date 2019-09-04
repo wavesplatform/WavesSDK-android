@@ -7,8 +7,10 @@ import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.common.primitives.Shorts
 import com.google.gson.annotations.SerializedName
+import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
+import com.wavesplatform.sdk.model.response.node.transaction.DataTransactionResponse
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
 import kotlinx.android.parcel.Parcelize
@@ -25,8 +27,7 @@ import java.nio.charset.Charset
  *
  * Fee depends of data transaction length (0.001 per 1kb)
  */
-@Parcelize
-class DataTransaction(
+data class DataTransaction(
         /**
          * Data as JSON-string as byte array
          * The value of the key field is a UTF-8 encoded string
@@ -42,7 +43,7 @@ class DataTransaction(
          * ],
          */
         @SerializedName("data") var data: List<Data> = mutableListOf())
-    : BaseTransaction(DATA), KeeperTransaction {
+    : BaseTransaction(DATA), Parcelable, KeeperTransaction {
 
     override fun sign(seed: String): String {
         version = 1
@@ -64,6 +65,10 @@ class DataTransaction(
         }
     }
 
+    fun getDataSize(): Int {
+        return dataBytes().size
+    }
+
     private fun dataBytes(): ByteArray {
         val allDataArray = if (data.isNotEmpty()) {
             var keyValueChainArray = byteArrayOf()
@@ -76,10 +81,10 @@ class DataTransaction(
                         stringValue(STRING_DATA_TYPE, oneData.value as String)
                     }
                     "integer" -> {
-                        val longValue: Long = if (oneData.value is Int) {
-                            (oneData.value as Int).toLong()
-                        } else {
-                            oneData.value as Long
+                        val longValue: Long = when {
+                            oneData.value is Int -> (oneData.value as Int).toLong()
+                            oneData.value is Double -> (oneData.value as Double).toLong()
+                            else -> oneData.value as Long
                         }
                         integerValue(INTEGER_DATA_TYPE, longValue)
                     }
@@ -110,6 +115,34 @@ class DataTransaction(
 
         return allDataArray
     }
+
+    private constructor(parcel: Parcel) : this() {
+        val tempData = mutableListOf<Data>()
+        parcel.readTypedList(tempData, Data.CREATOR)
+        if (tempData.isNotEmpty()) {
+            data = tempData
+        }
+        senderPublicKey = parcel.readString() ?: ""
+        timestamp = parcel.readLong()
+        fee = parcel.readLong()
+        version = parcel.readByte()
+        parcel.readStringList(proofs)
+        signature = parcel.readString() ?: ""
+        chainId = parcel.readByte()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeTypedList(data)
+        parcel.writeString(senderPublicKey)
+        parcel.writeLong(timestamp)
+        parcel.writeLong(fee)
+        parcel.writeByte(version)
+        parcel.writeStringList(proofs)
+        parcel.writeString(signature)
+        parcel.writeByte(chainId)
+    }
+
+    override fun describeContents() = 0
 
     companion object {
         const val INTEGER_DATA_TYPE: Byte = 0
@@ -151,6 +184,12 @@ class DataTransaction(
                 byteArrayOf(0)
             }
             return Bytes.concat(byteArrayOf(type), bytes)
+        }
+
+        @JvmField
+        val CREATOR = object : Parcelable.Creator<DataTransaction> {
+            override fun createFromParcel(parcel: Parcel) = DataTransaction(parcel)
+            override fun newArray(size: Int) = arrayOfNulls<DataTransaction>(size)
         }
     }
 
