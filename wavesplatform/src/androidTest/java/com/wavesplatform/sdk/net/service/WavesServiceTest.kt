@@ -31,10 +31,10 @@ class WavesServiceTest {
             assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
             recipient = "3Mq6WcupmXPVAzEB8DmXXiiT3kNFynebu6h",
             amount = 1,
-            fee = WavesConstants.WAVES_MIN_FEE,
             attachment = SignUtil.textToBase58("Hello-!"),
             feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
         )
+        transaction.fee = WavesConstants.WAVES_MIN_FEE
 
         transaction.sign(seed = SEED)
 

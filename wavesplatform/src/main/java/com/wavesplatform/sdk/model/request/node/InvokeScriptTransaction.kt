@@ -3,12 +3,17 @@ package com.wavesplatform.sdk.model.request.node
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.google.common.primitives.*
+import com.google.common.primitives.Bytes
+import com.google.common.primitives.Ints
+import com.google.common.primitives.Longs
+import com.google.common.primitives.Shorts
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.crypto.WavesCrypto
+import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
+import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
 import java.nio.charset.Charset
 
@@ -20,39 +25,39 @@ import java.nio.charset.Charset
  *
  * [dApp creation Wiki]({https://docs.wavesplatform.com/en/smart-contracts/writing-dapps.html)
  */
+@Parcelize
 class InvokeScriptTransaction(
-    /**
-     * Asset id instead Waves for transaction commission withdrawal
-     */
-    @SerializedName("feeAssetId") var feeAssetId: String? = null,
-    /**
-     * dApp – address or alias of contract with function on RIDE language
-     */
-    @SerializedName("dApp") var dApp: String,
-    /**
-     * Function name in dApp with array of arguments
-     */
-    @SerializedName("call") var call: Call? = null,
-    /**
-     * Payments for function of dApp. Now it works with only one payment.
-     */
-    @SerializedName("payment") var payment: List<Payment> = mutableListOf()
-) : BaseTransaction(SCRIPT_INVOCATION) {
+        /**
+         * Asset id instead Waves for transaction commission withdrawal
+         */
+        @SerializedName("feeAssetId") var feeAssetId: String? = null,
+        /**
+         * dApp – address or alias of contract with function on RIDE language
+         */
+        @SerializedName("dApp") var dApp: String,
+        /**
+         * Function name in dApp with array of arguments
+         */
+        @SerializedName("call") var call: Call? = null,
+        /**
+         * Payments for function of dApp. Now it works with only one payment.
+         */
+        @SerializedName("payment") var payment: List<Payment> = mutableListOf()
+) : BaseTransaction(SCRIPT_INVOCATION), KeeperTransaction {
 
     override fun toBytes(): ByteArray {
-
         return try {
             Bytes.concat(
-                byteArrayOf(type),
-                byteArrayOf(version),
-                byteArrayOf(chainId),
-                WavesCrypto.base58decode(senderPublicKey),
-                SignUtil.recipientBytes(dApp, version, chainId),
-                functionCallArray(),
-                paymentsArray(), // now it works with only one
-                Longs.toByteArray(fee),
-                SignUtil.arrayOption(feeAssetId ?: ""),
-                Longs.toByteArray(timestamp)
+                    byteArrayOf(type),
+                    byteArrayOf(version),
+                    byteArrayOf(chainId),
+                    WavesCrypto.base58decode(senderPublicKey),
+                    SignUtil.recipientBytes(dApp, version, chainId),
+                    functionCallArray(),
+                    paymentsArray(), // now it works with only one
+                    Longs.toByteArray(fee),
+                    SignUtil.arrayOption(feeAssetId ?: ""),
+                    Longs.toByteArray(timestamp)
             )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Script Invocation Transaction", e)
@@ -78,8 +83,8 @@ class InvokeScriptTransaction(
 
     private fun functionArray(): ByteArray {
         return call!!.function
-            .toByteArray(Charset.forName("UTF-8"))
-            .arrayWithIntSize()
+                .toByteArray(Charset.forName("UTF-8"))
+                .arrayWithIntSize()
     }
 
     private fun argsArray(): ByteArray {
@@ -105,23 +110,23 @@ class InvokeScriptTransaction(
     }
 
     private fun getStringBytes(arg: Arg, array: ByteArray) =
-        Bytes.concat(array, DataTransaction.stringValue(2, arg.value as String, true))
+            Bytes.concat(array, DataTransaction.stringValue(2, arg.value as String, true))
 
     private fun getBinaryBytes(arg: Arg, array: ByteArray): ByteArray {
         return Bytes.concat(
-            array,
-            DataTransaction.binaryValue(
-                1, (arg.value as String)
-                    .replace("base64:", ""), true
-            )
+                array,
+                DataTransaction.binaryValue(
+                        1, (arg.value as String)
+                        .replace("base64:", ""), true
+                )
         )
     }
 
     private fun getIntegerBytes(arg: Arg, array: ByteArray): ByteArray {
-        val longValue: Long = if (arg.value is Int) {
-            (arg.value as Int).toLong()
-        } else {
-            arg.value as Long
+        val longValue: Long = when {
+            arg.value is Int -> (arg.value as Int).toLong()
+            arg.value is Double -> (arg.value as Double).toLong()
+            else -> arg.value as Long
         }
         return Bytes.concat(array, DataTransaction.integerValue(0, longValue))
     }
@@ -141,59 +146,111 @@ class InvokeScriptTransaction(
         return Bytes.concat(lengthBytes, array.arrayWithSize())
     }
 
+    companion object : Parceler<InvokeScriptTransaction> {
+        override fun InvokeScriptTransaction.write(parcel: Parcel, flags: Int) {
+            parcel.apply {
+                writeString(feeAssetId)
+                writeString(dApp)
+                writeParcelable(call, flags)
+                writeTypedList(payment)
+                writeBaseToParcel(this)
+            }
+        }
+
+        override fun create(parcel: Parcel): InvokeScriptTransaction {
+            return InvokeScriptTransaction(
+                    parcel.readString().orEmpty(),
+                    parcel.readString().orEmpty(),
+                    parcel.readParcelable(Call::class.java.classLoader),
+                    getPayment(parcel))
+                    .apply {
+                        readBaseFromParcel(parcel)
+                    }
+        }
+
+        fun getPayment(parcel: Parcel): List<Payment> {
+            val tempPayment = mutableListOf<Payment>()
+            parcel.readTypedList(tempPayment, Payment.CREATOR)
+            return tempPayment
+        }
+    }
+
     /**
      * Payment for function of dApp. Now it works with only one payment.
      */
-    @Parcelize
     class Payment(
-        /**
-         * Amount in satoshi
-         */
-        @SerializedName("amount") var amount: Long,
-        /**
-         * Asset Id in Waves blockchain
-         */
-        @SerializedName("assetId") var assetId: String? = null
-    ) : Parcelable
+            /**
+             * Amount in satoshi
+             */
+            @SerializedName("amount") var amount: Long,
+            /**
+             * Asset Id in Waves blockchain
+             */
+            @SerializedName("assetId") var assetId: String? = null
+    ) : Parcelable {
+
+        constructor(parcel: Parcel) : this(
+                parcel.readLong(),
+                parcel.readString())
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeLong(amount)
+            parcel.writeString(assetId)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<Payment> {
+            override fun createFromParcel(parcel: Parcel): Payment {
+                return Payment(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Payment?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 
     /**
      * Call the function from dApp (address or alias) with typed arguments
      */
     @Parcelize
     class Call(
-        /**
-         * Function unique name
-         */
-        @SerializedName("function") var function: String,
-        /**
-         * List of arguments
-         */
-        @SerializedName("args") var args: List<Arg> = mutableListOf()
+            /**
+             * Function unique name
+             */
+            @SerializedName("function") var function: String,
+            /**
+             * List of arguments
+             */
+            @SerializedName("args") var args: List<Arg> = mutableListOf()
     ) : Parcelable
 
     /**
      * Arguments for the [Call.function] in [Call]
      */
     class Arg(
-        /**
-         * Type can be of four types - integer(0), boolean(1), binary(2) and string(3).
-         */
-        @SerializedName("type") var type: String?,
-        /**
-         * Argument value can be one of four types:
-         * [Long] for integer(0),
-         * [Boolean] for boolean(1),
-         * [String] for binary(2) You can use "base64:binaryString" and just "binaryString". Can't be empty string
-         * and [String] string(3).
-         *
-         * And it depends on type.
-         */
-        @SerializedName("value") var value: Any?
+            /**
+             * Type can be of four types - integer(0), boolean(1), binary(2) and string(3).
+             */
+            @SerializedName("type") var type: String?,
+            /**
+             * Argument value can be one of four types:
+             * [Long] for integer(0),
+             * [Boolean] for boolean(1),
+             * [String] for binary(2) You can use "base64:binaryString" and just "binaryString". Can't be empty string
+             * and [String] string(3).
+             *
+             * And it depends on type.
+             */
+            @SerializedName("value") var value: Any?
     ) : Parcelable {
 
         private constructor(parcel: Parcel) : this(
-            type = parcel.readString(),
-            value = parcel.readValue(Any::class.java.classLoader)
+                type = parcel.readString(),
+                value = parcel.readValue(Any::class.java.classLoader)
         )
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {

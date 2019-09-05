@@ -8,8 +8,11 @@ import com.google.common.primitives.Longs
 import com.google.common.primitives.Shorts
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.crypto.WavesCrypto
+import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.utils.arrayWithIntSize
 import com.wavesplatform.sdk.utils.arrayWithSize
+import kotlinx.android.parcel.Parceler
+import kotlinx.android.parcel.Parcelize
 import java.nio.charset.Charset
 
 /**
@@ -23,7 +26,8 @@ import java.nio.charset.Charset
  *
  * Fee depends of data transaction length (0.001 per 1kb)
  */
-class DataTransaction(
+@Parcelize
+data class DataTransaction(
         /**
          * Data as JSON-string as byte array
          * The value of the key field is a UTF-8 encoded string
@@ -39,7 +43,7 @@ class DataTransaction(
          * ],
          */
         @SerializedName("data") var data: List<Data> = mutableListOf())
-    : BaseTransaction(DATA) {
+    : BaseTransaction(DATA), KeeperTransaction {
 
     override fun sign(seed: String): String {
         version = 1
@@ -61,22 +65,26 @@ class DataTransaction(
         }
     }
 
+    fun getDataSize(): Int {
+        return dataBytes().size
+    }
+
     private fun dataBytes(): ByteArray {
         val allDataArray = if (data.isNotEmpty()) {
             var keyValueChainArray = byteArrayOf()
             for (oneData in data) {
                 val keyArray = oneData.key!!
-                    .toByteArray(Charset.forName("UTF-8"))
-                    .arrayWithSize()
+                        .toByteArray(Charset.forName("UTF-8"))
+                        .arrayWithSize()
                 val valueArray = when (oneData.type) {
                     "string" -> {
                         stringValue(STRING_DATA_TYPE, oneData.value as String)
                     }
                     "integer" -> {
-                        val longValue: Long = if (oneData.value is Int) {
-                            (oneData.value as Int).toLong()
-                        } else {
-                            oneData.value as Long
+                        val longValue: Long = when {
+                            oneData.value is Int -> (oneData.value as Int).toLong()
+                            oneData.value is Double -> (oneData.value as Double).toLong()
+                            else -> oneData.value as Long
                         }
                         integerValue(INTEGER_DATA_TYPE, longValue)
                     }
@@ -108,7 +116,7 @@ class DataTransaction(
         return allDataArray
     }
 
-    companion object {
+    companion object : Parceler<DataTransaction> {
         const val INTEGER_DATA_TYPE: Byte = 0
         const val BOOLEAN_DATA_TYPE: Byte = 1
         const val BINARY_DATA_TYPE: Byte = 2
@@ -116,6 +124,23 @@ class DataTransaction(
 
         private const val DATA_TX_SIZE_WITHOUT_ENTRIES = 52
         const val DATA_ENTRIES_BYTE_LIMIT = 140 * 1024 - DATA_TX_SIZE_WITHOUT_ENTRIES
+
+        override fun DataTransaction.write(parcel: Parcel, flags: Int) {
+            parcel.apply {
+                writeTypedList(data)
+                writeBaseToParcel(this)
+            }
+        }
+
+        override fun create(parcel: Parcel): DataTransaction {
+            return DataTransaction(
+                    mutableListOf<Data>().apply {
+                        parcel.readTypedList(this, Data.CREATOR)
+                    })
+                    .apply {
+                        readBaseFromParcel(parcel)
+                    }
+        }
 
         fun integerValue(type: Byte, int64Value: Long): ByteArray {
             return Bytes.concat(byteArrayOf(type), Longs.toByteArray(int64Value))
@@ -155,32 +180,32 @@ class DataTransaction(
      * Data of Data transaction.
      */
     class Data(
-        /**
-         * Key of data of Data transaction
-         */
-        @SerializedName("key")
-        var key: String?,
+            /**
+             * Key of data of Data transaction
+             */
+            @SerializedName("key")
+            var key: String?,
 
-        /**
-         * Type of data of Data transaction type can be only "string", "boolean", "integer", "binary"
-         */
-        @SerializedName("type")
-        var type: String?,
+            /**
+             * Type of data of Data transaction type can be only "string", "boolean", "integer", "binary"
+             */
+            @SerializedName("type")
+            var type: String?,
 
-        /**
-         * Data transaction value can be one of four types:
-         * [Long] for integer(0),
-         * [Boolean] for boolean(1),
-         * [String] for binary(2) You can use "base64:binaryString" and just "binaryString". Can't be empty string
-         * and [String] string(3).
-         */
-        @SerializedName("value")
-        var value: Any?) : Parcelable {
+            /**
+             * Data transaction value can be one of four types:
+             * [Long] for integer(0),
+             * [Boolean] for boolean(1),
+             * [String] for binary(2) You can use "base64:binaryString" and just "binaryString". Can't be empty string
+             * and [String] string(3).
+             */
+            @SerializedName("value")
+            var value: Any?) : Parcelable {
 
         private constructor(parcel: Parcel) : this(
-            key = parcel.readString(),
-            type = parcel.readString(),
-            value = parcel.readValue(Any::class.java.classLoader)
+                key = parcel.readString(),
+                type = parcel.readString(),
+                value = parcel.readValue(Any::class.java.classLoader)
         )
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {

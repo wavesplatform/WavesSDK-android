@@ -31,4 +31,20 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_d_app_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@android:drawable/ic_dialog_dialer" />
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_d_app_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@android:drawable/ic_menu_agenda" />
+
 </android.support.design.widget.CoordinatorLayout>
