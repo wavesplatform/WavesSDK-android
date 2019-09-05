@@ -15,12 +15,15 @@ import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.parseAlias
+import kotlinx.android.parcel.Parceler
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Transfer transaction sends amount of asset on address.
  * It is used to transfer a specific amount of an asset (WAVES by default)
  * to the recipient (by address or alias).
  */
+@Parcelize
 open class TransferTransaction(
         /**
          * Id of transferable asset in Waves blockchain, different for main and test net
@@ -70,46 +73,28 @@ open class TransferTransaction(
         return signature ?: ""
     }
 
-    private constructor(parcel: Parcel) : this() {
-        assetId = parcel.readString() ?: ""
-        recipient = parcel.readString() ?: ""
-        amount = parcel.readLong()
-        attachment = parcel.readString() ?: ""
-        feeAssetId = parcel.readString() ?: ""
+    companion object : Parceler<TransferTransaction> {
 
-        senderPublicKey = parcel.readString() ?: ""
-        timestamp = parcel.readLong()
-        fee = parcel.readLong()
-        version = parcel.readByte()
-        parcel.readStringList(proofs)
-        signature = parcel.readString() ?: ""
-        chainId = parcel.readByte()
-    }
+        override fun TransferTransaction.write(parcel: Parcel, flags: Int) {
+            parcel.apply {
+                writeString(assetId)
+                writeString(recipient)
+                writeLong(amount)
+                writeString(attachment)
+                writeString(feeAssetId)
+                writeBaseToParcel(this)
+            }
+        }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(assetId)
-        parcel.writeString(recipient)
-        parcel.writeLong(amount)
-        parcel.writeString(attachment)
-        parcel.writeString(feeAssetId)
-
-        parcel.writeString(senderPublicKey)
-        parcel.writeLong(timestamp)
-        parcel.writeLong(fee)
-        parcel.writeByte(version)
-        parcel.writeStringList(proofs)
-        parcel.writeString(signature)
-        parcel.writeByte(chainId)
-    }
-
-    override fun describeContents() = 0
-
-    companion object {
-
-        @JvmField
-        val CREATOR = object : Parcelable.Creator<TransferTransaction> {
-            override fun createFromParcel(parcel: Parcel) = TransferTransaction(parcel)
-            override fun newArray(size: Int) = arrayOfNulls<TransferTransaction>(size)
+        override fun create(parcel: Parcel): TransferTransaction {
+            return TransferTransaction(parcel.readString().orEmpty(),
+                    parcel.readString().orEmpty(),
+                    parcel.readLong(),
+                    parcel.readString().orEmpty(),
+                    parcel.readString().orEmpty())
+                    .apply {
+                        readBaseFromParcel(parcel)
+                    }
         }
 
         fun getAttachmentSize(attachment: String?): Int {
