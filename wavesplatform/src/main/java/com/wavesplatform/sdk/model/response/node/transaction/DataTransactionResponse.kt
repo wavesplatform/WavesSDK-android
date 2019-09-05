@@ -20,8 +20,8 @@ class DataTransactionResponse(@SerializedName("data")
 
         override fun DataTransactionResponse.write(parcel: Parcel, flags: Int) {
             parcel.apply {
-                writeBaseToParcel(this)
                 writeTypedList(data)
+                writeBaseToParcel(this)
             }
         }
 

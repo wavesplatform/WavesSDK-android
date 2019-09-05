@@ -149,11 +149,11 @@ class InvokeScriptTransaction(
     companion object : Parceler<InvokeScriptTransaction> {
         override fun InvokeScriptTransaction.write(parcel: Parcel, flags: Int) {
             parcel.apply {
-                writeBaseToParcel(this)
                 writeString(feeAssetId)
                 writeString(dApp)
                 writeParcelable(call, flags)
                 writeTypedList(payment)
+                writeBaseToParcel(this)
             }
         }
 

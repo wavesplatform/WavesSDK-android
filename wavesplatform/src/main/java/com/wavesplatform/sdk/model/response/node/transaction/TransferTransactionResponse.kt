@@ -27,12 +27,12 @@ class TransferTransactionResponse(@SerializedName("assetId")
 
         override fun TransferTransactionResponse.write(parcel: Parcel, flags: Int) {
             parcel.apply {
-                writeBaseToParcel(this)
                 writeString(assetId)
                 writeString(recipient)
                 writeLong(amount)
                 writeString(attachment)
                 writeString(feeAssetId)
+                writeBaseToParcel(this)
             }
         }
 

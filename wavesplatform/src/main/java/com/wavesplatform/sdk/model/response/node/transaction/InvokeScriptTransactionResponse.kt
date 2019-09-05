@@ -32,11 +32,11 @@ class InvokeScriptTransactionResponse(@SerializedName("feeAssetId")
 
         override fun InvokeScriptTransactionResponse.write(parcel: Parcel, flags: Int) {
             parcel.apply {
-                writeBaseToParcel(this)
                 writeString(feeAssetId)
                 writeString(dApp)
                 writeParcelable(call, flags)
                 writeTypedArray(payment, flags)
+                writeBaseToParcel(this)
             }
         }
 

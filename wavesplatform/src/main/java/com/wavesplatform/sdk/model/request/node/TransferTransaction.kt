@@ -77,12 +77,12 @@ open class TransferTransaction(
 
         override fun TransferTransaction.write(parcel: Parcel, flags: Int) {
             parcel.apply {
-                writeBaseToParcel(this)
                 writeString(assetId)
                 writeString(recipient)
                 writeLong(amount)
                 writeString(attachment)
                 writeString(feeAssetId)
+                writeBaseToParcel(this)
             }
         }
 

@@ -127,8 +127,8 @@ data class DataTransaction(
 
         override fun DataTransaction.write(parcel: Parcel, flags: Int) {
             parcel.apply {
-                writeBaseToParcel(this)
                 writeTypedList(data)
+                writeBaseToParcel(this)
             }
         }
 
