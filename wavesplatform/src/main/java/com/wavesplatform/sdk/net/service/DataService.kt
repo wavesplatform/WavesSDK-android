@@ -36,7 +36,8 @@ interface DataService {
      */
     @GET("v0/assets")
     fun assets(@Query("ids") ids: List<String?>? = null,
-               @Query("search") search: String? = null): Observable<AssetsInfoResponse>
+               @Query("search") search: String? = null,
+               @Query("limit") limit: Int? = null): Observable<AssetsInfoResponse>
 
     /**
      * Get pair info by amount and price assets
