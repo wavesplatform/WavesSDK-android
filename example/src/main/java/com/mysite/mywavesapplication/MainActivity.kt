@@ -1,7 +1,6 @@
 package com.mysite.mywavesapplication
 
 import android.os.Bundle
-import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -15,6 +14,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val fragments = arrayListOf(
+        R.string.bottom_navigation_sdk_title to SdkFragment.newInstance(),
+        R.string.bottom_navigation_keeper_title to KeeperFragment.newInstance()
+    )
+
+    private var currentFragment = fragments.first().second
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,34 +30,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        val sdkFragment = SdkFragment.newInstance()
-        val keeperFragment = KeeperFragment.newInstance()
-
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_keeper -> {
-                    showFragment(keeperFragment, R.string.bottom_navigation_keeper_title)
+                    showFragment(fragments[KEEPER_POSITION])
                 }
                 R.id.action_sdk -> {
-                    showFragment(sdkFragment, R.string.bottom_navigation_sdk_title)
+                    showFragment(fragments[SDK_POSITION])
                 }
                 else -> {
-                    showFragment(sdkFragment, R.string.bottom_navigation_sdk_title)
+                    showFragment(fragments[SDK_POSITION])
                 }
             }
             return@setOnNavigationItemSelectedListener true
         }
 
-        showFragment(sdkFragment, R.string.bottom_navigation_sdk_title)
+        showFragment(fragments[SDK_POSITION])
     }
 
-    private fun showFragment(fragment: Fragment, @StringRes title: Int) {
-        toolbar.setTitle(title)
-        supportFragmentManager
-            .beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.frame_fragment_container, fragment)
-            .commit()
+    private fun showFragment(pair: Pair<Int, Fragment>) {
+        val (title, fragment) = pair
+        val fragmentTitle = getString(title)
+
+        toolbar.title = fragmentTitle
+
+        if (supportFragmentManager.findFragmentByTag(fragmentTitle) == null) {
+            supportFragmentManager.beginTransaction()
+                .hide(currentFragment)
+                .add(R.id.frame_fragment_container, fragment, fragmentTitle)
+                .show(fragment)
+                .commitAllowingStateLoss()
+        } else {
+            supportFragmentManager.beginTransaction()
+                .hide(currentFragment)
+                .show(fragment)
+                .commitAllowingStateLoss()
+        }
+        currentFragment = fragment
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,5 +110,10 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    companion object {
+        const val SDK_POSITION = 0
+        const val KEEPER_POSITION = 1
     }
 }
