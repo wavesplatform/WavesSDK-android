@@ -19,25 +19,7 @@ class MainActivity : AppCompatActivity() {
 //        // You must configure dApp if you want to use Waves Keeper. Look at App
 //        // Try to send or sign data-transaction via mobile Keeper
 //
-//        val dataTransaction = DataTransaction(
-//            mutableListOf(
-//                DataTransaction.Data("key0", "string", "This is Data TX"),
-//                DataTransaction.Data("key1", "integer", 100),
-//                DataTransaction.Data("key2", "integer", -100),
-//                DataTransaction.Data("key3", "boolean", true),
-//                DataTransaction.Data("key4", "boolean", false),
-//                DataTransaction.Data("key5", "binary", "SGVsbG8h")
-//            )
-//        )
-//
-//        val transaction = TransferTransaction(
-//            assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
-//            recipient = "3P8ys7s9r61Dapp8wZ94NBJjhmPHcBVBkMf",
-//            amount = 1,
-//            attachment = SignUtil.textToBase58("Hello-!"),
-//            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
-//        )
-//        transaction.fee = WavesConstants.WAVES_MIN_FEE
+
 //
 //        fab_d_app_send.setOnClickListener {
 //            WavesSdk.keeper()

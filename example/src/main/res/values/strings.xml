@@ -4,4 +4,7 @@
     <string name="bottom_navigation_keeper_title">Keeper</string>
     <string name="sdk_generate_new_seed">Generate new seed</string>
     <string name="sdk_load_address_waves_balance">Load address Waves balance</string>
+    <string name="keeper_transaction_type">Transaction type</string>
+    <string name="keeper_send">Send</string>
+    <string name="keeper_sign">Sign</string>
 </resources>

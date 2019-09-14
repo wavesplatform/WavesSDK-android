@@ -3,6 +3,8 @@ package com.mysite.mywavesapplication.sdk
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.text.HtmlCompat
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,15 @@ import com.wavesplatform.sdk.utils.RxUtil
 import com.wavesplatform.sdk.utils.getScaledAmount
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_sdk.*
+import android.R.attr.label
+import android.content.ClipData
+import android.content.ClipData.newPlainText
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import com.mysite.mywavesapplication.utils.copyToClipboard
+
 
 /**
  * A simple [Fragment] subclass.
@@ -43,7 +54,10 @@ class SdkFragment : Fragment() {
         button_generate_seed.setOnClickListener {
             // Generate or add your seed
             val newSeed = WavesCrypto.randomSeed()
-            text_seed.text = "New seed is: $newSeed"
+            text_seed.text = HtmlCompat.fromHtml(
+                "<b>New seed is:</b> $newSeed\"",
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
         }
 
         button_load_balance.setOnClickListener {
@@ -55,6 +69,10 @@ class SdkFragment : Fragment() {
             // Create request to Node service about address balance
             getWavesBalance(address)
             // Examples of transactions available in [WavesServiceTest]
+        }
+
+        text_seed.setOnClickListener {
+            activity?.copyToClipboard(text_seed.text.toString())
         }
 
         handleServiceErrors()
