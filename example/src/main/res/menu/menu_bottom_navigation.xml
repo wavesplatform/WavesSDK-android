@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_sdk"
+        android:enabled="true"
+        android:icon="@drawable/ic_sdk"
+        android:title="@string/bottom_navigation_sdk_title"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_keeper"
+        android:enabled="true"
+        android:icon="@drawable/ic_keeper"
+        android:title="@string/bottom_navigation_keeper_title"
+        app:showAsAction="ifRoom" />
+</menu>

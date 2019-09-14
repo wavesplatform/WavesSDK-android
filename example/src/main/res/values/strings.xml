@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">My Waves DApp</string>
-    <string name="action_settings">Settings</string>
+    <string name="bottom_navigation_sdk_title">SDK</string>
+    <string name="bottom_navigation_keeper_title">Keeper</string>
+    <string name="sdk_generate_new_seed">Generate new seed</string>
+    <string name="sdk_load_address_waves_balance">Load address Waves balance</string>
 </resources>

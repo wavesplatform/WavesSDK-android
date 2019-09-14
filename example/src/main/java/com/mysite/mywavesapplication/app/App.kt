@@ -1,4 +1,4 @@
-package com.mysite.mywavesapplication
+package com.mysite.mywavesapplication.app
 
 import android.app.Application
 import com.wavesplatform.sdk.WavesSdk
