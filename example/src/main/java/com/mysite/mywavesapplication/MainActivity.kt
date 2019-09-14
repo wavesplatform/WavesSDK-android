@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import com.mysite.mywavesapplication.keeper.KeeperFragment
 import com.mysite.mywavesapplication.sdk.SdkFragment
+import com.wavesplatform.sdk.WavesSdk
+import com.wavesplatform.sdk.utils.Environment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -15,38 +19,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-//
-//        // You must configure dApp if you want to use Waves Keeper. Look at App
-//        // Try to send or sign data-transaction via mobile Keeper
-//
-
-//
-//        fab_d_app_send.setOnClickListener {
-//            WavesSdk.keeper()
-//                .send(this, transaction, object : KeeperCallback<TransferTransactionResponse> {
-//                    override fun onSuccess(result: KeeperResult.Success<TransferTransactionResponse>) {
-//                        Log.d("KEEPERTEST", result.toString())
-//                        Log.d("KEEPERTEST", "TXID: " + result.transaction?.id)
-//                    }
-//
-//                    override fun onFailed(error: KeeperResult.Error) {
-//                        Log.d("KEEPERTEST", error.toString())
-//                    }
-//                })
-//        }
-//
-//        fab_d_app_sign.setOnClickListener {
-//            WavesSdk.keeper().sign(this, transaction, object : KeeperCallback<TransferTransaction> {
-//                override fun onSuccess(result: KeeperResult.Success<TransferTransaction>) {
-//                    Log.d("KEEPERTEST", result.toString())
-//                }
-//
-//                override fun onFailed(error: KeeperResult.Error) {
-//                    Log.d("KEEPERTEST", error.toString())
-//                }
-//            })
-//        }
-
 
         setupBottomNavigation()
     }
@@ -80,5 +52,48 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .replace(R.id.frame_fragment_container, fragment)
             .commit()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        menu.findItem(R.id.action_change_environment).title =
+            when (WavesSdk.getEnvironment()) {
+                Environment.MAIN_NET -> {
+                    getString(R.string.environment_main)
+                }
+                Environment.TEST_NET -> {
+                    getString(R.string.environment_test)
+                }
+                else -> {
+                    getString(R.string.environment_custom)
+                }
+            }
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_change_environment -> {
+                when (item.title) {
+                    getString(R.string.environment_main) -> {
+                        item.title = getString(R.string.environment_test)
+                        WavesSdk.setEnvironment(Environment.TEST_NET)
+                    }
+                    getString(R.string.environment_test) -> {
+                        item.title = getString(R.string.environment_main)
+                        WavesSdk.setEnvironment(Environment.MAIN_NET)
+                    }
+                    else -> {
+                        item.title = getString(R.string.environment_test)
+                        WavesSdk.setEnvironment(Environment.TEST_NET)
+                    }
+                }
+
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

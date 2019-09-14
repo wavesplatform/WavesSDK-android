@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.mysite.mywavesapplication.R
+import com.mysite.mywavesapplication.app.App
 import com.mysite.mywavesapplication.utils.copyToClipboard
 import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_keeper.*
 /**
  * A simple [Fragment] subclass.
  */
+@SuppressLint("SetTextI18n")
 class KeeperFragment : Fragment() {
     private val transactionTypes = arrayOf<Pair<String, KeeperTransaction>>(
         "Success Data Transaction" to DataTransaction(
@@ -55,15 +57,15 @@ class KeeperFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_keeper, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_keeper, container, false)
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /**
+         *  You must configure dApp if you want to use Waves Keeper. Look at [App]
+         *  Try to send or sign data-transaction via mobile Keeper
+         */
 
         val transactionTypesDialog = AlertDialog.Builder(requireActivity())
 
@@ -72,11 +74,12 @@ class KeeperFragment : Fragment() {
                 setTitle("Select a Transaction Type with result")
                 setSingleChoiceItems(
                     transactionTypes.map { (title, _) -> title }.toTypedArray(),
-                    -1
+                    transactionTypes.indexOfFirst { (_, transaction) -> transaction == selectedTransaction }
                 ) { dialog, item ->
-                    val (_, transaction) = transactionTypes[item]
+                    val (title, transaction) = transactionTypes[item]
 
                     selectedTransaction = transaction
+                    edit_transaction_type.setText(title)
 
                     logRequest(gson.toJson(transaction))
 
@@ -133,7 +136,8 @@ class KeeperFragment : Fragment() {
     }
 
     private fun logResponse(text: String?) {
-        text_json_log.text = "${text_json_log.text} \n\n[------------ Response ------------] \n\n $text"
+        text_json_log.text =
+            "${text_json_log.text} \n\n[------------ Response ------------] \n\n $text"
     }
 
     companion object {

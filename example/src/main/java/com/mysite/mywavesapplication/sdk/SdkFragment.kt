@@ -1,16 +1,17 @@
 package com.mysite.mywavesapplication.sdk
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.text.HtmlCompat
-import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.mysite.mywavesapplication.R
+import com.mysite.mywavesapplication.utils.copyToClipboard
 import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.net.NetworkException
@@ -19,19 +20,12 @@ import com.wavesplatform.sdk.utils.RxUtil
 import com.wavesplatform.sdk.utils.getScaledAmount
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_sdk.*
-import android.R.attr.label
-import android.content.ClipData
-import android.content.ClipData.newPlainText
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Context.CLIPBOARD_SERVICE
-import android.support.v4.content.ContextCompat.getSystemService
-import com.mysite.mywavesapplication.utils.copyToClipboard
 
 
 /**
  * A simple [Fragment] subclass.
  */
+@SuppressLint("SetTextI18n")
 class SdkFragment : Fragment() {
 
     // For Activity or Fragment add Observables in CompositeDisposable
@@ -40,16 +34,16 @@ class SdkFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sdk, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_sdk, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // First you must init() WavesSdk in Application and add Internet permission
-        // Put your seed in const [MainActivity.Companion.SEED] from https://testnet.wavesplatform.com
-        // or https://client.wavesplatform.com
+        /**
+        * First you must init() WavesSdk in [App] and add Internet permission
+        * Put your seed in const [MainActivity.Companion.SEED] from https://testnet.wavesplatform.com
+        * or https://client.wavesplatform.com
+         */
 
         button_generate_seed.setOnClickListener {
             // Generate or add your seed

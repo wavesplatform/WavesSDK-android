@@ -7,4 +7,7 @@
     <string name="keeper_transaction_type">Transaction type</string>
     <string name="keeper_send">Send</string>
     <string name="keeper_sign">Sign</string>
+    <string name="environment_main">MainNet</string>
+    <string name="environment_test">TestNet</string>
+    <string name="environment_custom">Custom</string>
 </resources>
