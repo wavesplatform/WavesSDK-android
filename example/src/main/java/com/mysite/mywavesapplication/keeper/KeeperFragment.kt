@@ -19,6 +19,7 @@ import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransactionResponse
 import com.wavesplatform.sdk.keeper.model.KeeperResult
 import com.wavesplatform.sdk.model.request.node.DataTransaction
+import com.wavesplatform.sdk.model.request.node.InvokeScriptTransaction
 import com.wavesplatform.sdk.model.request.node.TransferTransaction
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.WavesConstants
@@ -30,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_keeper.*
 @SuppressLint("SetTextI18n")
 class KeeperFragment : Fragment() {
     private val transactionTypes = arrayOf<Pair<String, KeeperTransaction>>(
-        "Success Data Transaction" to DataTransaction(
+        "Data Transaction (Success)" to DataTransaction(
             mutableListOf(
                 DataTransaction.Data("key0", "string", "This is Data TX"),
                 DataTransaction.Data("key1", "integer", 100),
@@ -40,15 +41,52 @@ class KeeperFragment : Fragment() {
                 DataTransaction.Data("key5", "binary", "SGVsbG8h")
             )
         ),
-        "Success Transfer Transaction" to TransferTransaction(
+        "Data Transaction (Send Error)" to DataTransaction(
+            mutableListOf(
+                DataTransaction.Data("key0", "string", "This is Data TX"),
+                DataTransaction.Data("key1", "integer", 100),
+                DataTransaction.Data("key2", "integer", -100),
+                DataTransaction.Data("key3", "boolean", true),
+                DataTransaction.Data("key4", "boolean", "test"), // ERROR here (incorrect value)
+                DataTransaction.Data("key5", "binary", "SGVsbG8h")
+            )
+        ),
+        "Transfer Transaction (Success)" to TransferTransaction(
             assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
-            recipient = "3P8ys7s9r61Dapp8wZ94NBJjhmPHcBVBkMf",
+            recipient = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj", // only TESTNET valid address
             amount = 1,
             attachment = SignUtil.textToBase58("Hello-!"),
             feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
-        ).apply {
-            fee = WavesConstants.WAVES_MIN_FEE
-        }
+        ),
+        "Transfer Transaction (Send Error)" to TransferTransaction(
+            assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
+            recipient = "000", // ERROR here (invalid address)
+            amount = 1,
+            attachment = SignUtil.textToBase58("Hello-!"),
+            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
+        ),
+        "Invoke Script Transaction (Success)" to InvokeScriptTransaction(
+            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
+            call = InvokeScriptTransaction.Call("deposit"),
+            payment = mutableListOf(
+                InvokeScriptTransaction.Payment(
+                    amount = 900000000,
+                    assetId = null
+                )
+            ),
+            dApp = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj" // only TESTNET valid address
+        ),
+        "Invoke Script Transaction (Send Error)" to InvokeScriptTransaction(
+            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
+            call = InvokeScriptTransaction.Call("deposit32"), // ERROR here (invalid function name)
+            payment = mutableListOf(
+                InvokeScriptTransaction.Payment(
+                    amount = 900000000,
+                    assetId = null
+                )
+            ),
+            dApp = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj" // only TESTNET valid address
+        )
     )
 
     private var selectedTransaction: KeeperTransaction? = null
