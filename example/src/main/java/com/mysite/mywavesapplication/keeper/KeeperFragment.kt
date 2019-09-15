@@ -18,11 +18,6 @@ import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransactionResponse
 import com.wavesplatform.sdk.keeper.model.KeeperResult
-import com.wavesplatform.sdk.model.request.node.DataTransaction
-import com.wavesplatform.sdk.model.request.node.InvokeScriptTransaction
-import com.wavesplatform.sdk.model.request.node.TransferTransaction
-import com.wavesplatform.sdk.utils.SignUtil
-import com.wavesplatform.sdk.utils.WavesConstants
 import kotlinx.android.synthetic.main.fragment_keeper.*
 
 /**
@@ -30,66 +25,8 @@ import kotlinx.android.synthetic.main.fragment_keeper.*
  */
 @SuppressLint("SetTextI18n")
 class KeeperFragment : Fragment() {
-    private val transactionTypes = arrayOf<Pair<String, KeeperTransaction>>(
-        "Data Transaction (Success)" to DataTransaction(
-            mutableListOf(
-                DataTransaction.Data("key0", "string", "This is Data TX"),
-                DataTransaction.Data("key1", "integer", 100),
-                DataTransaction.Data("key2", "integer", -100),
-                DataTransaction.Data("key3", "boolean", true),
-                DataTransaction.Data("key4", "boolean", false),
-                DataTransaction.Data("key5", "binary", "SGVsbG8h")
-            )
-        ),
-        "Data Transaction (Send Error)" to DataTransaction(
-            mutableListOf(
-                DataTransaction.Data("key0", "string", "This is Data TX"),
-                DataTransaction.Data("key1", "integer", 100),
-                DataTransaction.Data("key2", "integer", -100),
-                DataTransaction.Data("key3", "boolean", true),
-                DataTransaction.Data("key4", "boolean", "test"), // ERROR here (incorrect value)
-                DataTransaction.Data("key5", "binary", "SGVsbG8h")
-            )
-        ),
-        "Transfer Transaction (Success)" to TransferTransaction(
-            assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
-            recipient = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj", // only TESTNET valid address
-            amount = 1,
-            attachment = SignUtil.textToBase58("Hello-!"),
-            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
-        ),
-        "Transfer Transaction (Send Error)" to TransferTransaction(
-            assetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
-            recipient = "000", // ERROR here (invalid address)
-            amount = 1,
-            attachment = SignUtil.textToBase58("Hello-!"),
-            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY
-        ),
-        "Invoke Script Transaction (Success)" to InvokeScriptTransaction(
-            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
-            call = InvokeScriptTransaction.Call("deposit"),
-            payment = mutableListOf(
-                InvokeScriptTransaction.Payment(
-                    amount = 900000000,
-                    assetId = null
-                )
-            ),
-            dApp = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj" // only TESTNET valid address
-        ),
-        "Invoke Script Transaction (Send Error)" to InvokeScriptTransaction(
-            feeAssetId = WavesConstants.WAVES_ASSET_ID_EMPTY,
-            call = InvokeScriptTransaction.Call("deposit32"), // ERROR here (invalid function name)
-            payment = mutableListOf(
-                InvokeScriptTransaction.Payment(
-                    amount = 900000000,
-                    assetId = null
-                )
-            ),
-            dApp = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj" // only TESTNET valid address
-        )
-    )
 
-    private var selectedTransaction: KeeperTransaction? = null
+    private var selectedTransaction: ExampleTransaction? = null
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
     override fun onCreateView(
@@ -109,17 +46,17 @@ class KeeperFragment : Fragment() {
 
         edit_transaction_type.setOnClickListener {
             transactionTypesDialog.apply {
-                setTitle("Select a Transaction Type with result")
+                setTitle(getString(R.string.keeper_transaction_type_dialog_title))
                 setSingleChoiceItems(
-                    transactionTypes.map { (title, _) -> title }.toTypedArray(),
-                    transactionTypes.indexOfFirst { (_, transaction) -> transaction == selectedTransaction }
+                    ExampleTransaction.getTitles(),
+                    ExampleTransaction.findIndexOf(selectedTransaction)
                 ) { dialog, item ->
-                    val (title, transaction) = transactionTypes[item]
+                    val transaction = ExampleTransaction.values()[item]
 
                     selectedTransaction = transaction
-                    edit_transaction_type.setText(title)
+                    edit_transaction_type.setText(transaction.title)
 
-                    logRequest(gson.toJson(transaction))
+                    logRequest(gson.toJson(transaction.getTransaction()))
 
                     dialog.dismiss()
                 }
@@ -135,7 +72,7 @@ class KeeperFragment : Fragment() {
                 WavesSdk.keeper()
                     .send(
                         requireActivity(),
-                        transaction,
+                        transaction.getTransaction(),
                         object : KeeperCallback<KeeperTransactionResponse> {
                             override fun onSuccess(result: KeeperResult.Success<KeeperTransactionResponse>) {
                                 logResponse(gson.toJson(result.transaction))
@@ -154,7 +91,7 @@ class KeeperFragment : Fragment() {
                 WavesSdk.keeper()
                     .sign(
                         requireActivity(),
-                        transaction,
+                        transaction.getTransaction(),
                         object : KeeperCallback<KeeperTransaction> {
                             override fun onSuccess(result: KeeperResult.Success<KeeperTransaction>) {
                                 logResponse(gson.toJson(result.transaction))
