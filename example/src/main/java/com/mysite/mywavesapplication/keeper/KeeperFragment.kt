@@ -27,7 +27,10 @@ import kotlinx.android.synthetic.main.fragment_keeper.*
 class KeeperFragment : Fragment() {
 
     private var selectedTransaction: ExampleTransaction? = null
-    private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
+    private val gson: Gson = GsonBuilder()
+        .serializeNulls()
+        .setPrettyPrinting()
+        .create()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -74,7 +74,7 @@ enum class ExampleTransaction(var title: String) : IExampleTransaction {
                 payment = mutableListOf(
                     InvokeScriptTransaction.Payment(
                         amount = 900000000,
-                        assetId = null
+                        assetId = WavesConstants.WAVES_ASSET_ID_EMPTY
                     )
                 ),
                 dApp = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj" // only TESTNET valid address
@@ -90,7 +90,7 @@ enum class ExampleTransaction(var title: String) : IExampleTransaction {
                 payment = mutableListOf(
                     InvokeScriptTransaction.Payment(
                         amount = 900000000,
-                        assetId = null
+                        assetId = WavesConstants.WAVES_ASSET_ID_EMPTY
                     )
                 ),
                 dApp = "3Mw9vGsQa22LGez1YRCawKswfyZskobmWDj" // only TESTNET valid address

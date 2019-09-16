@@ -194,6 +194,12 @@ class InvokeScriptTransaction(
         @SerializedName("assetId") var assetId: String? = null
     ) : Parcelable {
 
+        init {
+            if (assetId.isNullOrEmpty()) {
+                assetId = null
+            }
+        }
+
         constructor(parcel: Parcel) : this(
             parcel.readLong(),
             parcel.readString()
