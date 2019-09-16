@@ -48,15 +48,6 @@ class WavesSdk {
 
         /**
          * Initialisation WavesSdk method must be call first.
-         * @param context context of the app
-         */
-        @JvmStatic
-        fun init(context: Context) {
-            init(context, Environment.DEFAULT)
-        }
-
-        /**
-         * Initialisation WavesSdk method must be call first.
          * @param context context-context ot the app
          * @param environment base urls and current time
          */

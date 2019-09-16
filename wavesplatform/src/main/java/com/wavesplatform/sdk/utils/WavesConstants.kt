@@ -25,6 +25,7 @@ class WavesConstants {
         const val CUSTOM_FEE_ASSET_NAME = "Waves"
         const val WAVES_MIN_FEE = 100000L
         const val WAVES_ORDER_MIN_FEE = 300000L
+        const val WAVES_INVOKE_MIN_FEE = 500000L
         const val MIN_WAVES_SPONSORED_BALANCE = 1.005
 
         val WAVES_ASSET_INFO = AssetInfoResponse(
