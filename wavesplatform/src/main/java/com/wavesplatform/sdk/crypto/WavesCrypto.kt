@@ -170,8 +170,9 @@ interface WavesCrypto {
         const val HASH_LENGTH = 20
         const val ADDRESS_LENGTH = 1 + 1 + CHECK_SUM_LENGTH + HASH_LENGTH
 
-        const val MAIN_NET_CHAIN_ID: Byte = 87
-        const val TEST_NET_CHAIN_ID: Byte = 84
+        const val MAIN_NET_CHAIN_ID: Byte = 87  // W
+        const val TEST_NET_CHAIN_ID: Byte = 84  // T
+        const val STAGE_NET_CHAIN_ID: Byte = 83 // S
 
         fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = MAIN_NET_CHAIN_ID)
                 : String {

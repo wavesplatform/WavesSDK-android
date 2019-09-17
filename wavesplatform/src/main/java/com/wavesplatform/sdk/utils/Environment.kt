@@ -34,6 +34,12 @@ class Environment(
                 this.nodeUrl = WavesConstants.URL_NODE_TEST
                 this.matcherUrl = WavesConstants.URL_MATCHER_TEST
             }
+            Server.StageNet -> {
+                this.chainId = WavesCrypto.STAGE_NET_CHAIN_ID
+                this.dataUrl = WavesConstants.URL_DATA_STAGE
+                this.nodeUrl = WavesConstants.URL_NODE_STAGE
+                this.matcherUrl = WavesConstants.URL_MATCHER_STAGE
+            }
             is Server.Custom -> {
                 val serverCustom = server as Server.Custom
                 this.chainId = serverCustom.scheme
