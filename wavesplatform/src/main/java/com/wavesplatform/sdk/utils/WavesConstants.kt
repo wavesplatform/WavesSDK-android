@@ -14,6 +14,10 @@ class WavesConstants {
         const val URL_DATA_TEST = "https://api.testnet.wavesplatform.com/"
         const val URL_MATCHER_TEST = "https://matcher.testnet.wavesnodes.com/"
 
+        const val URL_NODE_STAGE = "https://nodes-stagenet.wavesnodes.com/"
+        const val URL_DATA_STAGE = "https://api-stagenet.wavesplatform.com/"
+        const val URL_MATCHER_STAGE = "https://matcher-stagenet.wavesplatform.com/"
+
         const val URL_WAVES_EXPLORER = "http://wavesexplorer.com/tx/%s"
         const val URL_WAVES_STAGE_EXPLORER = "http://stage.wavesexplorer.com/tx/%s"
 

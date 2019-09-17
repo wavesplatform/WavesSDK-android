@@ -9,6 +9,7 @@
     <string name="keeper_sign">Sign</string>
     <string name="environment_main">MainNet</string>
     <string name="environment_test">TestNet</string>
+    <string name="environment_stage">StageNet</string>
     <string name="environment_custom">Custom</string>
     <string name="keeper_transaction_type_dialog_title">Select a Transaction Type with result</string>
 </resources>
