@@ -80,6 +80,9 @@ class MainActivity : AppCompatActivity() {
                 Environment.TEST_NET -> {
                     getString(R.string.environment_test)
                 }
+                Environment.STAGE_NET -> {
+                    getString(R.string.environment_stage)
+                }
                 else -> {
                     getString(R.string.environment_custom)
                 }
@@ -97,6 +100,10 @@ class MainActivity : AppCompatActivity() {
                         WavesSdk.setEnvironment(Environment.TEST_NET)
                     }
                     getString(R.string.environment_test) -> {
+                        item.title = getString(R.string.environment_stage)
+                        WavesSdk.setEnvironment(Environment.STAGE_NET)
+                    }
+                    getString(R.string.environment_stage) -> {
                         item.title = getString(R.string.environment_main)
                         WavesSdk.setEnvironment(Environment.MAIN_NET)
                     }

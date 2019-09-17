@@ -52,11 +52,13 @@ class Environment(
         val DEFAULT = Environment(server = Server.MainNet, timestampServerDiff = 0L)
         val MAIN_NET = DEFAULT
         val TEST_NET = Environment(server = Server.TestNet, timestampServerDiff = 0L)
+        val STAGE_NET = Environment(server = Server.StageNet, timestampServerDiff = 0L)
     }
 
     sealed class Server {
         object MainNet : Server()
         object TestNet : Server()
+        object StageNet : Server()
         class Custom(val node: String, val matcher: String, val data: String, val scheme: Byte)
             : Server()
     }
