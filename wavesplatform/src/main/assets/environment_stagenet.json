@@ -65,7 +65,7 @@
       "iconUrls": {
         "default": "https://d1jh0rcszsaxik.cloudfront.net/assset_icons/v3/usd.png"
       },
-      "assetId": "HETgTyfn5grcHWGRKHi7p3hvMB4QxWVrPD8Fnfi9tfD9\t",
+      "assetId": "HETgTyfn5grcHWGRKHi7p3hvMB4QxWVrPD8Fnfi9tfD9",
       "displayName": "US Dollar",
       "isFiat": true,
       "isGateway": true,
@@ -195,7 +195,7 @@
       "iconUrls": {
         "default": "https://d1jh0rcszsaxik.cloudfront.net/assset_icons/v3/litecoin.png"
       },
-      "assetId": "HZk1mbfuJpmxU1Fs4AX5MWLVYtctsNcg6e2C6VKqK8zk",
+      "assetId": "HFX6dpUHv9wWQKGa6wHi72WiEETndwvtsg1A2z8YSuzv",
       "displayName": "Litecoin",
       "isFiat": false,
       "isGateway": true,
