@@ -14,6 +14,10 @@ class WavesConstants {
         const val URL_DATA_TEST = "https://api.testnet.wavesplatform.com/"
         const val URL_MATCHER_TEST = "https://matcher.testnet.wavesnodes.com/"
 
+        const val URL_NODE_STAGE = "https://nodes-stagenet.wavesnodes.com/"
+        const val URL_DATA_STAGE = "https://api-stagenet.wavesplatform.com/"
+        const val URL_MATCHER_STAGE = "https://matcher-stagenet.wavesplatform.com/"
+
         const val URL_WAVES_EXPLORER = "http://wavesexplorer.com/tx/%s"
         const val URL_WAVES_STAGE_EXPLORER = "http://stage.wavesexplorer.com/tx/%s"
 
@@ -25,6 +29,7 @@ class WavesConstants {
         const val CUSTOM_FEE_ASSET_NAME = "Waves"
         const val WAVES_MIN_FEE = 100000L
         const val WAVES_ORDER_MIN_FEE = 300000L
+        const val WAVES_INVOKE_MIN_FEE = 500000L
         const val MIN_WAVES_SPONSORED_BALANCE = 1.005
 
         val WAVES_ASSET_INFO = AssetInfoResponse(

@@ -202,7 +202,7 @@ class WavesKeeper(private var context: Context) : Keeper {
 
     private fun processResult(result: Intent, success: Boolean): KeeperResult? {
         return when {
-            // Canceled flow
+            // Rejected flow
             result.extras == null && !success -> {
                 KeeperResult.Error("Action Rejected", KeeperResult.REJECTED)
             }
