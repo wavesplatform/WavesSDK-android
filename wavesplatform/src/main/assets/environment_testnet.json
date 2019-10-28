@@ -3,7 +3,7 @@
     "servers": {
         "nodeUrl": "https://pool.testnet.wavesnodes.com",
         "dataUrl": "https://api.testnet.wavesplatform.com",
-        "spamUrl": "https://github-proxy.wvservices.com/wavesplatform/waves-community/master/Scam%20tokens%20according%20to%20the%20opinion%20of%20Waves%20Community.csv",
+        "spamUrl": "https://raw.githubusercontent.com/wavesplatform/waves-community/master/Scam%20tokens%20according%20to%20the%20opinion%20of%20Waves%20Community.csv",
         "matcherUrl": "https://matcher.testnet.wavesnodes.com",
         "gatewayUrl": "https://gateways-dev.wvservices.com/api"
     },
@@ -26,8 +26,8 @@
             "isGateway": true,
             "wavesId": "WBTC",
             "gatewayId": "BTC",
-            "gatewayType": "coinomat",
-            "addressRegEx": "^[13][a-km-zA-HJ-NP-Z1-9]{33}"
+            "gatewayType": "gateway",
+            "addressRegEx": "^[13][a-km-zA-HJ-NP-Z1-9]{25,34}|(bc1)[a-z0-9]{25,90}"
         },
         {
             "assetId": "BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3",
