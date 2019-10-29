@@ -17,7 +17,7 @@ data class AssetsRequest(
         /**
          * Get assets info by assets ids
          */
-        @SerializedName("ids") var ids: List<String?>? = null,
+        @SerializedName("ids") var ids: List<String?>? = mutableListOf(),
 
         /**
          * For searching assets, that have the {search} in asset names,
@@ -28,4 +28,4 @@ data class AssetsRequest(
         /**
          * How many assets to await in response.
          */
-        @SerializedName("limit") var limit: Int? = null)
+        @SerializedName("limit") var limit: Int? = 100)
