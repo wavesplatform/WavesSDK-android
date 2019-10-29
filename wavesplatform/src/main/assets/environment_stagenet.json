@@ -3,9 +3,9 @@
   "servers": {
     "nodeUrl": "https://nodes-stagenet.wavesnodes.com",
     "dataUrl": "https://api-stagenet.wavesplatform.com",
-    "spamUrl": "https://github-proxy.wvservices.com/wavesplatform/waves-community/master/Scam%20tokens%20according%20to%20the%20opinion%20of%20Waves%20Community.csv",
+    "spamUrl": "https://raw.githubusercontent.com/wavesplatform/waves-community/master/Scam%20tokens%20according%20to%20the%20opinion%20of%20Waves%20Community.csv",
     "matcherUrl": "https://matcher-stagenet.wavesplatform.com",
-    "gatewayUrl": "https://gw-stagenet.wavesplatform.com"
+    "gatewayUrl": "https://gw-stagenet.wavesplatform.com/"
   },
   "scheme": "S",
   "generalAssets": [
@@ -27,7 +27,7 @@
         "default": "https://d1jh0rcszsaxik.cloudfront.net/assset_icons/v3/wavesenterprise.png"
       },
       "assetId": "4TokpX1hU9YVS8ivZxpSJRWQssaGtYUprQgBXfipxmAZ",
-      "displayName": "VST",
+      "displayName": "WE",
       "isFiat": false,
       "isGateway": true,
       "wavesId": "Vostok",
