@@ -6,11 +6,10 @@
 package com.wavesplatform.sdk.utils
 
 import android.content.Intent
-import android.support.v4.app.FragmentActivity
 import com.wavesplatform.sdk.utils.inline.InlineActivityResult
 import com.wavesplatform.sdk.utils.inline.OnActivityResult
 
-fun FragmentActivity.startActivityForResult(
+fun androidx.fragment.app.FragmentActivity.startActivityForResult(
         intent: Intent,
         requestCode: Int = 196,
         onActivityResult: OnActivityResult

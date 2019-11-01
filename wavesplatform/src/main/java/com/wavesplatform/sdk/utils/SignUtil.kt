@@ -8,7 +8,6 @@ package com.wavesplatform.sdk.utils
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Shorts
 import com.wavesplatform.sdk.crypto.WavesCrypto
-import java.nio.charset.Charset
 
 object SignUtil {
 

@@ -6,7 +6,6 @@
 package com.wavesplatform.sdk.model.response.node
 
 import com.google.gson.annotations.SerializedName
-import com.wavesplatform.sdk.utils.WavesConstants
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.BaseTransaction
 import com.wavesplatform.sdk.model.response.data.AssetInfoResponse
