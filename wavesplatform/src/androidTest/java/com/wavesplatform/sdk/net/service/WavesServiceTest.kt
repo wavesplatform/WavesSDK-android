@@ -1,7 +1,7 @@
 package com.wavesplatform.sdk.net.service
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.filters.LargeTest
 import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.*

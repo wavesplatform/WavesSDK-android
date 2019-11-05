@@ -6,16 +6,15 @@
 package com.wavesplatform.sdk.utils.inline
 
 import android.content.Intent
-import android.support.v4.app.FragmentManager
 
 class InlineActivityResult {
     private var pending: MutableMap<Int, ActivityResult> = mutableMapOf()
 
     fun start(
-            fragmentManager: FragmentManager,
-            intent: Intent,
-            requestCode: Int,
-            onActivityResult: OnActivityResult
+        fragmentManager: androidx.fragment.app.FragmentManager,
+        intent: Intent,
+        requestCode: Int,
+        onActivityResult: OnActivityResult
     ) {
         check(!pending.containsKey(requestCode)) {
             "There is already a pending request for requestCode $requestCode."

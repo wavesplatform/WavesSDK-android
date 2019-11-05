@@ -3,8 +3,8 @@ package com.mysite.mywavesapplication.sdk
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.text.HtmlCompat
+import androidx.fragment.app.Fragment
+import androidx.core.text.HtmlCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_sdk.*
  * A simple [Fragment] subclass.
  */
 @SuppressLint("SetTextI18n")
-class SdkFragment : Fragment() {
+class SdkFragment : androidx.fragment.app.Fragment() {
 
     // For Activity or Fragment add Observables in CompositeDisposable
     private val compositeDisposable = CompositeDisposable()

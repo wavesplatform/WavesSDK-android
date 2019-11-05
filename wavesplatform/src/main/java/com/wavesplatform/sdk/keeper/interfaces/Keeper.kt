@@ -7,8 +7,7 @@ package com.wavesplatform.sdk.keeper.interfaces
 
 import android.content.Context
 import android.content.Intent
-import android.support.annotation.RestrictTo
-import android.support.v4.app.FragmentActivity
+import androidx.annotation.RestrictTo
 import com.wavesplatform.sdk.keeper.model.KeeperDataHolder
 import com.wavesplatform.sdk.keeper.model.KeeperIntentResult
 import com.wavesplatform.sdk.keeper.model.KeeperProcessData
@@ -18,16 +17,16 @@ interface Keeper {
                       dAppName: String,
                       dAppIconUrl: String)
 
-    fun <T : KeeperTransaction> sign(activity: FragmentActivity,
+    fun <T : KeeperTransaction> sign(activity: androidx.fragment.app.FragmentActivity,
                                      transaction: KeeperTransaction,
                                      callback: KeeperCallback<T>)
 
-    fun <T : KeeperTransactionResponse> send(activity: FragmentActivity,
+    fun <T : KeeperTransactionResponse> send(activity: androidx.fragment.app.FragmentActivity,
                                              transaction: KeeperTransaction,
                                              callback: KeeperCallback<T>)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishProcess(activity: FragmentActivity,
+    fun finishProcess(activity: androidx.fragment.app.FragmentActivity,
                       result: KeeperIntentResult)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)

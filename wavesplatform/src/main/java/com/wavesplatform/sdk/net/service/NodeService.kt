@@ -7,7 +7,6 @@ package com.wavesplatform.sdk.net.service
 
 import com.wavesplatform.sdk.model.request.node.*
 import com.wavesplatform.sdk.model.response.node.*
-import com.wavesplatform.sdk.model.response.node.AssetBalancesResponse
 import com.wavesplatform.sdk.model.response.node.IssueTransactionResponse
 import com.wavesplatform.sdk.model.response.node.transaction.*
 import io.reactivex.Observable

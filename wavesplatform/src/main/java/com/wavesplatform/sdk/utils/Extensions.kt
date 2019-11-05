@@ -4,7 +4,6 @@ import android.util.Patterns
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Ints
 import com.google.common.primitives.Shorts
-import com.wavesplatform.sdk.crypto.AESUtil
 import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.BaseTransaction
 import com.wavesplatform.sdk.model.response.ErrorResponse
