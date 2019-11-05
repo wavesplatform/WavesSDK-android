@@ -5,6 +5,7 @@
 
 package com.wavesplatform.sdk.net.service
 
+import com.wavesplatform.sdk.model.request.data.AssetsRequest
 import com.wavesplatform.sdk.model.request.data.PairRequest
 import com.wavesplatform.sdk.model.response.data.*
 import io.reactivex.Observable
@@ -34,10 +35,8 @@ interface DataService {
      * @param ids Asset IDs array
      * @param search Assets prefix-search by the query in asset names, tickers, id
      */
-    @GET("v0/assets")
-    fun assets(@Query("ids") ids: List<String?>? = null,
-               @Query("search") search: String? = null,
-               @Query("limit") limit: Int? = null): Observable<AssetsInfoResponse>
+    @POST("v0/assets")
+    fun assets(@Body request: AssetsRequest): Observable<AssetsInfoResponse>
 
     /**
      * Get pair info by amount and price assets
