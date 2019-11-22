@@ -75,6 +75,12 @@ interface MatcherService {
      */
     @POST("matcher/orderbook")
     fun createOrder(@Body orderRequest: CreateOrderRequest): Observable<Any>
+    
+    /**
+     * Place a new market order (buy or sell)
+     */
+    @POST("matcher/orderbook/market")
+    fun createMarketOrder(@Body orderRequest: CreateOrderRequest): Observable<Any>
 
     /**
      * Cancel previously submitted order if it's not already filled completely
@@ -92,10 +98,15 @@ interface MatcherService {
     @GET("matcher")
     fun matcherPublicKey(): Observable<String>
 
-
+    /**
+     * Get current rates of assets (price of 1 Waves in the specified asset)
+     */
     @GET("matcher/settings/rates")
     fun getMatcherSettingsRates(): Observable<MutableMap<String, Double>>
 
+    /**
+     * Get matcher settings
+     */
     @GET("matcher/settings")
     fun getMatcherSettings(): Observable<MatcherSettingsResponse>
 }
