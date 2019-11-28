@@ -86,7 +86,8 @@ interface DataService {
     fun transactionsExchange(
             @Query("amountAsset") amountAsset: String?,
             @Query("priceAsset") priceAsset: String?,
-            @Query("limit") limit: Int
+            @Query("limit") limit: Int,
+            @Query("matcher") matcher: String? = null
     ): Observable<LastTradesResponse>
 
     /**
