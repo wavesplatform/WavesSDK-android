@@ -8,7 +8,7 @@ class WavesConstants {
 
         const val URL_NODE = "https://nodes.wavesnodes.com/"
         const val URL_DATA = "https://api.wavesplatform.com/"
-        const val URL_MATCHER = "https://matcher.wavesplatform.com/"
+        const val URL_MATCHER = "https://matcher.waves.exchange/"
 
         const val URL_NODE_TEST = "https://pool.testnet.wavesnodes.com/"
         const val URL_DATA_TEST = "https://api.testnet.wavesplatform.com/"
