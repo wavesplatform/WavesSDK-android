@@ -45,7 +45,8 @@ interface DataService {
      */
     @GET("v0/pairs/{amountAsset}/{priceAsset}")
     fun pairs(@Path("amountAsset") amountAsset: String?,
-              @Path("priceAsset") priceAsset: String?): Observable<PairResponse>
+              @Path("priceAsset") priceAsset: String?,
+              @Query("matcher") matcher: String? = null): Observable<PairResponse>
 
     /**
      * DEX volume, change24, last trade price
