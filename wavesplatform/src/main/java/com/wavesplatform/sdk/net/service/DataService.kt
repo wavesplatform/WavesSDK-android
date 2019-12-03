@@ -109,4 +109,13 @@ interface DataService {
             @Query("timeEnd") timeEnd: Long,
             @Query("matcher") matcher: String? = null
     ): Observable<CandlesResponse>
+
+    /**
+     * Get rates info by amount and price assets
+     * @param pairs Pairs list (amountAsset/priceAsset)
+     * @param matcher Matcher address
+     */
+    @GET("v0/matchers/{matcher}/rates")
+    fun pairsRates(@Path("matcher") matcher: String? = null,
+                   @Query("pairs") pairs: List<String>?): Observable<PairsRatesResponse>
 }
