@@ -120,7 +120,7 @@ interface DataService {
      * @param pairs Pairs list (amountAsset/priceAsset)
      * @param matcher Matcher address
      */
-    @GET("v0/matchers/{matcher}/rates")
+    @POST("v0/matchers/{matcher}/rates")
     fun pairsRates(
         @Path("matcher") matcher: String? = null,
         @Body request: PairRatesRequest
