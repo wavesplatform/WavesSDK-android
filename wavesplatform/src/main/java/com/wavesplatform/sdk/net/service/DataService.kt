@@ -6,6 +6,7 @@
 package com.wavesplatform.sdk.net.service
 
 import com.wavesplatform.sdk.model.request.data.AssetsRequest
+import com.wavesplatform.sdk.model.request.data.PairRatesRequest
 import com.wavesplatform.sdk.model.request.data.PairRequest
 import com.wavesplatform.sdk.model.response.data.*
 import io.reactivex.Observable
@@ -44,9 +45,11 @@ interface DataService {
      * @param priceAsset Asset ID of the price asset
      */
     @GET("v0/pairs/{amountAsset}/{priceAsset}")
-    fun pairs(@Path("amountAsset") amountAsset: String?,
-              @Path("priceAsset") priceAsset: String?,
-              @Query("matcher") matcher: String? = null): Observable<PairResponse>
+    fun pairs(
+        @Path("amountAsset") amountAsset: String?,
+        @Path("priceAsset") priceAsset: String?,
+        @Query("matcher") matcher: String? = null
+    ): Observable<PairResponse>
 
     /**
      * DEX volume, change24, last trade price
@@ -64,12 +67,14 @@ interface DataService {
      * @param matcher Matcher address
      */
     @GET("v0/pairs")
-    fun pairs(@Query("pairs") pairs: List<String>?,
-              @Query("search_by_asset") searchByAsset: String?,
-              @Query("search_by_assets") searchByAssets: List<String>?,
-              @Query("match_exactly") matchExactly: Boolean?,
-              @Query("limit") limit: Int = 100,
-              @Query("matcher") matcher: String? = null): Observable<SearchPairResponse>
+    fun pairs(
+        @Query("pairs") pairs: List<String>?,
+        @Query("search_by_asset") searchByAsset: String?,
+        @Query("search_by_assets") searchByAssets: List<String>?,
+        @Query("match_exactly") matchExactly: Boolean?,
+        @Query("limit") limit: Int = 100,
+        @Query("matcher") matcher: String? = null
+    ): Observable<SearchPairResponse>
 
     /**
      * DEX volume, change24, last trade price. See pairs with Get-request
@@ -85,10 +90,10 @@ interface DataService {
      */
     @GET("v0/transactions/exchange")
     fun transactionsExchange(
-            @Query("amountAsset") amountAsset: String?,
-            @Query("priceAsset") priceAsset: String?,
-            @Query("limit") limit: Int,
-            @Query("matcher") matcher: String? = null
+        @Query("amountAsset") amountAsset: String?,
+        @Query("priceAsset") priceAsset: String?,
+        @Query("limit") limit: Int,
+        @Query("matcher") matcher: String? = null
     ): Observable<LastTradesResponse>
 
     /**
@@ -102,11 +107,22 @@ interface DataService {
      */
     @GET("v0/candles/{amountAsset}/{priceAsset}")
     fun candles(
-            @Path("amountAsset") amountAsset: String?,
-            @Path("priceAsset") priceAsset: String?,
-            @Query("interval") interval: String,
-            @Query("timeStart") timeStart: Long,
-            @Query("timeEnd") timeEnd: Long,
-            @Query("matcher") matcher: String? = null
+        @Path("amountAsset") amountAsset: String?,
+        @Path("priceAsset") priceAsset: String?,
+        @Query("interval") interval: String,
+        @Query("timeStart") timeStart: Long,
+        @Query("timeEnd") timeEnd: Long,
+        @Query("matcher") matcher: String? = null
     ): Observable<CandlesResponse>
+
+    /**
+     * Get rates info by amount and price assets
+     * @param pairs Pairs list (amountAsset/priceAsset)
+     * @param matcher Matcher address
+     */
+    @POST("v0/matchers/{matcher}/rates")
+    fun pairsRates(
+        @Path("matcher") matcher: String? = null,
+        @Body request: PairRatesRequest
+    ): Observable<PairsRatesResponse>
 }
