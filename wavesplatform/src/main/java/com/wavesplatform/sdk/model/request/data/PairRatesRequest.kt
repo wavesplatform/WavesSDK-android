@@ -8,6 +8,10 @@ import com.google.gson.annotations.SerializedName
 data class PairRatesRequest(
 
         /**
-         * Get pair info by amount and price assets
+         * Get pairs rates info by amount and price assets
          */
-        @SerializedName("pairs") var pairs: List<String>? = null)
+        @SerializedName("pairs") var pairs: List<String>? = null,
+        /**
+         * Timestamp of rate info
+         */
+        @SerializedName("timestamp") var timestamp: Long = null)
