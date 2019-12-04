@@ -14,4 +14,4 @@ data class PairRatesRequest(
         /**
          * Timestamp of rate info
          */
-        @SerializedName("timestamp") var timestamp: Long = null)
+        @SerializedName("timestamp") var timestamp: Long? = null)
