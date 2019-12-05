@@ -1,10 +1,9 @@
 package com.mysite.mywavesapplication
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.mysite.mywavesapplication.keeper.KeeperFragment
 import com.mysite.mywavesapplication.sdk.SdkFragment
 import com.wavesplatform.sdk.WavesSdk
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         showFragment(fragments[SDK_POSITION])
     }
 
-    private fun showFragment(pair: Pair<Int, Fragment>) {
+    private fun showFragment(pair: Pair<Int, androidx.fragment.app.Fragment>) {
         val (title, fragment) = pair
         val fragmentTitle = getString(title)
 

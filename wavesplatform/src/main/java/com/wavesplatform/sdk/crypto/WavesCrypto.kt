@@ -174,7 +174,7 @@ interface WavesCrypto {
         const val TEST_NET_CHAIN_ID: Byte = 84  // T
         const val STAGE_NET_CHAIN_ID: Byte = 83 // S
 
-        fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = MAIN_NET_CHAIN_ID)
+        @Synchronized fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = MAIN_NET_CHAIN_ID)
                 : String {
             return try {
                 val publicKeyHash = keccak(publicKey).copyOf(HASH_LENGTH)

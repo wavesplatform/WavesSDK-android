@@ -13,9 +13,8 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.annotation.RestrictTo
-import android.support.v4.app.FragmentActivity
 import android.util.Log
+import androidx.annotation.RestrictTo
 import com.wavesplatform.sdk.keeper.interfaces.Keeper
 import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
@@ -40,20 +39,20 @@ class WavesKeeper(private var context: Context) : Keeper {
         DApp(dAppName, dAppIconUrl).save(getPreferences(context))
     }
 
-    override fun <T : KeeperTransaction> sign(activity: FragmentActivity,
+    override fun <T : KeeperTransaction> sign(activity: androidx.fragment.app.FragmentActivity,
                                               transaction: KeeperTransaction,
                                               callback: KeeperCallback<T>) {
         processIntent(activity, KeeperActionType.SIGN, transaction, callback)
     }
 
-    override fun <T : KeeperTransactionResponse> send(activity: FragmentActivity,
+    override fun <T : KeeperTransactionResponse> send(activity: androidx.fragment.app.FragmentActivity,
                                                       transaction: KeeperTransaction,
                                                       callback: KeeperCallback<T>) {
         processIntent(activity, KeeperActionType.SEND, transaction, callback)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    override fun finishProcess(activity: FragmentActivity, result: KeeperIntentResult) {
+    override fun finishProcess(activity: androidx.fragment.app.FragmentActivity, result: KeeperIntentResult) {
         when (result) {
             is KeeperIntentResult.SuccessSignResult -> {
                 processFinish(activity, KeeperActionType.SIGN, result.transaction)
@@ -111,7 +110,7 @@ class WavesKeeper(private var context: Context) : Keeper {
         return keeperDataHolder
     }
 
-    private fun processFinishWithError(activity: FragmentActivity,
+    private fun processFinishWithError(activity: androidx.fragment.app.FragmentActivity,
                                        actionType: KeeperActionType,
                                        error: String) {
         activity.apply {
@@ -126,14 +125,14 @@ class WavesKeeper(private var context: Context) : Keeper {
         }
     }
 
-    private fun processReject(activity: FragmentActivity) {
+    private fun processReject(activity: androidx.fragment.app.FragmentActivity) {
         activity.apply {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
     }
 
-    private fun <T : Parcelable> processFinish(activity: FragmentActivity, actionType: KeeperActionType, transaction: T) {
+    private fun <T : Parcelable> processFinish(activity: androidx.fragment.app.FragmentActivity, actionType: KeeperActionType, transaction: T) {
         activity.apply {
             val intent = Intent().apply {
                 putExtras(Bundle().apply {
@@ -146,7 +145,7 @@ class WavesKeeper(private var context: Context) : Keeper {
         }
     }
 
-    private fun <T> processIntent(activity: FragmentActivity,
+    private fun <T> processIntent(activity: androidx.fragment.app.FragmentActivity,
                                   type: KeeperActionType,
                                   transaction: KeeperTransaction,
                                   callback: KeeperCallback<T>) {
@@ -159,7 +158,7 @@ class WavesKeeper(private var context: Context) : Keeper {
         }
     }
 
-    private fun <T> startKeeperActivity(activity: FragmentActivity, params: Bundle,
+    private fun <T> startKeeperActivity(activity: androidx.fragment.app.FragmentActivity, params: Bundle,
                                         callback: KeeperCallback<T>) {
         val intent = Intent(WAVES_APP_KEEPER_ACTION, null).apply {
             if (context.isAppInstalled(WAVES_DEV_APP_PACKAGE_ID)) {
