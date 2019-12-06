@@ -110,8 +110,9 @@ class WavesService(private var context: Context) {
         dataService = createService(addSlash(WavesSdk.getEnvironment().dataUrl), adapterFactory)
             .create(DataService::class.java)
 
-        matcherService = createService(addSlash(WavesSdk.getEnvironment().matcherUrl), adapterFactory)
-            .create(MatcherService::class.java)
+        matcherService =
+            createService(addSlash(WavesSdk.getEnvironment().matcherUrl), adapterFactory)
+                .create(MatcherService::class.java)
     }
 
     private fun addSlash(url: String): String {
@@ -148,7 +149,7 @@ class WavesService(private var context: Context) {
         return Interceptor { chain ->
             val originalResponse = chain.proceed(chain.request())
             if (originalResponse.request().url().url().toString()
-                    .contains(WavesConstants.URL_NODE)
+                    .contains(WavesSdk.getEnvironment().nodeUrl)
                 && originalResponse.headers("Set-Cookie").isNotEmpty()
                 && this.cookies.isEmpty()
             ) {
@@ -183,7 +184,7 @@ class WavesService(private var context: Context) {
     private fun addCookiesInterceptor(): Interceptor {
         return Interceptor { chain ->
             if (this.cookies.isNotEmpty() && chain.request().url().url().toString()
-                    .contains(WavesConstants.URL_NODE)
+                    .contains(WavesSdk.getEnvironment().nodeUrl)
             ) {
                 val builder = chain.request().newBuilder()
                 this.cookies.forEach {

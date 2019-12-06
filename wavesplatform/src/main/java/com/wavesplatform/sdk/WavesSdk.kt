@@ -41,6 +41,7 @@ class WavesSdk {
     internal lateinit var environment: Environment
     internal lateinit var service: WavesService
     internal lateinit var keeper: WavesKeeper
+    internal lateinit var context: Context
 
     companion object {
 
@@ -54,6 +55,8 @@ class WavesSdk {
         @JvmStatic
         fun init(context: Context, environment: Environment) {
             instance = WavesSdk()
+            instance!!.context = context
+            environment.init(context)
             instance!!.environment = environment
             instance!!.service = WavesService(context)
             instance!!.keeper = WavesKeeper(context)
@@ -86,6 +89,7 @@ class WavesSdk {
          */
         @JvmStatic
         fun setEnvironment(environment: Environment) {
+            environment.init(context = get().context)
             get().environment = environment
             service().createServices()
         }
