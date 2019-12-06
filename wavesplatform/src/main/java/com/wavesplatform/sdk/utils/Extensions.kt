@@ -1,5 +1,6 @@
 package com.wavesplatform.sdk.utils
 
+import android.content.Context
 import android.util.Patterns
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Ints
@@ -9,8 +10,10 @@ import com.wavesplatform.sdk.model.request.node.BaseTransaction
 import com.wavesplatform.sdk.model.response.ErrorResponse
 import com.wavesplatform.sdk.model.response.node.OrderResponse
 import org.spongycastle.util.encoders.Hex
+import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.nio.charset.Charset
 import java.security.SecureRandom
 import kotlin.math.abs
 
@@ -28,8 +31,8 @@ fun String.withWavesIdConvert(): String {
 
 fun getWavesDexFee(fee: Long): BigDecimal {
     return MoneyUtil.getScaledText(fee, WavesConstants.WAVES_ASSET_INFO.precision)
-            .clearBalance()
-            .toBigDecimal()
+        .clearBalance()
+        .toBigDecimal()
 }
 
 fun String.isWavesId(): Boolean {
@@ -46,13 +49,16 @@ fun ByteArray.arrayWithIntSize(): ByteArray {
 
 fun String.clearBalance(): String {
     return this.stripZeros()
-            .replace(MoneyUtil.DEFAULT_SEPARATOR_COMMA.toString(), "")
-            .replace(MoneyUtil.DEFAULT_SEPARATOR_THIN_SPACE.toString(), "")
+        .replace(MoneyUtil.DEFAULT_SEPARATOR_COMMA.toString(), "")
+        .replace(MoneyUtil.DEFAULT_SEPARATOR_THIN_SPACE.toString(), "")
 }
 
 fun String.stripZeros(): String {
     if (this == "0.0") return this
-    return if (!this.contains(".")) this else this.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
+    return if (!this.contains(".")) this else this.replace(
+        "0*$".toRegex(),
+        ""
+    ).replace("\\.$".toRegex(), "")
 }
 
 fun String.isWebUrl(): Boolean {
@@ -106,13 +112,13 @@ fun getScaledAmount(amount: Long, decimals: Int): String {
 
     return sign + when {
         value >= MoneyUtil.ONE_B -> value.divide(MoneyUtil.ONE_B, 1, RoundingMode.FLOOR)
-                .toPlainString().stripZeros() + "B"
+            .toPlainString().stripZeros() + "B"
         value >= MoneyUtil.ONE_M -> value.divide(MoneyUtil.ONE_M, 1, RoundingMode.FLOOR)
-                .toPlainString().stripZeros() + "M"
+            .toPlainString().stripZeros() + "M"
         value >= MoneyUtil.ONE_K -> value.divide(MoneyUtil.ONE_K, 1, RoundingMode.FLOOR)
-                .toPlainString().stripZeros() + "k"
+            .toPlainString().stripZeros() + "k"
         else -> MoneyUtil.createFormatter(decimals).format(BigDecimal.valueOf(absAmount, decimals))
-                .stripZeros() + ""
+            .stripZeros() + ""
     }
 }
 
@@ -131,5 +137,20 @@ fun scriptBytes(script: String?): ByteArray {
             byteArrayOf(BaseTransaction.SET_SCRIPT_LANG_VERSION),
             WavesCrypto.base64decode(script.replace("base64:", "")).arrayWithSize()
         )
+    }
+}
+
+
+fun Context.loadJsonFromAsset(fileName: String): String {
+    return try {
+        val inputStream = assets.open(fileName)
+        val size = inputStream.available()
+        val buffer = ByteArray(size)
+        inputStream.read(buffer)
+        inputStream.close()
+        String(buffer, Charset.defaultCharset())
+    } catch (ex: IOException) {
+        ex.printStackTrace()
+        ""
     }
 }
