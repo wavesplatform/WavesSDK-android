@@ -85,7 +85,7 @@ interface MatcherService {
     /**
      * Cancel all active orders
      */
-    @POST("matcher/orders/{address}")
+    @POST("matcher/orderbook/cancel")
     fun cancelAllOrders(@Body request: CancelAllOrderRequest): Observable<Any>
 
     /**
