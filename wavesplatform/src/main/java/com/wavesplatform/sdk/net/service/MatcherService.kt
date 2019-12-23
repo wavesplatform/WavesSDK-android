@@ -6,6 +6,7 @@
 package com.wavesplatform.sdk.net.service
 
 import com.google.gson.internal.LinkedTreeMap
+import com.wavesplatform.sdk.model.request.matcher.CancelAllOrderRequest
 import com.wavesplatform.sdk.model.request.matcher.CancelOrderRequest
 import com.wavesplatform.sdk.model.request.matcher.CreateOrderRequest
 import com.wavesplatform.sdk.model.response.matcher.AssetPairOrderResponse
@@ -71,11 +72,28 @@ interface MatcherService {
     ): Observable<List<AssetPairOrderResponse>>
 
     /**
+     * Get OrderResponse History for a given address
+     */
+    @GET("matcher/orderbook/{publicKey}")
+    fun allAddressOrders(
+        @Path("publicKey") publicKey: String,
+        @Query("activeOnly") activeOnly: Boolean = false,
+        @Header("signature") signature: String?,
+        @Header("timestamp") timestamp: Long
+    ): Observable<List<AssetPairOrderResponse>>
+
+    /**
+     * Cancel all active orders
+     */
+    @POST("matcher/orderbook/cancel")
+    fun cancelAllOrders(@Body request: CancelAllOrderRequest): Observable<Any>
+
+    /**
      * Place a new limit order (buy or sell)
      */
     @POST("matcher/orderbook")
     fun createOrder(@Body orderRequest: CreateOrderRequest): Observable<Any>
-    
+
     /**
      * Place a new market order (buy or sell)
      */
