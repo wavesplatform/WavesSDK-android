@@ -174,7 +174,7 @@ class WavesService(private var context: Context) {
                     "${System.getProperty("http.agent")} " +
                             "AppId/${context.packageName} " +
                             "DeviceId/$deviceId " +
-                            "WavesSDK/(${BuildConfig.VERSION_NAME})"
+                            "WavesSDK/${BuildConfig.VERSION_NAME}"
                 )
                 .build()
             chain.proceed(request)
