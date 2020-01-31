@@ -9,6 +9,7 @@ import com.wavesplatform.sdk.model.request.data.AssetsRequest
 import com.wavesplatform.sdk.model.request.data.PairRatesRequest
 import com.wavesplatform.sdk.model.request.data.PairRequest
 import com.wavesplatform.sdk.model.response.data.*
+import com.wavesplatform.sdk.model.response.data.transaction.DataMassTransferTransactionResponseWrapperList
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -94,7 +95,22 @@ interface DataService {
         @Query("priceAsset") priceAsset: String?,
         @Query("limit") limit: Int,
         @Query("matcher") matcher: String? = null
-    ): Observable<LastTradesResponse>
+    ): Observable<LastTradesResponseDataList>
+
+    /**
+     * Get a list of mass transfer transactions by applying filters
+     * @param assetId Asset ID of mass transfer
+     * @param sender Address who send amount
+     * @param recipient Address who receive amount
+     * @param limit How many transactions to await in response. Default value : 100
+     */
+    @GET("v0/transactions/mass-transfer")
+    fun massTransferTransactions(
+        @Query("assetId") assetId: String?,
+        @Query("sender") sender: String?,
+        @Query("recipient") recipient: String?,
+        @Query("limit") limit: Int
+    ): Observable<DataMassTransferTransactionResponseWrapperList>
 
     /**
      * Get candles by amount and price assets. Maximum amount of candles in response – 1440
