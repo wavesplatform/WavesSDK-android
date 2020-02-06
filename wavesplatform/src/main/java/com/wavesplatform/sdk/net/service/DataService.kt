@@ -9,6 +9,7 @@ import com.wavesplatform.sdk.model.request.data.AssetsRequest
 import com.wavesplatform.sdk.model.request.data.PairRatesRequest
 import com.wavesplatform.sdk.model.request.data.PairRequest
 import com.wavesplatform.sdk.model.response.data.*
+import com.wavesplatform.sdk.model.response.node.transaction.MassTransferTransactionResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -125,4 +126,22 @@ interface DataService {
         @Path("matcher") matcher: String? = null,
         @Body request: PairRatesRequest
     ): Observable<PairsRatesResponse>
+
+
+    /**
+     * Get mass transfer transactions
+     * @param sender Address-sender of the transaction
+     * @param recipient Search transactions by recipient address
+     * @param assetId Filter transactions by assetId
+     * @param after Cursor in base64 encoding. Holds information about timestamp, id, sort
+     * @param limit How many transactions to await in response
+     */
+    @GET("v0/transactions/mass-transfer")
+    fun getMassTransferTransaction(
+        @Query("sender") sender: String,
+        @Query("recipient") recipient: String,
+        @Query("assetId") assetId: String,
+        @Query("after") after: String? = null,
+        @Query("limit") limit: Int
+    ): Observable<DataServiceMassTransferTransactionResponse>
 }
