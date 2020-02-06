@@ -10,10 +10,7 @@ import com.wavesplatform.sdk.model.response.node.*
 import com.wavesplatform.sdk.model.response.node.IssueTransactionResponse
 import com.wavesplatform.sdk.model.response.node.transaction.*
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 /**
  * Service for working with nodes.
@@ -62,6 +59,15 @@ interface NodeService {
     fun assetDetails(@Path("assetId") assetId: String): Observable<AssetsDetailsResponse>
 
     /**
+     * Read all data posted by an account
+     * @param address Account address
+     * @param key Exact keys to query
+     */
+    @GET("/addresses/data/{address}")
+    fun dataByAddress(@Path("address") address: String,
+                      @Query("key") key: String?): Observable<MutableList<BlockChainData>>
+
+    /**
      * Get list of transactions where specified address has been involved
      * @param address Address
      * @param limit Number of transactions to be returned. Max is last 1000.
@@ -69,6 +75,7 @@ interface NodeService {
     @GET("transactions/address/{address}/limit/{limit}")
     fun transactionsAddress(@Path("address") address: String?,
                             @Path("limit") limit: Int): Observable<List<List<HistoryTransactionResponse>>>
+
     /**
      * Get current Waves block-chain height
      */
