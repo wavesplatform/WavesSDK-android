@@ -109,7 +109,8 @@ interface DataService {
         @Query("assetId") assetId: String?,
         @Query("sender") sender: String?,
         @Query("recipient") recipient: String?,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("after") after: String? = null
     ): Observable<DataMassTransferTransactionResponseWrapperList>
 
     /**
