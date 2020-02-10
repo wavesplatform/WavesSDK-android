@@ -13,7 +13,6 @@ import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.net.service.DataService
 import com.wavesplatform.sdk.net.service.MatcherService
 import com.wavesplatform.sdk.net.service.NodeService
-import com.wavesplatform.sdk.utils.WavesConstants
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -38,6 +37,7 @@ class WavesService(private var context: Context) {
     private var cookies: HashSet<String> = hashSetOf()
     private var adapterFactory: CallAdapter.Factory
     private val onErrorListeners = mutableListOf<OnErrorListener>()
+    private val cache: Cache by lazy { createCache() }
 
     init {
         adapterFactory = CallAdapterFactory(object : OnErrorListener {
@@ -125,7 +125,7 @@ class WavesService(private var context: Context) {
 
     private fun createClient(timeout: Long = 30L): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
-            .cache(createCache())
+            .cache(cache)
             .readTimeout(timeout, TimeUnit.SECONDS)
             .writeTimeout(timeout, TimeUnit.SECONDS)
             .addInterceptor(receivedCookiesInterceptor())
