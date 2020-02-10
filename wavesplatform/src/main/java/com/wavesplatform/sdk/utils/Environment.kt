@@ -53,8 +53,7 @@ class Environment(
                             nodeUrl = serverCustom.node,
                             dataUrl = serverCustom.data,
                             matcherUrl = serverCustom.matcher
-                        ), serverCustom.scheme.toString()
-                    )
+                        ), String(byteArrayOf(serverCustom.scheme)))
                 }
             }
         this.chainId = configurationResponse.scheme.first().toByte()
