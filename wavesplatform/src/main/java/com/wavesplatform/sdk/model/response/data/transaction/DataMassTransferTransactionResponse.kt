@@ -13,10 +13,6 @@ class DataMassTransferTransactionResponse(@SerializedName("assetId")
                                           var assetId: String?,
                                           @SerializedName("attachment")
                                           var attachment: String,
-                                          @SerializedName("transferCount")
-                                          var transferCount: Int,
-                                          @SerializedName("totalAmount")
-                                          var totalAmount: Long,
                                           @SerializedName("transfers")
                                           var transfers: MutableList<Transfer>)
     : BaseDataTransactionResponse(type = BaseTransaction.MASS_TRANSFER), Parcelable {
