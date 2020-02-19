@@ -13,7 +13,6 @@ import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.net.service.DataService
 import com.wavesplatform.sdk.net.service.MatcherService
 import com.wavesplatform.sdk.net.service.NodeService
-import com.wavesplatform.sdk.utils.WavesConstants
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -36,15 +35,9 @@ class WavesService(private var context: Context) {
     private lateinit var dataService: DataService
     private lateinit var matcherService: MatcherService
     private var cookies: HashSet<String> = hashSetOf()
-    private var adapterFactory: CallAdapter.Factory
-    private val onErrorListeners = mutableListOf<OnErrorListener>()
+    private val adapterFactory: CallAdapter.Factory = CallAdapterFactory()
 
     init {
-        adapterFactory = CallAdapterFactory(object : OnErrorListener {
-            override fun onError(exception: NetworkException) {
-                onErrorListeners.forEach { it.onError(exception) }
-            }
-        })
         createServices()
     }
 
@@ -72,22 +65,8 @@ class WavesService(private var context: Context) {
         return dataService
     }
 
-    /**
-     * Add Error Listener to retrofit. Add it if you need know about net errors
-     */
-    fun addOnErrorListener(errorListener: OnErrorListener) {
-        onErrorListeners.add(errorListener)
-    }
-
-    /**
-     * Remove all Retrofit listeners
-     */
-    fun removeOnErrorListener(errorListener: OnErrorListener) {
-        onErrorListeners.remove(errorListener)
-    }
-
-    fun createService(baseUrl: String, errorListener: OnErrorListener): Retrofit {
-        return createService(baseUrl, CallAdapterFactory(errorListener))
+    fun createService(baseUrl: String): Retrofit {
+        return createService(baseUrl, CallAdapterFactory())
     }
 
     private fun createService(

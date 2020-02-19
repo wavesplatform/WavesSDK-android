@@ -37,6 +37,7 @@ android {
         }
         debug {
             multiDexEnabled true
+            testCoverageEnabled true
         }
     }
 }

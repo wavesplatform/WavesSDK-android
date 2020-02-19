@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
-internal class CallAdapterFactory(private val errorListener: OnErrorListener) : CallAdapter.Factory() {
+internal class CallAdapterFactory : CallAdapter.Factory() {
 
     private val original: RxJava2CallAdapterFactory = RxJava2CallAdapterFactory.create()
 
@@ -23,14 +23,15 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener) : 
      */
     override fun get(returnType: Type, annotations: Array<Annotation>,
                      retrofit: Retrofit): CallAdapter<*, *> {
-        return RxCallAdapterWrapper(retrofit, original.get(returnType, annotations, retrofit)
-                as CallAdapter<out Any, *>, returnType)
+        return RxCallAdapterWrapper(
+            retrofit, original.get(returnType, annotations, retrofit)
+                    as CallAdapter<out Any, *>
+        )
     }
 
     inner class RxCallAdapterWrapper<R>(
-            private val retrofit: Retrofit,
-            private val wrapped: CallAdapter<R, *>,
-            private val returnType: Type
+        private val retrofit: Retrofit,
+        private val wrapped: CallAdapter<R, *>
     ) : CallAdapter<R, Any> {
 
         override fun responseType(): Type {
@@ -44,9 +45,7 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener) : 
         }
 
         private fun handleErrorToShow(throwable: Throwable): NetworkException {
-            val retrofitException = asRetrofitException(throwable)
-            errorListener.onError(retrofitException)
-            return retrofitException
+            return asRetrofitException(throwable)
         }
 
         private fun convert(o: Any): Observable<*> {
