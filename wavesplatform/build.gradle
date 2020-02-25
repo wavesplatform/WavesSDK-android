@@ -26,6 +26,12 @@ android {
         experimental = true
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     buildTypes {
         release {
             debuggable false
@@ -43,6 +49,10 @@ android {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+    testImplementation('org.robolectric:robolectric:4.3.1') {
+        exclude group: 'com.google.guava'
+        exclude group: 'com.google.protobuf'
+    }
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
