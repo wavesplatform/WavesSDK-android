@@ -2,7 +2,10 @@ package com.wavesplatform.sdk.crypto
 
 import org.junit.Assert
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class WavesCryptoTest {
 
     @Test
@@ -73,10 +76,8 @@ class WavesCryptoTest {
 
     @Test
     fun base64() {
-        Assert.assertEquals(WavesCrypto.base64decode(WavesCrypto.base64encode(RANDOM_BYTES)).contentEquals(RANDOM_BYTES),
-            true)
-        Assert.assertEquals(WavesCrypto.base64encode(WavesCrypto.base64decode("base64$RANDOM_STRING=")),
-            "base64$RANDOM_STRING")
+        Assert.assertTrue(WavesCrypto.base64decode(WavesCrypto.base64encode(RANDOM_BYTES)).contentEquals(RANDOM_BYTES))
+        Assert.assertEquals(RANDOM_STRING_IN_BASE64, WavesCrypto.base64encode(RANDOM_STRING.toByteArray()))
     }
 
     @Test
@@ -95,5 +96,6 @@ class WavesCryptoTest {
         const val TEST_NET_CHAIN_ID = WavesCrypto.TEST_NET_CHAIN_ID.toString()
         val RANDOM_BYTES = byteArrayOf(56, 127, 57, -24, 0, 77, 33, -14, 14, 69, 55, 5, 110, -1, 12)
         val RANDOM_STRING = "slll000OOOjdgnlfsjdgnsqwertyulslkdmzxcvbnm"
+        val RANDOM_STRING_IN_BASE64 = "c2xsbDAwME9PT2pkZ25sZnNqZGduc3F3ZXJ0eXVsc2xrZG16eGN2Ym5t\n"
     }
 }
