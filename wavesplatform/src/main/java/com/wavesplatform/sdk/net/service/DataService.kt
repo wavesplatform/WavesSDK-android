@@ -34,11 +34,17 @@ interface DataService {
 
     /**
      * Get a list of assets info from a list of IDs
-     * @param ids Asset IDs array
-     * @param search Assets prefix-search by the query in asset names, tickers, id
+     * @param request AssetsRequest with IDs array for many ids
      */
     @POST("v0/assets")
     fun assets(@Body request: AssetsRequest): Observable<AssetsInfoResponse>
+
+    /**
+     * Get a list of assets info by search
+     * @param search Assets prefix-search by the query in asset names, tickers, id
+     */
+    @GET("v0/assets")
+    fun assets(@Query("search") search: String): Observable<AssetsInfoResponse>
 
     /**
      * Get pair info by amount and price assets
