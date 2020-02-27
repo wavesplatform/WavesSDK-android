@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
-internal class CallAdapterFactory(private val errorListener: OnErrorListener) : CallAdapter.Factory() {
+internal class CallAdapterFactory(private val errorListener: OnErrorListener? = null) : CallAdapter.Factory() {
 
     private val original: RxJava2CallAdapterFactory = RxJava2CallAdapterFactory.create()
 
@@ -45,7 +45,7 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener) : 
 
         private fun handleErrorToShow(throwable: Throwable): NetworkException {
             val retrofitException = asRetrofitException(throwable)
-            errorListener.onError(retrofitException)
+            errorListener?.onError(retrofitException)
             return retrofitException
         }
 

@@ -13,7 +13,6 @@ import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.net.service.DataService
 import com.wavesplatform.sdk.net.service.MatcherService
 import com.wavesplatform.sdk.net.service.NodeService
-import com.wavesplatform.sdk.utils.WavesConstants
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -86,7 +85,7 @@ class WavesService(private var context: Context) {
         onErrorListeners.remove(errorListener)
     }
 
-    fun createService(baseUrl: String, errorListener: OnErrorListener): Retrofit {
+    fun createService(baseUrl: String, errorListener: OnErrorListener? = null): Retrofit {
         return createService(baseUrl, CallAdapterFactory(errorListener))
     }
 
