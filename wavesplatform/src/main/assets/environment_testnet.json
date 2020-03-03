@@ -8,7 +8,6 @@
         "gatewayUrl": "https://gateways-dev.wvservices.com/api",
         "exchangeUrl": "https://testnet.waves.exchange"
     },
-    "exchangeClientSecret":"Basic dGVzdC1jbGllbnQ6c2VjcmV0",
     "scheme": "T",
     "generalAssets": [
         {
