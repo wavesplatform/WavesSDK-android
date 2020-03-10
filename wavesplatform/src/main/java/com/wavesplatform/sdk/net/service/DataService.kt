@@ -166,4 +166,21 @@ interface DataService {
         @Query("after") after: String? = null,
         @Query("limit") limit: Int
     ): Observable<DataServiceMassTransferTransactionResponse>
+
+    /**
+     * Get mass transfer transactions
+     * @param sender Address-sender of the transaction
+     * @param recipient Search transactions by recipient address
+     * @param assetId Filter transactions by assetId
+     * @param timeStart Time range filter, start. Defaults to first transaction's time_stamp in db (ISO-8601 or timestamp in milliseconds)
+     * @param timeEnd Time range filter, end. Defaults to now (ISO-8601 or timestamp in milliseconds)
+     */
+    @GET("v0/transactions/mass-transfer")
+    fun getMassTransferTransaction(
+        @Query("sender") sender: String,
+        @Query("recipient") recipient: String,
+        @Query("assetId") assetId: String,
+        @Query("timeStart") timeStart: String,
+        @Query("timeEnd") timeEnd: String
+    ): Observable<DataServiceMassTransferTransactionResponse>
 }
