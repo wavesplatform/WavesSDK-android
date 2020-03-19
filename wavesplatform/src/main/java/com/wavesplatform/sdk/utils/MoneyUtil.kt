@@ -89,6 +89,14 @@ class MoneyUtil private constructor() {
             return formatter.format(amount)
         }
 
+        fun getFormattedTotal(amount: Float, decimals: Int): String {
+            val formatter = NumberFormat.getInstance(Locale.US) as DecimalFormat
+            formatter.maximumFractionDigits = decimals
+            formatter.minimumFractionDigits = 0
+            formatter.isParseBigDecimal = true
+            return formatter.format(amount)
+        }
+
         fun getScaledText(amount: Long?, ab: AssetBalanceResponse?): String {
             return getScaledText(amount!!, ab?.getDecimals() ?: 8)
         }
