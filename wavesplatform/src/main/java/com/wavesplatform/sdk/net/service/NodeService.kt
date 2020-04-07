@@ -11,6 +11,7 @@ import com.wavesplatform.sdk.model.response.node.IssueTransactionResponse
 import com.wavesplatform.sdk.model.response.node.transaction.*
 import io.reactivex.Observable
 import retrofit2.http.*
+import java.util.Random
 
 /**
  * Service for working with nodes.
@@ -39,6 +40,10 @@ interface NodeService {
      */
     @GET("assets/balance/{address}")
     fun assetsBalance(@Path("address") address: String?): Observable<AssetBalancesResponse>
+
+    @GET("assets/balance/{address}")
+    fun assetsBalanceWithoutCache(@Path("address") address: String?,
+                                  @Query("r") random: Int? = Random().nextInt()): Observable<AssetBalancesResponse>
 
     /**
      * Account's assetId balance by address
