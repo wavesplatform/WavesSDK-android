@@ -10,8 +10,8 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 class AliasTransactionResponse(@SerializedName("alias")
-                               var alias: String = "",
+                               var alias: String? = "",
                                @SerializedName("address")
-                               var address: String = "",
+                               var address: String? = "",
                                var own: Boolean = false)
     : BaseTransactionResponse(type = BaseTransaction.CREATE_ALIAS), Parcelable
