@@ -78,11 +78,7 @@ data class CreateOrderRequest(
 ) {
 
     private fun toBytes(): ByteArray {
-        return if (matcherFeeAssetId.isWaves() || matcherFeeAssetId.isWavesId()) {
-            toBytesV2()
-        } else {
-            toBytesV3()
-        }
+        return toBytesV3()
     }
 
     private fun toBytesV2(): ByteArray {
@@ -93,16 +89,16 @@ data class CreateOrderRequest(
                 1
             }
             Bytes.concat(
-                    byteArrayOf(version),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    WavesCrypto.base58decode(matcherPublicKey),
-                    assetPair.toBytes(),
-                    byteArrayOf(orderTypeByte),
-                    Longs.toByteArray(price),
-                    Longs.toByteArray(amount),
-                    Longs.toByteArray(timestamp),
-                    Longs.toByteArray(expiration),
-                    Longs.toByteArray(matcherFee)
+                byteArrayOf(version),
+                WavesCrypto.base58decode(senderPublicKey),
+                WavesCrypto.base58decode(matcherPublicKey),
+                assetPair.toBytes(),
+                byteArrayOf(orderTypeByte),
+                Longs.toByteArray(price),
+                Longs.toByteArray(amount),
+                Longs.toByteArray(timestamp),
+                Longs.toByteArray(expiration),
+                Longs.toByteArray(matcherFee)
             )
         } catch (e: Exception) {
             Log.e("CreateOrderRequest", "Couldn't create toBytes", e)
@@ -114,8 +110,9 @@ data class CreateOrderRequest(
         return try {
             version = 3
             Bytes.concat(
-                    toBytesV2(),
-                    SignUtil.arrayOption(matcherFeeAssetId))
+                toBytesV2(),
+                SignUtil.arrayOption(matcherFeeAssetId)
+            )
         } catch (e: Exception) {
             Log.e("CreateOrderRequest", "Couldn't create toBytesV3", e)
             ByteArray(0)
@@ -123,7 +120,10 @@ data class CreateOrderRequest(
     }
 
     fun sign(privateKey: ByteArray) {
-        proofs = mutableListOf(WavesCrypto.base58encode(
-            WavesCrypto.signBytesWithPrivateKey(toBytes(), WavesCrypto.base58encode(privateKey))))
+        proofs = mutableListOf(
+            WavesCrypto.base58encode(
+                WavesCrypto.signBytesWithPrivateKey(toBytes(), WavesCrypto.base58encode(privateKey))
+            )
+        )
     }
 }
