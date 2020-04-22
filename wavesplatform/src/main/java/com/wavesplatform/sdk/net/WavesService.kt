@@ -127,6 +127,7 @@ class WavesService(private var context: Context) {
             .cache(createCache())
             .readTimeout(timeout, TimeUnit.SECONDS)
             .writeTimeout(timeout, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
             .addInterceptor(receivedCookiesInterceptor())
             .addInterceptor(addCookiesInterceptor())
             .addInterceptor(addUserAgentInterceptor())
