@@ -14,8 +14,6 @@ import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.response.matcher.OrderBookResponse
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.WavesConstants
-import com.wavesplatform.sdk.utils.isWaves
-import com.wavesplatform.sdk.utils.isWavesId
 
 /**
  * Create Order Request to DEX-matcher, decentralized exchange of Waves.
@@ -58,7 +56,7 @@ data class CreateOrderRequest(
     /**
      * Matcher Fee Asset Id. You can change asset commission
      */
-    @SerializedName("matcherFeeAssetId") var matcherFeeAssetId: String = "",
+    @SerializedName("matcherFeeAssetId") var matcherFeeAssetId: String? = null,
     /**
      * Amount matcher fee of Waves in satoshi
      */

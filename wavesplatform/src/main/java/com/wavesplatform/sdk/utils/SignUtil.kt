@@ -30,8 +30,8 @@ object SignUtil {
         }
     }
 
-    fun arrayOption(o: String): ByteArray {
-        return if (org.apache.commons.lang3.StringUtils.isEmpty(o))
+    fun arrayOption(o: String?): ByteArray {
+        return if (o.isNullOrEmpty())
             byteArrayOf(0)
         else
             Bytes.concat(byteArrayOf(1), WavesCrypto.base58decode(o))
