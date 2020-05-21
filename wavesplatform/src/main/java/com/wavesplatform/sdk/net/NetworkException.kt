@@ -71,7 +71,7 @@ class NetworkException internal constructor(
 
     companion object {
 
-        fun httpError(url: String, response: Response<*>, retrofit: Retrofit): NetworkException {
+        fun httpError(url: String, response: Response<*>, retrofit: Retrofit?): NetworkException {
             val message = response.code().toString() + " " + response.message()
             return NetworkException(message, url, response, Kind.HTTP, null, retrofit)
         }
