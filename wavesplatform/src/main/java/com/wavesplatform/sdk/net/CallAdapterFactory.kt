@@ -9,7 +9,10 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.io.IOException
 import java.lang.reflect.Type
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 
 internal class CallAdapterFactory(private val errorListener: OnErrorListener? = null) : CallAdapter.Factory() {
 

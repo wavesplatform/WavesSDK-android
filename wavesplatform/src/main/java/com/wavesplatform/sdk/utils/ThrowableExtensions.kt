@@ -3,7 +3,10 @@ package com.wavesplatform.sdk.utils
 import com.wavesplatform.sdk.net.NetworkException
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 
 fun Throwable.asRetrofitException(): NetworkException {
 
