@@ -9,7 +9,9 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.SponsorshipTransaction]
  */
 @Parcelize
-class SponsorshipTransactionResponse(var assetId: String,
-                                     @SerializedName("minSponsoredAssetFee")
-                                     var minSponsoredAssetFee: Long)
-    : BaseTransactionResponse(type = BaseTransaction.SPONSORSHIP), Parcelable
+class SponsorshipTransactionResponse(
+    var assetId: String,
+    @SerializedName("minSponsoredAssetFee")
+    var minSponsoredAssetFee: Long
+) :
+    BaseTransactionResponse(type = BaseTransaction.SPONSORSHIP), Parcelable

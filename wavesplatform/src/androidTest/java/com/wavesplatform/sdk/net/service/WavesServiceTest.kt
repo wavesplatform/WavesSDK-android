@@ -1,9 +1,8 @@
 package com.wavesplatform.sdk.net.service
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
 import com.wavesplatform.sdk.WavesSdk
-import com.wavesplatform.sdk.crypto.WavesCrypto
 import com.wavesplatform.sdk.model.request.node.*
 import com.wavesplatform.sdk.utils.Environment
 import com.wavesplatform.sdk.utils.RxUtil
@@ -42,11 +41,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -59,7 +61,8 @@ class WavesServiceTest {
             InvokeScriptTransaction.Arg("integer", -127L),
             InvokeScriptTransaction.Arg("boolean", true),
             InvokeScriptTransaction.Arg("boolean", false),
-            InvokeScriptTransaction.Arg("binary", "base64:VGVzdA=="))
+            InvokeScriptTransaction.Arg("binary", "base64:VGVzdA==")
+        )
 
         val call = InvokeScriptTransaction.Call(
             function = "testarg",
@@ -69,12 +72,15 @@ class WavesServiceTest {
         val payment = mutableListOf(
             InvokeScriptTransaction.Payment(
                 assetId = null,
-                amount = 1L))
+                amount = 1L
+            )
+        )
 
         val transaction = InvokeScriptTransaction(
             dApp = "3Mv9XDntij4ZRE1XiNZed6J74rncBpiYNDV",
             call = call,
-            payment = payment)
+            payment = payment
+        )
 
         transaction.fee = 500000L
         transaction.sign(SEED)
@@ -83,11 +89,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -102,11 +111,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -121,11 +133,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -140,11 +155,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -159,25 +177,30 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
 
     @Test
     fun sendDataTransactionsTest() {
-        val transferTransaction = DataTransaction(mutableListOf(
-            DataTransaction.Data("key0", "string", "This is Data TX"),
-            DataTransaction.Data("key1", "integer", 100),
-            DataTransaction.Data("key2", "integer", -100),
-            DataTransaction.Data("key3", "boolean", true),
-            DataTransaction.Data("key4", "boolean", false),
-            DataTransaction.Data("key5", "binary", "SGVsbG8h") // base64 binary string
-        ))
+        val transferTransaction = DataTransaction(
+            mutableListOf(
+                DataTransaction.Data("key0", "string", "This is Data TX"),
+                DataTransaction.Data("key1", "integer", 100),
+                DataTransaction.Data("key2", "integer", -100),
+                DataTransaction.Data("key3", "boolean", true),
+                DataTransaction.Data("key4", "boolean", false),
+                DataTransaction.Data("key5", "binary", "SGVsbG8h") // base64 binary string
+            )
+        )
 
         transferTransaction.sign(seed = SEED)
 
@@ -185,15 +208,17 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
-
 
     @Test
     fun sendIssueTransactionsTest() {
@@ -203,7 +228,8 @@ class WavesServiceTest {
             100_000_000L,
             8,
             true,
-            "AwZd0cYf") // scripts: AwZd0cYf = true and AweHXCN1 = false (You can't it change anymore)
+            "AwZd0cYf"
+        ) // scripts: AwZd0cYf = true and AweHXCN1 = false (You can't it change anymore)
 
         transferTransaction.fee = 100000000
 
@@ -213,22 +239,25 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
-
 
     @Test
     fun sendReissueTransactionsTest() {
         val transferTransaction = ReissueTransaction(
             "5HiZ9n8oEBL495nMrpg57As7ujMwqmFn2hU3nYqv1Qx9",
             100_000_000L,
-            true)
+            true
+        )
 
         transferTransaction.fee = 100000000
 
@@ -238,26 +267,30 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
-
 
     @Test
     fun sendMassTransferTransactionsTest() {
         val transfers = mutableListOf(
             MassTransferTransaction.Transfer("3Mps7CZqB9nUbEirYyCMMoA7VbqrxLvJFSB", 1),
-            MassTransferTransaction.Transfer("3Mq6WcupmXPVAzEB8DmXXiiT3kNFynebu6h", 1))
+            MassTransferTransaction.Transfer("3Mq6WcupmXPVAzEB8DmXXiiT3kNFynebu6h", 1)
+        )
 
         val transferTransaction = MassTransferTransaction(
             "BHar7QeZLmHkGqQnvBRWjyHaNKJUstYBaDrPQ64cjJL9",
             transfers = transfers,
-            attachment = SignUtil.textToBase58("Hello attachment!"))
+            attachment = SignUtil.textToBase58("Hello attachment!")
+        )
 
         transferTransaction.fee = 200000
 
@@ -267,11 +300,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -280,7 +316,8 @@ class WavesServiceTest {
     fun sendSponsorshipTransactionsTest() {
         val transferTransaction = SponsorshipTransaction(
             "BHar7QeZLmHkGqQnvBRWjyHaNKJUstYBaDrPQ64cjJL9",
-            2) // 0 for cancel
+            2
+        ) // 0 for cancel
 
         transferTransaction.fee = 100000000
 
@@ -290,11 +327,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -303,7 +343,8 @@ class WavesServiceTest {
     fun sendSetAssetScriptTransactionsTest() {
         val transferTransaction = SetAssetScriptTransaction(
             "FxmduD1XBq45inE2EoBoE3fuQZEuhsenWjBcAr8X3Pp8",
-            "AweHXCN1") // scripts: AwZd0cYf = true and AweHXCN1 = false (You can't it change anymore)
+            "AweHXCN1"
+        ) // scripts: AwZd0cYf = true and AweHXCN1 = false (You can't it change anymore)
 
         transferTransaction.fee = 100000000
 
@@ -313,11 +354,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transferTransaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }
@@ -325,7 +369,8 @@ class WavesServiceTest {
     @Test
     fun sendSetScriptTransactionsTest() {
         val transaction = SetScriptTransaction(
-            null) // script: AwZd0cYf = true
+            null
+        ) // script: AwZd0cYf = true
 
         transaction.fee = 100000000
 
@@ -335,11 +380,14 @@ class WavesServiceTest {
             .getNode()
             .transactionsBroadcast(transaction)
             .compose(RxUtil.applyObservableDefaultSchedulers())
-            .subscribe({
-                Assert.assertEquals(true, true)
-            }, {
-                Assert.assertEquals(true, false)
-            })
+            .subscribe(
+                {
+                    Assert.assertEquals(true, true)
+                },
+                {
+                    Assert.assertEquals(true, false)
+                }
+            )
 
         TimeUnit.SECONDS.sleep(5)
     }

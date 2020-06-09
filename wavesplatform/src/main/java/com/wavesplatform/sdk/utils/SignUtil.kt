@@ -37,7 +37,6 @@ object SignUtil {
             Bytes.concat(byteArrayOf(1), WavesCrypto.base58decode(o))
     }
 
-
     fun attachmentBytes(base58Attachment: String): ByteArray {
         return if (base58Attachment.isEmpty()) {
             byteArrayOf(0, 0)
@@ -52,8 +51,8 @@ object SignUtil {
                 byteArrayOf(version),
                 byteArrayOf(chainId),
                 recipient.parseAlias()
-                        .toByteArray(CHARSET)
-                        .arrayWithSize()
+                    .toByteArray(CHARSET)
+                    .arrayWithSize()
             )
         } else {
             WavesCrypto.base58decode(recipient)

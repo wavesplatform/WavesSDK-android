@@ -46,15 +46,23 @@ class WavesCryptoTest {
 
     @Test
     fun verifySignature() {
-        Assert.assertEquals(WavesCrypto.verifySignature(
-            PUBLIC_KEY,
-            RANDOM_BYTES,
-            WavesCrypto.signBytesWithPrivateKey(RANDOM_BYTES, PRIVATE_KEY)), true)
+        Assert.assertEquals(
+            WavesCrypto.verifySignature(
+                PUBLIC_KEY,
+                RANDOM_BYTES,
+                WavesCrypto.signBytesWithPrivateKey(RANDOM_BYTES, PRIVATE_KEY)
+            ),
+            true
+        )
 
-        Assert.assertEquals(WavesCrypto.verifySignature(
-            PUBLIC_KEY,
-            RANDOM_BYTES,
-            WavesCrypto.signBytesWithSeed(RANDOM_BYTES, SEED)), true)
+        Assert.assertEquals(
+            WavesCrypto.verifySignature(
+                PUBLIC_KEY,
+                RANDOM_BYTES,
+                WavesCrypto.signBytesWithSeed(RANDOM_BYTES, SEED)
+            ),
+            true
+        )
     }
 
     @Test
@@ -69,8 +77,10 @@ class WavesCryptoTest {
 
     @Test
     fun base58() {
-        Assert.assertEquals(WavesCrypto.base58decode(WavesCrypto.base58encode(RANDOM_BYTES)).contentEquals(RANDOM_BYTES),
-            true)
+        Assert.assertEquals(
+            WavesCrypto.base58decode(WavesCrypto.base58encode(RANDOM_BYTES)).contentEquals(RANDOM_BYTES),
+            true
+        )
         Assert.assertEquals(WavesCrypto.base58encode(WavesCrypto.base58decode(ADDRESS)), ADDRESS)
     }
 

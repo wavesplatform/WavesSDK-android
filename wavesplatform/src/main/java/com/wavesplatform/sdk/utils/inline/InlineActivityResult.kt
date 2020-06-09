@@ -24,14 +24,14 @@ class InlineActivityResult {
         val fragment = ActivityResultFragment.newInstance(launchIntent = intent, requestCode = requestCode)
 
         fragmentManager
-                .beginTransaction()
-                .apply { add(fragment, getTag(requestCode)) }
-                .commit()
+            .beginTransaction()
+            .apply { add(fragment, getTag(requestCode)) }
+            .commit()
     }
 
     fun stopWithResult(requestCode: Int, resultCode: Int, data: Intent) {
         val pendingRequest = pending[requestCode]
-                ?: throw IllegalStateException("There's no pending request for requestCode $requestCode.")
+            ?: throw IllegalStateException("There's no pending request for requestCode $requestCode.")
 
         pendingRequest.deliverResult(requestCode = requestCode, resultCode = resultCode, data = data)
         pending.remove(requestCode)

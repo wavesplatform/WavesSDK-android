@@ -6,7 +6,6 @@
 package com.wavesplatform.sdk.model.request.matcher
 
 import android.util.Log
-
 import com.google.common.primitives.Bytes
 import com.google.common.primitives.Longs
 import com.google.gson.annotations.SerializedName

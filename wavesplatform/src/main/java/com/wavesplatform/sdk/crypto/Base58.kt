@@ -3,7 +3,7 @@ package com.wavesplatform.sdk.crypto
 internal object Base58 {
 
     private val ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-            .toCharArray()
+        .toCharArray()
     private val BASE_58 = ALPHABET.size
     private val BASE_256 = 256
 

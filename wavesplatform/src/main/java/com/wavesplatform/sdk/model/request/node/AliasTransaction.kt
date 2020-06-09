@@ -17,28 +17,31 @@ import java.nio.charset.Charset
  * The Alias transaction creates short readable alias for address
  */
 class AliasTransaction(
-        /**
-         * Alias, short name for address in Waves blockchain.
-         * Alias bytes must be in [4;30]
-         * Alphabet: -.0123456789@_abcdefghijklmnopqrstuvwxyz
-         */
-        @SerializedName("alias") var alias: String = "")
-    : BaseTransaction(CREATE_ALIAS) {
+    /**
+     * Alias, short name for address in Waves blockchain.
+     * Alias bytes must be in [4;30]
+     * Alphabet: -.0123456789@_abcdefghijklmnopqrstuvwxyz
+     */
+    @SerializedName("alias") var alias: String = ""
+) :
+    BaseTransaction(CREATE_ALIAS) {
 
     override fun toBytes(): ByteArray {
         return try {
             Bytes.concat(
-                    byteArrayOf(type),
+                byteArrayOf(type),
+                byteArrayOf(version),
+                WavesCrypto.base58decode(senderPublicKey),
+                Bytes.concat(
                     byteArrayOf(version),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    Bytes.concat(
-                            byteArrayOf(version),
-                            byteArrayOf(chainId),
-                            alias.toByteArray(
-                                    Charset.forName("UTF-8")).arrayWithSize()
-                    ).arrayWithSize(),
-                    Longs.toByteArray(fee),
-                    Longs.toByteArray(timestamp))
+                    byteArrayOf(chainId),
+                    alias.toByteArray(
+                        Charset.forName("UTF-8")
+                    ).arrayWithSize()
+                ).arrayWithSize(),
+                Longs.toByteArray(fee),
+                Longs.toByteArray(timestamp)
+            )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Alias Transaction", e)
             ByteArray(0)

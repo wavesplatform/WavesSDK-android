@@ -29,7 +29,7 @@ import java.nio.charset.Charset
  */
 class IssueTransaction(
     /**
-     * Name of your new asset byte length must be in [[MIN_ASSET_NAME_LENGTH],[MAX_ASSET_NAME_LENGTH]]
+     * Name of your new asset byte length must be in [[MIN_ASSET_NAME_LENGTH], [MAX_ASSET_NAME_LENGTH]]
      */
     @SerializedName("name") val name: String,
     /**

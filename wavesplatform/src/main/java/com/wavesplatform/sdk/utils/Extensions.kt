@@ -17,7 +17,6 @@ import java.nio.charset.Charset
 import java.security.SecureRandom
 import kotlin.math.abs
 
-
 fun String.isWaves(): Boolean {
     return this.toLowerCase() == WavesConstants.WAVES_ASSET_INFO.name.toLowerCase()
 }
@@ -111,14 +110,18 @@ fun getScaledAmount(amount: Long, decimals: Int): String {
     val sign = if (amount < 0) "-" else ""
 
     return sign + when {
-        value >= MoneyUtil.ONE_B -> value.divide(MoneyUtil.ONE_B, 1, RoundingMode.FLOOR)
-            .toPlainString().stripZeros() + "B"
-        value >= MoneyUtil.ONE_M -> value.divide(MoneyUtil.ONE_M, 1, RoundingMode.FLOOR)
-            .toPlainString().stripZeros() + "M"
-        value >= MoneyUtil.ONE_K -> value.divide(MoneyUtil.ONE_K, 1, RoundingMode.FLOOR)
-            .toPlainString().stripZeros() + "k"
-        else -> MoneyUtil.createFormatter(decimals).format(BigDecimal.valueOf(absAmount, decimals))
-            .stripZeros() + ""
+        value >= MoneyUtil.ONE_B ->
+            value.divide(MoneyUtil.ONE_B, 1, RoundingMode.FLOOR)
+                .toPlainString().stripZeros() + "B"
+        value >= MoneyUtil.ONE_M ->
+            value.divide(MoneyUtil.ONE_M, 1, RoundingMode.FLOOR)
+                .toPlainString().stripZeros() + "M"
+        value >= MoneyUtil.ONE_K ->
+            value.divide(MoneyUtil.ONE_K, 1, RoundingMode.FLOOR)
+                .toPlainString().stripZeros() + "k"
+        else ->
+            MoneyUtil.createFormatter(decimals).format(BigDecimal.valueOf(absAmount, decimals))
+                .stripZeros() + ""
     }
 }
 
@@ -139,7 +142,6 @@ fun scriptBytes(script: String?): ByteArray {
         )
     }
 }
-
 
 fun Context.loadJsonFromAsset(fileName: String): String {
     return try {

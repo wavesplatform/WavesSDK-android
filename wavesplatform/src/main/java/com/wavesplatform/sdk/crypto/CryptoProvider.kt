@@ -1,7 +1,6 @@
 package com.wavesplatform.sdk.crypto
 
 import org.whispersystems.curve25519.OpportunisticCurve25519Provider
-
 import java.lang.reflect.Constructor
 
 internal object CryptoProvider {

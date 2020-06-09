@@ -149,7 +149,6 @@ interface DataService {
         @Body request: PairRatesRequest
     ): Observable<PairsRatesResponse>
 
-
     /**
      * Get mass transfer transactions
      * @param sender Address-sender of the transaction

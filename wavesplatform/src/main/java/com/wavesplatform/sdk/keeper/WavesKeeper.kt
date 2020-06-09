@@ -33,21 +33,27 @@ import com.wavesplatform.sdk.utils.startActivityForResult
 class WavesKeeper(private var context: Context) : Keeper {
     private var keeperDataHolder: KeeperDataHolder? = null
 
-    override fun configureDApp(context: Context,
-                               dAppName: String,
-                               dAppIconUrl: String) {
+    override fun configureDApp(
+        context: Context,
+        dAppName: String,
+        dAppIconUrl: String
+    ) {
         DApp(dAppName, dAppIconUrl).save(getPreferences(context))
     }
 
-    override fun <T : KeeperTransaction> sign(activity: androidx.fragment.app.FragmentActivity,
-                                              transaction: KeeperTransaction,
-                                              callback: KeeperCallback<T>) {
+    override fun <T : KeeperTransaction> sign(
+        activity: androidx.fragment.app.FragmentActivity,
+        transaction: KeeperTransaction,
+        callback: KeeperCallback<T>
+    ) {
         processIntent(activity, KeeperActionType.SIGN, transaction, callback)
     }
 
-    override fun <T : KeeperTransactionResponse> send(activity: androidx.fragment.app.FragmentActivity,
-                                                      transaction: KeeperTransaction,
-                                                      callback: KeeperCallback<T>) {
+    override fun <T : KeeperTransactionResponse> send(
+        activity: androidx.fragment.app.FragmentActivity,
+        transaction: KeeperTransaction,
+        callback: KeeperCallback<T>
+    ) {
         processIntent(activity, KeeperActionType.SEND, transaction, callback)
     }
 
@@ -80,14 +86,16 @@ class WavesKeeper(private var context: Context) : Keeper {
 
         intent.extras?.let { bundle ->
             val action = KeeperActionType.valueOf(
-                    bundle.getString(KeeperKeys.ActionKeys.ACTION_TYPE)
-                            ?: KeeperActionType.SIGN.name)
+                bundle.getString(KeeperKeys.ActionKeys.ACTION_TYPE)
+                    ?: KeeperActionType.SIGN.name
+            )
 
-            val dApp = DApp(bundle.getString(KeeperKeys.DAppKeys.NAME),
-                    bundle.getString(KeeperKeys.DAppKeys.ICON_URL))
+            val dApp = DApp(
+                bundle.getString(KeeperKeys.DAppKeys.NAME),
+                bundle.getString(KeeperKeys.DAppKeys.ICON_URL)
+            )
 
             val transaction = bundle.getParcelable<KeeperTransaction>(KeeperKeys.TransactionKeys.TRANSACTION)
-
 
             val processData = KeeperProcessData(action, dApp, transaction)
             keeperDataHolder = KeeperDataHolder(processData)
@@ -100,9 +108,11 @@ class WavesKeeper(private var context: Context) : Keeper {
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun isKeeperIntent(intent: Intent): Boolean {
-        return (intent.action == WAVES_APP_KEEPER_ACTION && intent.extras != null)
-                || (intent.extras != null && intent.hasExtra(KeeperKeys.ActionKeys.ACTION_TYPE)
-                || keeperDataHolder != null)
+        return (intent.action == WAVES_APP_KEEPER_ACTION && intent.extras != null) ||
+            (
+                intent.extras != null && intent.hasExtra(KeeperKeys.ActionKeys.ACTION_TYPE) ||
+                    keeperDataHolder != null
+                )
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -110,15 +120,19 @@ class WavesKeeper(private var context: Context) : Keeper {
         return keeperDataHolder
     }
 
-    private fun processFinishWithError(activity: androidx.fragment.app.FragmentActivity,
-                                       actionType: KeeperActionType,
-                                       error: String) {
+    private fun processFinishWithError(
+        activity: androidx.fragment.app.FragmentActivity,
+        actionType: KeeperActionType,
+        error: String
+    ) {
         activity.apply {
             val intent = Intent().apply {
-                putExtras(Bundle().apply {
-                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, actionType.name)
-                    putString(KeeperKeys.ResultKeys.ERROR_MESSAGE, error)
-                })
+                putExtras(
+                    Bundle().apply {
+                        putString(KeeperKeys.ActionKeys.ACTION_TYPE, actionType.name)
+                        putString(KeeperKeys.ResultKeys.ERROR_MESSAGE, error)
+                    }
+                )
             }
             setResult(Activity.RESULT_OK, intent)
             finish()
@@ -135,31 +149,41 @@ class WavesKeeper(private var context: Context) : Keeper {
     private fun <T : Parcelable> processFinish(activity: androidx.fragment.app.FragmentActivity, actionType: KeeperActionType, transaction: T) {
         activity.apply {
             val intent = Intent().apply {
-                putExtras(Bundle().apply {
-                    putString(KeeperKeys.ActionKeys.ACTION_TYPE, actionType.name)
-                    putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
-                })
+                putExtras(
+                    Bundle().apply {
+                        putString(KeeperKeys.ActionKeys.ACTION_TYPE, actionType.name)
+                        putParcelable(KeeperKeys.TransactionKeys.TRANSACTION, transaction)
+                    }
+                )
             }
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
 
-    private fun <T> processIntent(activity: androidx.fragment.app.FragmentActivity,
-                                  type: KeeperActionType,
-                                  transaction: KeeperTransaction,
-                                  callback: KeeperCallback<T>) {
-        if ((context.isAppInstalled(WAVES_APP_PACKAGE_ID)
-                        || context.isAppInstalled(WAVES_DEV_APP_PACKAGE_ID))
-                && context.isIntentAvailable(WAVES_APP_KEEPER_ACTION)) {
+    private fun <T> processIntent(
+        activity: androidx.fragment.app.FragmentActivity,
+        type: KeeperActionType,
+        transaction: KeeperTransaction,
+        callback: KeeperCallback<T>
+    ) {
+        if ((
+            context.isAppInstalled(WAVES_APP_PACKAGE_ID) ||
+                context.isAppInstalled(WAVES_DEV_APP_PACKAGE_ID)
+            ) &&
+            context.isIntentAvailable(WAVES_APP_KEEPER_ACTION)
+        ) {
             startKeeperActivity(activity, createParams(activity, type, transaction), callback)
         } else {
             openAppInPlayMarket(activity)
         }
     }
 
-    private fun <T> startKeeperActivity(activity: androidx.fragment.app.FragmentActivity, params: Bundle,
-                                        callback: KeeperCallback<T>) {
+    private fun <T> startKeeperActivity(
+        activity: androidx.fragment.app.FragmentActivity,
+        params: Bundle,
+        callback: KeeperCallback<T>
+    ) {
         val intent = Intent(WAVES_APP_KEEPER_ACTION, null).apply {
             if (context.isAppInstalled(WAVES_DEV_APP_PACKAGE_ID)) {
                 setPackage(WAVES_DEV_APP_PACKAGE_ID)
@@ -175,9 +199,11 @@ class WavesKeeper(private var context: Context) : Keeper {
         }
     }
 
-    private fun createParams(activity: Activity,
-                             type: KeeperActionType,
-                             transaction: KeeperTransaction): Bundle {
+    private fun createParams(
+        activity: Activity,
+        type: KeeperActionType,
+        transaction: KeeperTransaction
+    ): Bundle {
 
         return Bundle().apply {
             val dApp = DApp.restore(getPreferences(activity))
@@ -208,22 +234,26 @@ class WavesKeeper(private var context: Context) : Keeper {
             // Success flow
             result.extras != null && !result.hasExtra(KeeperKeys.ResultKeys.ERROR_MESSAGE) && success -> {
                 val action = KeeperActionType.valueOf(
-                        result.getStringExtra(KeeperKeys.ActionKeys.ACTION_TYPE)
-                                ?: KeeperActionType.SIGN.name)
+                    result.getStringExtra(KeeperKeys.ActionKeys.ACTION_TYPE)
+                        ?: KeeperActionType.SIGN.name
+                )
                 when (action) {
                     KeeperActionType.SIGN -> {
-                        when (val transaction =
-                                result.getParcelableExtra<KeeperTransaction>(KeeperKeys.TransactionKeys.TRANSACTION)) {
+                        when (
+                            val transaction =
+                                result.getParcelableExtra<KeeperTransaction>(KeeperKeys.TransactionKeys.TRANSACTION)
+                        ) {
                             is DataTransaction -> KeeperResult.Success(transaction)
                             is TransferTransaction -> KeeperResult.Success(transaction)
                             is InvokeScriptTransaction -> KeeperResult.Success(transaction)
                             else -> null
-
                         }
                     }
                     KeeperActionType.SEND -> {
-                        when (val transaction =
-                                result.getParcelableExtra<KeeperTransactionResponse>(KeeperKeys.TransactionKeys.TRANSACTION)) {
+                        when (
+                            val transaction =
+                                result.getParcelableExtra<KeeperTransactionResponse>(KeeperKeys.TransactionKeys.TRANSACTION)
+                        ) {
                             is DataTransactionResponse -> KeeperResult.Success(transaction)
                             is TransferTransactionResponse -> KeeperResult.Success(transaction)
                             is InvokeScriptTransactionResponse -> KeeperResult.Success(transaction)

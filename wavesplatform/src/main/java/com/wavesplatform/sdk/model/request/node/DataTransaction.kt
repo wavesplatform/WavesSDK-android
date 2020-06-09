@@ -28,22 +28,23 @@ import java.nio.charset.Charset
  */
 @Parcelize
 data class DataTransaction(
-        /**
-         * Data as JSON-string as byte array
-         * The value of the key field is a UTF-8 encoded string
-         * of length from 1 to 100 characters inclusive.
-         * It can be of four types - integer(0), boolean(1), binary array(2) and string(3).
-         * The size of value field can be from 0 to 65025 bytes.
-         * Example:
-         * "data": [
-         *      {"key": "int", "type": "integer", "value": 24},
-         *      {"key": "bool", "type": "boolean", "value": true},
-         *      {"key": "blob", "type": "binary", "value": "base64:BzWHaQU="}
-         *      {"key": "My poem", "type": "string", "value": "Oh waves!"}
-         * ],
-         */
-        @SerializedName("data") var data: List<Data> = mutableListOf())
-    : BaseTransaction(DATA), KeeperTransaction {
+    /**
+     * Data as JSON-string as byte array
+     * The value of the key field is a UTF-8 encoded string
+     * of length from 1 to 100 characters inclusive.
+     * It can be of four types - integer(0), boolean(1), binary array(2) and string(3).
+     * The size of value field can be from 0 to 65025 bytes.
+     * Example:
+     * "data": [
+     *      {"key": "int", "type": "integer", "value": 24},
+     *      {"key": "bool", "type": "boolean", "value": true},
+     *      {"key": "blob", "type": "binary", "value": "base64:BzWHaQU="}
+     *      {"key": "My poem", "type": "string", "value": "Oh waves!"}
+     * ],
+     */
+    @SerializedName("data") var data: List<Data> = mutableListOf()
+) :
+    BaseTransaction(DATA), KeeperTransaction {
 
     override fun sign(seed: String): String {
         version = 1
@@ -53,12 +54,14 @@ data class DataTransaction(
 
     override fun toBytes(): ByteArray {
         return try {
-            Bytes.concat(byteArrayOf(type),
-                    byteArrayOf(version),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    dataBytes(),
-                    Longs.toByteArray(timestamp),
-                    Longs.toByteArray(fee))
+            Bytes.concat(
+                byteArrayOf(type),
+                byteArrayOf(version),
+                WavesCrypto.base58decode(senderPublicKey),
+                dataBytes(),
+                Longs.toByteArray(timestamp),
+                Longs.toByteArray(fee)
+            )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Data Transaction", e)
             ByteArray(0)
@@ -74,8 +77,8 @@ data class DataTransaction(
             var keyValueChainArray = byteArrayOf()
             for (oneData in data) {
                 val keyArray = oneData.key!!
-                        .toByteArray(Charset.forName("UTF-8"))
-                        .arrayWithSize()
+                    .toByteArray(Charset.forName("UTF-8"))
+                    .arrayWithSize()
                 val valueArray = when (oneData.type) {
                     "string" -> {
                         stringValue(STRING_DATA_TYPE, oneData.value as String)
@@ -92,8 +95,11 @@ data class DataTransaction(
                         booleanValue(BOOLEAN_DATA_TYPE, oneData.value as Boolean)
                     }
                     "binary" -> {
-                        binaryValue(BINARY_DATA_TYPE, (oneData.value as String)
-                                .replace("base64:", ""))
+                        binaryValue(
+                            BINARY_DATA_TYPE,
+                            (oneData.value as String)
+                                .replace("base64:", "")
+                        )
                     }
                     else -> {
                         throw Error("There is no the data type")
@@ -134,12 +140,13 @@ data class DataTransaction(
 
         override fun create(parcel: Parcel): DataTransaction {
             return DataTransaction(
-                    mutableListOf<Data>().apply {
-                        parcel.readTypedList(this, Data.CREATOR)
-                    })
-                    .apply {
-                        readBaseFromParcel(parcel)
-                    }
+                mutableListOf<Data>().apply {
+                    parcel.readTypedList(this, Data.CREATOR)
+                }
+            )
+                .apply {
+                    readBaseFromParcel(parcel)
+                }
         }
 
         fun integerValue(type: Byte, int64Value: Long): ByteArray {
@@ -180,32 +187,33 @@ data class DataTransaction(
      * Data of Data transaction.
      */
     class Data(
-            /**
-             * Key of data of Data transaction
-             */
-            @SerializedName("key")
-            var key: String?,
+        /**
+         * Key of data of Data transaction
+         */
+        @SerializedName("key")
+        var key: String?,
 
-            /**
-             * Type of data of Data transaction type can be only "string", "boolean", "integer", "binary"
-             */
-            @SerializedName("type")
-            var type: String?,
+        /**
+         * Type of data of Data transaction type can be only "string", "boolean", "integer", "binary"
+         */
+        @SerializedName("type")
+        var type: String?,
 
-            /**
-             * Data transaction value can be one of four types:
-             * [Long] for integer(0),
-             * [Boolean] for boolean(1),
-             * [String] for binary(2) You can use "base64:binaryString" and just "binaryString". Can't be empty string
-             * and [String] string(3).
-             */
-            @SerializedName("value")
-            var value: Any?) : Parcelable {
+        /**
+         * Data transaction value can be one of four types:
+         * [Long] for integer(0),
+         * [Boolean] for boolean(1),
+         * [String] for binary(2) You can use "base64:binaryString" and just "binaryString". Can't be empty string
+         * and [String] string(3).
+         */
+        @SerializedName("value")
+        var value: Any?
+    ) : Parcelable {
 
         private constructor(parcel: Parcel) : this(
-                key = parcel.readString(),
-                type = parcel.readString(),
-                value = parcel.readValue(Any::class.java.classLoader)
+            key = parcel.readString(),
+            type = parcel.readString(),
+            value = parcel.readValue(Any::class.java.classLoader)
         )
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {

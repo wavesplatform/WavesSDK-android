@@ -49,11 +49,14 @@ class Environment(
                 is Server.Custom -> {
                     val serverCustom = server as Server.Custom
                     ServersConfigurationResponse(
-                        "Custom", ServersConfigurationResponse.Servers(
+                        "Custom",
+                        ServersConfigurationResponse.Servers(
                             nodeUrl = serverCustom.node,
                             dataUrl = serverCustom.data,
                             matcherUrl = serverCustom.matcher
-                        ), String(byteArrayOf(serverCustom.scheme)))
+                        ),
+                        String(byteArrayOf(serverCustom.scheme))
+                    )
                 }
             }
         this.chainId = configurationResponse.scheme.first().toByte()

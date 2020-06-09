@@ -44,25 +44,28 @@ import com.wavesplatform.sdk.crypto.WavesCrypto
  * For cancel send with minSponsoredAssetFee == 0
  */
 class SponsorshipTransaction(
-        /**
-         * Selected your asset Id for sponsorship
-         */
-        @SerializedName("assetId") var assetId: String,
-        /**
-         * Min sponsored asset fee. If "0" Sponsorship will be cancelled
-         */
-        @SerializedName("minSponsoredAssetFee") var minSponsoredAssetFee: Long?)
-    : BaseTransaction(SPONSORSHIP) {
+    /**
+     * Selected your asset Id for sponsorship
+     */
+    @SerializedName("assetId") var assetId: String,
+    /**
+     * Min sponsored asset fee. If "0" Sponsorship will be cancelled
+     */
+    @SerializedName("minSponsoredAssetFee") var minSponsoredAssetFee: Long?
+) :
+    BaseTransaction(SPONSORSHIP) {
 
     override fun toBytes(): ByteArray {
         return try {
-            Bytes.concat(byteArrayOf(type),
-                    byteArrayOf(version),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    WavesCrypto.base58decode(assetId),
-                    Longs.toByteArray(minSponsoredAssetFee ?: 0),
-                    Longs.toByteArray(fee),
-                    Longs.toByteArray(timestamp))
+            Bytes.concat(
+                byteArrayOf(type),
+                byteArrayOf(version),
+                WavesCrypto.base58decode(senderPublicKey),
+                WavesCrypto.base58decode(assetId),
+                Longs.toByteArray(minSponsoredAssetFee ?: 0),
+                Longs.toByteArray(fee),
+                Longs.toByteArray(timestamp)
+            )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Sponsorship Transaction", e)
             ByteArray(0)

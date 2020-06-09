@@ -2,7 +2,6 @@ package com.wavesplatform.sdk.model.response.local
 
 import com.google.gson.annotations.SerializedName
 
-
 data class ServersConfigurationResponse(
     @SerializedName("name") var name: String = "",
     @SerializedName("servers") var servers: Servers = Servers(),

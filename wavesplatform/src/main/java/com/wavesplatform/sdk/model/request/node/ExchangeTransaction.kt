@@ -21,16 +21,128 @@ import kotlinx.android.parcel.Parcelize
  * The asset and the amount which the user requests in return.
  */
 internal class ExchangeTransaction(
+    /**
+     * 1st order
+     */
+    @SerializedName("order1")
+    var order1: Order,
+    /**
+     * 2nd order
+     */
+    @SerializedName("order2")
+    var order2: Order,
+    /**
+     * Price for amount
+     */
+    @SerializedName("price")
+    var price: Long,
+    /**
+     * Amount of asset in satoshi
+     */
+    @SerializedName("amount")
+    var amount: Long,
+    /**
+     * Fee from buyer order to mutcher
+     */
+    @SerializedName("buyMatcherFee")
+    var buyMatcherFee: Long,
+    /**
+     * Fee from seller order to mutcher
+     */
+    @SerializedName("sellMatcherFee")
+    var sellMatcherFee: Long
+) :
+    BaseTransaction(EXCHANGE) {
+
+    override fun toBytes(): ByteArray {
+        return try {
+            Bytes.concat(
+                byteArrayOf(0.toByte()),
+                byteArrayOf(type),
+                byteArrayOf(version),
+                WavesCrypto.base58decode(senderPublicKey),
+                orderArray(order1),
+                orderArray(order2),
+                Longs.toByteArray(fee),
+                Longs.toByteArray(price),
+                Longs.toByteArray(amount),
+                Longs.toByteArray(buyMatcherFee),
+                Longs.toByteArray(sellMatcherFee),
+                Longs.toByteArray(timestamp)
+            )
+        } catch (e: Exception) {
+            Log.e("Sign", "Can't create bytes for sign in Exchange Transaction", e)
+            ByteArray(0)
+        }
+    }
+
+    private fun orderArray(order: Order): ByteArray {
+        val schema1 = Bytes.concat(
+            WavesCrypto.base58decode(order.senderPublicKey),
+            WavesCrypto.base58decode(order.matcherPublicKey),
+            WavesCrypto.base58decode(order.assetPair.amountAsset),
+            WavesCrypto.base58decode(order.assetPair.priceAsset),
+            byteArrayOf(order.orderType[0].toByte()),
+            Longs.toByteArray(order.price),
+            Longs.toByteArray(order.amount),
+            Longs.toByteArray(order.timestamp),
+            Longs.toByteArray(order.expiration),
+            Longs.toByteArray(order.matcherFee)
+        )
+
+        return Bytes.concat(
+            byteArrayOf(1),
+            Bytes.concat(
+                byteArrayOf(1),
+                schema1,
+                WavesCrypto.base58decode(order.proofs[0])
+            )
+                .arrayWithSize(),
+            byteArrayOf(2),
+            Bytes.concat(
+                byteArrayOf(version),
+                schema1,
+                byteArrayOf(1),
+                WavesCrypto.base58decode(order.proofs[0])
+            )
+                .arrayWithSize(),
+            byteArrayOf(version),
+            byteArrayOf(4)
+        )
+    }
+
+    @Parcelize
+    class Order(
         /**
-         * 1st order
+         * Id of order, hash of data, returns after send Exchange transaction
          */
-        @SerializedName("order1")
-        var order1: Order,
+        @SerializedName("id")
+        var id: String,
         /**
-         * 2nd order
+         * Address of sender, returns after send Exchange transaction
          */
-        @SerializedName("order2")
-        var order2: Order,
+        @SerializedName("sender")
+        var sender: String,
+        /**
+         * Account public key of the sender
+         */
+        @SerializedName("senderPublicKey")
+        var senderPublicKey: String,
+        /**
+         * Matcher Public Key, available in MatcherService.matcherPublicKey() for DEX
+         */
+        @SerializedName("matcherPublicKey")
+        var matcherPublicKey: String,
+        /**
+         * Exchangeable pair. We sell or buy always amount asset and we always give price asset
+         */
+        @SerializedName("assetPair")
+        var assetPair: AssetPair,
+        /**
+         * Order type buy(0) or sell(1)
+         */
+        @SerializedName("orderType")
+        var orderType: String,
         /**
          * Price for amount
          */
@@ -42,151 +154,43 @@ internal class ExchangeTransaction(
         @SerializedName("amount")
         var amount: Long,
         /**
-         * Fee from buyer order to mutcher
+         * Unix time of creation
          */
-        @SerializedName("buyMatcherFee")
-        var buyMatcherFee: Long,
+        @SerializedName("timestamp")
+        var timestamp: Long = 0L,
+        @SerializedName("expiration")
         /**
-         * Fee from seller order to mutcher
+         * Unix time of order expiration. Until the time order will be work.
          */
-        @SerializedName("sellMatcherFee")
-        var sellMatcherFee: Long)
-    : BaseTransaction(EXCHANGE) {
-
-    override fun toBytes(): ByteArray {
-        return try {
-            Bytes.concat(
-                    byteArrayOf(0.toByte()),
-                    byteArrayOf(type),
-                    byteArrayOf(version),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    orderArray(order1),
-                    orderArray(order2),
-                    Longs.toByteArray(fee),
-                    Longs.toByteArray(price),
-                    Longs.toByteArray(amount),
-                    Longs.toByteArray(buyMatcherFee),
-                    Longs.toByteArray(sellMatcherFee),
-                    Longs.toByteArray(timestamp))
-        } catch (e: Exception) {
-            Log.e("Sign", "Can't create bytes for sign in Exchange Transaction", e)
-            ByteArray(0)
-        }
-    }
-
-    private fun orderArray(order: Order): ByteArray {
-        val schema1 = Bytes.concat(
-                WavesCrypto.base58decode(order.senderPublicKey),
-                WavesCrypto.base58decode(order.matcherPublicKey),
-                WavesCrypto.base58decode(order.assetPair.amountAsset),
-                WavesCrypto.base58decode(order.assetPair.priceAsset),
-                byteArrayOf(order.orderType[0].toByte()),
-                Longs.toByteArray(order.price),
-                Longs.toByteArray(order.amount),
-                Longs.toByteArray(order.timestamp),
-                Longs.toByteArray(order.expiration),
-                Longs.toByteArray(order.matcherFee))
-
-        return Bytes.concat(
-                byteArrayOf(1),
-                Bytes.concat(
-                        byteArrayOf(1),
-                        schema1,
-                        WavesCrypto.base58decode(order.proofs[0]))
-                        .arrayWithSize(),
-                byteArrayOf(2),
-                Bytes.concat(
-                        byteArrayOf(version),
-                        schema1,
-                        byteArrayOf(1),
-                        WavesCrypto.base58decode(order.proofs[0]))
-                        .arrayWithSize(),
-                byteArrayOf(version),
-                byteArrayOf(4)
-        )
-    }
-
-    @Parcelize
-    class Order(
-            /**
-             * Id of order, hash of data, returns after send Exchange transaction
-             */
-            @SerializedName("id")
-            var id: String,
-            /**
-             * Address of sender, returns after send Exchange transaction
-             */
-            @SerializedName("sender")
-            var sender: String,
-            /**
-             * Account public key of the sender
-             */
-            @SerializedName("senderPublicKey")
-            var senderPublicKey: String,
-            /**
-             * Matcher Public Key, available in MatcherService.matcherPublicKey() for DEX
-             */
-            @SerializedName("matcherPublicKey")
-            var matcherPublicKey: String,
-            /**
-             * Exchangeable pair. We sell or buy always amount asset and we always give price asset
-             */
-            @SerializedName("assetPair")
-            var assetPair: AssetPair,
-            /**
-             * Order type buy(0) or sell(1)
-             */
-            @SerializedName("orderType")
-            var orderType: String,
-            /**
-             * Price for amount
-             */
-            @SerializedName("price")
-            var price: Long,
-            /**
-             * Amount of asset in satoshi
-             */
-            @SerializedName("amount")
-            var amount: Long,
-            /**
-             * Unix time of creation
-             */
-            @SerializedName("timestamp")
-            var timestamp: Long = 0L,
-            @SerializedName("expiration")
-            /**
-             * Unix time of order expiration. Until the time order will be work.
-             */
-            var expiration: Long,
-            @SerializedName("matcherFee")
-            /**
-             * Amount matcher fee of Waves in satoshi
-             */
-            var matcherFee: Long,
-            /**
-             * Signature v1. See also [proofs]
-             */
-            @SerializedName("signature")
-            var signature: String?,
-            /**
-             * Signatures v2 string set.
-             * A transaction signature is a digital signature
-             * with which the sender confirms the ownership of the outgoing transaction.
-             * If the array is empty, then S= 3. If the array is not empty,
-             * then S = 3 + 2 × N + (P1 + P2 + ... + Pn), where N is the number of proofs in the array,
-             * Pn is the size on N-th proof in bytes.
-             * The maximum number of proofs in the array is 8. The maximum size of each proof is 64 bytes
-             */
-            @SerializedName("proofs")
-            val proofs: MutableList<String> = mutableListOf()
+        var expiration: Long,
+        @SerializedName("matcherFee")
+        /**
+         * Amount matcher fee of Waves in satoshi
+         */
+        var matcherFee: Long,
+        /**
+         * Signature v1. See also [proofs]
+         */
+        @SerializedName("signature")
+        var signature: String?,
+        /**
+         * Signatures v2 string set.
+         * A transaction signature is a digital signature
+         * with which the sender confirms the ownership of the outgoing transaction.
+         * If the array is empty, then S= 3. If the array is not empty,
+         * then S = 3 + 2 × N + (P1 + P2 + ... + Pn), where N is the number of proofs in the array,
+         * Pn is the size on N-th proof in bytes.
+         * The maximum number of proofs in the array is 8. The maximum size of each proof is 64 bytes
+         */
+        @SerializedName("proofs")
+        val proofs: MutableList<String> = mutableListOf()
     ) : Parcelable
-
 
     @Parcelize
     class AssetPair(
-            @SerializedName("amountAsset")
-            var amountAsset: String,
-            @SerializedName("priceAsset")
-            var priceAsset: String
+        @SerializedName("amountAsset")
+        var amountAsset: String,
+        @SerializedName("priceAsset")
+        var priceAsset: String
     ) : Parcelable
 }

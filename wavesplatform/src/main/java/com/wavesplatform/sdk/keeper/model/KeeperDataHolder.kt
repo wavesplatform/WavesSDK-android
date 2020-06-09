@@ -5,5 +5,4 @@
 
 package com.wavesplatform.sdk.keeper.model
 
-
 data class KeeperDataHolder(val processData: KeeperProcessData)

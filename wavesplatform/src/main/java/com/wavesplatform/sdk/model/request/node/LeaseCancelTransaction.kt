@@ -17,21 +17,23 @@ import com.wavesplatform.sdk.crypto.WavesCrypto
  * and discontinue the WAVES leasing process to a Waves node.
  */
 class LeaseCancelTransaction(
-        /**
-         * Id of Leasing Transaction to cancel
-         */
-        @SerializedName("leaseId") var leaseId: String = "")
-    : BaseTransaction(CANCEL_LEASING) {
+    /**
+     * Id of Leasing Transaction to cancel
+     */
+    @SerializedName("leaseId") var leaseId: String = ""
+) :
+    BaseTransaction(CANCEL_LEASING) {
 
     override fun toBytes(): ByteArray {
         return try {
-            Bytes.concat(byteArrayOf(type),
-                    byteArrayOf(version),
-                    byteArrayOf(chainId),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    Longs.toByteArray(fee),
-                    Longs.toByteArray(timestamp),
-                    WavesCrypto.base58decode(leaseId)
+            Bytes.concat(
+                byteArrayOf(type),
+                byteArrayOf(version),
+                byteArrayOf(chainId),
+                WavesCrypto.base58decode(senderPublicKey),
+                Longs.toByteArray(fee),
+                Longs.toByteArray(timestamp),
+                WavesCrypto.base58decode(leaseId)
             )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Cancel Leasing Transaction", e)

@@ -45,8 +45,8 @@ package com.wavesplatform.sdk.crypto.hash
  * ===========================(LICENSE END)=============================
 </pre> *
  *
- * @version   $Revision: 229 $
- * @author    Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
+ * @version $Revision: 229 $
+ * @author Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
  */
 
 abstract class DigestEngine : Digest {
@@ -64,7 +64,7 @@ abstract class DigestEngine : Digest {
      * unprocessed. The values of the remaining bytes are
      * undefined and may be altered at will.
      *
-     * @return  a block-sized internal buffer
+     * @return a block-sized internal buffer
      */
     protected val blockBuffer: ByteArray
     private var outputBuf: ByteArray? = null
@@ -74,7 +74,7 @@ abstract class DigestEngine : Digest {
      * current hash operation. That counter is incremented
      * *after* the call to [.processBlock].
      *
-     * @return  the block count
+     * @return the block count
      */
     protected var blockCount: Long = 0
         private set
@@ -88,7 +88,7 @@ abstract class DigestEngine : Digest {
      * block length (which is used, for instance, by HMAC) is
      * suboptimal with regards to internal buffering needs.
      *
-     * @return  the internal block length (in bytes)
+     * @return the internal block length (in bytes)
      */
     protected val internalBlockLength: Int
         get() = blockLength
@@ -230,7 +230,7 @@ abstract class DigestEngine : Digest {
      * Flush internal buffers, so that less than a block of data
      * may at most be upheld.
      *
-     * @return  the number of bytes still unprocessed after the flush
+     * @return the number of bytes still unprocessed after the flush
      */
     protected fun flush(): Int {
         return inputLen
@@ -244,7 +244,7 @@ abstract class DigestEngine : Digest {
      * method.
      *
      * @param dest   the copy
-     * @return  the value `dest`
+     * @return the value `dest`
      */
     protected fun copyState(dest: DigestEngine): Digest {
         dest.inputLen = inputLen

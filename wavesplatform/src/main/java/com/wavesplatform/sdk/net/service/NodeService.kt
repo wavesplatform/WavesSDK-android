@@ -42,8 +42,10 @@ interface NodeService {
     fun assetsBalance(@Path("address") address: String?): Observable<AssetBalancesResponse>
 
     @GET("assets/balance/{address}")
-    fun assetsBalanceWithoutCache(@Path("address") address: String?,
-                                  @Query("r") random: Int? = Random().nextInt()): Observable<AssetBalancesResponse>
+    fun assetsBalanceWithoutCache(
+        @Path("address") address: String?,
+        @Query("r") random: Int? = Random().nextInt()
+    ): Observable<AssetBalancesResponse>
 
     /**
      * Account's assetId balance by address
@@ -52,8 +54,8 @@ interface NodeService {
      */
     @GET("assets/balance/{address}/{assetId}")
     fun assetsBalance(
-            @Path("address") address: String?,
-            @Path("assetId") assetId: String?
+        @Path("address") address: String?,
+        @Path("assetId") assetId: String?
     ): Observable<AddressAssetBalanceResponse>
 
     /**
@@ -69,8 +71,10 @@ interface NodeService {
      * @param key Exact keys to query
      */
     @GET("/addresses/data/{address}")
-    fun dataByAddress(@Path("address") address: String,
-                      @Query("key") key: String?): Observable<MutableList<BlockChainData>>
+    fun dataByAddress(
+        @Path("address") address: String,
+        @Query("key") key: String?
+    ): Observable<MutableList<BlockChainData>>
 
     /**
      * Get list of transactions where specified address has been involved
@@ -78,8 +82,10 @@ interface NodeService {
      * @param limit Number of transactions to be returned. Max is last 1000.
      */
     @GET("transactions/address/{address}/limit/{limit}")
-    fun transactionsAddress(@Path("address") address: String?,
-                            @Path("limit") limit: Int): Observable<List<List<HistoryTransactionResponse>>>
+    fun transactionsAddress(
+        @Path("address") address: String?,
+        @Path("limit") limit: Int
+    ): Observable<List<List<HistoryTransactionResponse>>>
 
     /**
      * Get current Waves block-chain height
@@ -99,7 +105,6 @@ interface NodeService {
      */
     @GET("/utils/time")
     fun utilsTime(): Observable<UtilsTimeResponse>
-
 
     // Broadcast transactions //////////////////////////////////////
 
@@ -200,5 +205,4 @@ interface NodeService {
      */
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: InvokeScriptTransaction): Observable<InvokeScriptTransactionResponse>
-
 }

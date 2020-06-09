@@ -59,12 +59,13 @@ class MoneyUtil private constructor() {
         fun getScaledText(amount: Long, decimals: Int): String {
             return try {
                 get().getFormatter(decimals).format(
-                        BigDecimal.valueOf(amount, decimals))
+                    BigDecimal.valueOf(amount, decimals)
+                )
             } catch (e: Exception) {
                 get().getFormatter(8).format(
-                        BigDecimal.valueOf(amount, decimals))
+                    BigDecimal.valueOf(amount, decimals)
+                )
             }
-
         }
 
         fun getTextStripZeros(amount: String): String {
@@ -78,7 +79,8 @@ class MoneyUtil private constructor() {
             formatter.minimumFractionDigits = 1
             formatter.isParseBigDecimal = true
             return formatter.format(
-                    BigDecimal.valueOf(amount, decimals))
+                BigDecimal.valueOf(amount, decimals)
+            )
         }
 
         fun getFormattedTotal(amount: Double, decimals: Int): String {
@@ -122,8 +124,10 @@ class MoneyUtil private constructor() {
                 return 0L
             return try {
                 val value = get().getFormatter(decimals).parse(amount)
-                (value as? BigDecimal)?.setScale(decimals,
-                        roundingMod)?.unscaledValue()?.toLong() ?: 0L
+                (value as? BigDecimal)?.setScale(
+                    decimals,
+                    roundingMod
+                )?.unscaledValue()?.toLong() ?: 0L
             } catch (ex: Exception) {
                 0L
             }

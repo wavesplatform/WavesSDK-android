@@ -12,9 +12,11 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.DataTransaction]
  */
 @Parcelize
-class DataTransactionResponse(@SerializedName("data")
-                              var data: List<DataTransaction.Data>? = null)
-    : BaseTransactionResponse(type = BaseTransaction.DATA), KeeperTransactionResponse {
+class DataTransactionResponse(
+    @SerializedName("data")
+    var data: List<DataTransaction.Data>? = null
+) :
+    BaseTransactionResponse(type = BaseTransaction.DATA), KeeperTransactionResponse {
 
     companion object : Parceler<DataTransactionResponse> {
 
@@ -27,12 +29,13 @@ class DataTransactionResponse(@SerializedName("data")
 
         override fun create(parcel: Parcel): DataTransactionResponse {
             return DataTransactionResponse(
-                    mutableListOf<DataTransaction.Data>().apply {
-                        parcel.readTypedList(this, DataTransaction.Data.CREATOR)
-                    })
-                    .apply {
-                        readBaseFromParcel(parcel)
-                    }
+                mutableListOf<DataTransaction.Data>().apply {
+                    parcel.readTypedList(this, DataTransaction.Data.CREATOR)
+                }
+            )
+                .apply {
+                    readBaseFromParcel(parcel)
+                }
         }
     }
 }

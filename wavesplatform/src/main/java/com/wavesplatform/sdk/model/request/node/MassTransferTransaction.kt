@@ -12,7 +12,6 @@ import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.SignUtil.attachmentBytes
 import kotlinx.android.parcel.Parcelize
 
-
 /**
  * The Mass-Transfer transaction sends a lot of transactions of asset for recipients set
  *

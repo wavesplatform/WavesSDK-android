@@ -33,8 +33,8 @@ package com.wavesplatform.sdk.crypto.hash
  * ===========================(LICENSE END)=============================
 </pre> *
  *
- * @version   $Revision: 258 $
- * @author    Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
+ * @version $Revision: 258 $
+ * @author Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
  */
 
 abstract class KeccakCore : DigestEngine() {
@@ -598,17 +598,19 @@ abstract class KeccakCore : DigestEngine() {
          *
          * @param buf   the source buffer
          * @param off   the source offset
-         * @return  the decoded value
+         * @return the decoded value
          */
         private fun decodeLELong(buf: ByteArray, off: Int): Long {
-            return (buf[off + 0].toLong() and 0xFFL
+            return (
+                buf[off + 0].toLong() and 0xFFL
                     or (buf[off + 1].toLong() and 0xFFL shl 8)
                     or (buf[off + 2].toLong() and 0xFFL shl 16)
                     or (buf[off + 3].toLong() and 0xFFL shl 24)
                     or (buf[off + 4].toLong() and 0xFFL shl 32)
                     or (buf[off + 5].toLong() and 0xFFL shl 40)
                     or (buf[off + 6].toLong() and 0xFFL shl 48)
-                    or (buf[off + 7].toLong() and 0xFFL shl 56))
+                    or (buf[off + 7].toLong() and 0xFFL shl 56)
+                )
         }
     }
 }

@@ -52,7 +52,6 @@ class SetScriptTransaction(
                 Longs.toByteArray(fee),
                 Longs.toByteArray(timestamp)
             )
-
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in SetScript Transaction", e)
             ByteArray(0)

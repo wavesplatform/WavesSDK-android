@@ -9,10 +9,12 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.ReissueTransaction]
  */
 @Parcelize
-class ReissueTransactionResponse(@SerializedName("assetId")
-                                 var assetId: String,
-                                 @SerializedName("quantity")
-                                 var quantity: Long,
-                                 @SerializedName("reissuable")
-                                 var reissuable: Boolean)
-    : BaseTransactionResponse(type = BaseTransaction.REISSUE), Parcelable
+class ReissueTransactionResponse(
+    @SerializedName("assetId")
+    var assetId: String,
+    @SerializedName("quantity")
+    var quantity: Long,
+    @SerializedName("reissuable")
+    var reissuable: Boolean
+) :
+    BaseTransactionResponse(type = BaseTransaction.REISSUE), Parcelable

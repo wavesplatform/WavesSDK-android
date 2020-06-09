@@ -5,14 +5,13 @@
 
 package com.wavesplatform.sdk.model.response.node
 
-
 import com.google.gson.annotations.SerializedName
 
 data class BlockChainData(
-        @SerializedName("key")
-        var key: String,
-        @SerializedName("type")
-        var type: String,
-        @SerializedName("value")
-        var value: Int
+    @SerializedName("key")
+    var key: String,
+    @SerializedName("type")
+    var type: String,
+    @SerializedName("value")
+    var value: Int
 )

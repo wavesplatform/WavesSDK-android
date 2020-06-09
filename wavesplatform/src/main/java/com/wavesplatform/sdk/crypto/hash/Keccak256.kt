@@ -33,8 +33,8 @@ package com.wavesplatform.sdk.crypto.hash
  * ===========================(LICENSE END)=============================
 </pre> *
  *
- * @version   $Revision: 189 $
- * @author    Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
+ * @version $Revision: 189 $
+ * @author Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
  */
 
 /**

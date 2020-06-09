@@ -14,20 +14,22 @@ import com.wavesplatform.sdk.utils.stripZeros
 import java.math.BigInteger
 
 class OrderBookResponse(
-        @SerializedName("timestamp") var timestamp: Long = 0,
-        @SerializedName("pair") var pair: PairResponse = PairResponse(),
-        @SerializedName("bids") var bids: List<BidResponse> = listOf(),
-        @SerializedName("asks") var asks: List<AskResponse> = listOf()
+    @SerializedName("timestamp") var timestamp: Long = 0,
+    @SerializedName("pair") var pair: PairResponse = PairResponse(),
+    @SerializedName("bids") var bids: List<BidResponse> = listOf(),
+    @SerializedName("asks") var asks: List<AskResponse> = listOf()
 ) {
 
     class PairResponse(
-            @SerializedName("amountAsset") var amountAsset: String = "",
-            @SerializedName("priceAsset") var priceAsset: String = ""
+        @SerializedName("amountAsset") var amountAsset: String = "",
+        @SerializedName("priceAsset") var priceAsset: String = ""
     ) {
         fun toBytes(): ByteArray {
             return try {
-                Bytes.concat(SignUtil.arrayOption(amountAsset),
-                        SignUtil.arrayOption(priceAsset))
+                Bytes.concat(
+                    SignUtil.arrayOption(amountAsset),
+                    SignUtil.arrayOption(priceAsset)
+                )
             } catch (e: Exception) {
                 Log.e("Wallet", "Couldn't create bytes for AssetPairResponse: ", e)
                 ByteArray(0)
@@ -36,16 +38,16 @@ class OrderBookResponse(
     }
 
     open class AskResponse(
-            @SerializedName("amount") var amount: Long = 0,
-            @SerializedName("price") var price: Long = 0,
-            @SerializedName("sum") var sum: Long = 0
+        @SerializedName("amount") var amount: Long = 0,
+        @SerializedName("price") var price: Long = 0,
+        @SerializedName("sum") var sum: Long = 0
     ) {
 
         val total: Long
             get() {
                 return BigInteger.valueOf(amount)
-                        .multiply(BigInteger.valueOf(price))
-                        .divide(BigInteger.valueOf(100000000)).toLong()
+                    .multiply(BigInteger.valueOf(price))
+                    .divide(BigInteger.valueOf(100000000)).toLong()
             }
 
         fun getScaledSum(priceAssetDecimals: Int?): String {
@@ -54,18 +56,17 @@ class OrderBookResponse(
     }
 
     open class BidResponse(
-            @SerializedName("amount") var amount: Long = 0,
-            @SerializedName("price") var price: Long = 0,
-            @SerializedName("sum") var sum: Long = 0
+        @SerializedName("amount") var amount: Long = 0,
+        @SerializedName("price") var price: Long = 0,
+        @SerializedName("sum") var sum: Long = 0
     ) {
 
         val total: Long
             get() {
                 return BigInteger.valueOf(amount)
-                        .multiply(BigInteger.valueOf(price))
-                        .divide(BigInteger.valueOf(100000000)).toLong()
+                    .multiply(BigInteger.valueOf(price))
+                    .divide(BigInteger.valueOf(100000000)).toLong()
             }
-
 
         fun getScaledSum(priceAssetDecimals: Int?): String {
             return MoneyUtil.getTextStripZeros(sum, priceAssetDecimals ?: 8).stripZeros()

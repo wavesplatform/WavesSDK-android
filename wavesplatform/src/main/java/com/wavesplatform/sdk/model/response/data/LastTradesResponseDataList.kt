@@ -11,24 +11,52 @@ import com.wavesplatform.sdk.model.response.data.transaction.BaseDataListTransac
 class LastTradesResponseDataList : BaseDataListTransactionsResponse<LastTradesResponseDataList.ExchangeTransactionResponse>() {
 
     data class ExchangeTransactionResponse(
+        @SerializedName("amount")
+        var amount: Double = 0.0,
+        @SerializedName("buyMatcherFee")
+        var buyMatcherFee: Double = 0.0,
+        @SerializedName("fee")
+        var fee: Double = 0.0,
+        @SerializedName("height")
+        var height: Int = 0,
+        @SerializedName("id")
+        var id: String = "",
+        @SerializedName("order1")
+        var order1: ExchangeOrderResponse = ExchangeOrderResponse(),
+        @SerializedName("order2")
+        var order2: ExchangeOrderResponse = ExchangeOrderResponse(),
+        @SerializedName("price")
+        var price: Double = 0.0,
+        @SerializedName("sellMatcherFee")
+        var sellMatcherFee: Double = 0.0,
+        @SerializedName("sender")
+        var sender: String = "",
+        @SerializedName("senderPublicKey")
+        var senderPublicKey: String = "",
+        @SerializedName("signature")
+        var signature: String = "",
+        @SerializedName("timestamp")
+        var timestamp: String = "",
+        @SerializedName("type")
+        var type: Int = 0
+    ) {
+        data class ExchangeOrderResponse(
             @SerializedName("amount")
             var amount: Double = 0.0,
-            @SerializedName("buyMatcherFee")
-            var buyMatcherFee: Double = 0.0,
-            @SerializedName("fee")
-            var fee: Double = 0.0,
-            @SerializedName("height")
-            var height: Int = 0,
+            @SerializedName("assetPair")
+            var assetPair: AssetPairResponse = AssetPairResponse(),
+            @SerializedName("expiration")
+            var expiration: String = "",
             @SerializedName("id")
             var id: String = "",
-            @SerializedName("order1")
-            var order1: ExchangeOrderResponse = ExchangeOrderResponse(),
-            @SerializedName("order2")
-            var order2: ExchangeOrderResponse = ExchangeOrderResponse(),
+            @SerializedName("matcherFee")
+            var matcherFee: Double = 0.0,
+            @SerializedName("matcherPublicKey")
+            var matcherPublicKey: String = "",
+            @SerializedName("orderType")
+            var orderType: String = "",
             @SerializedName("price")
             var price: Double = 0.0,
-            @SerializedName("sellMatcherFee")
-            var sellMatcherFee: Double = 0.0,
             @SerializedName("sender")
             var sender: String = "",
             @SerializedName("senderPublicKey")
@@ -36,42 +64,14 @@ class LastTradesResponseDataList : BaseDataListTransactionsResponse<LastTradesRe
             @SerializedName("signature")
             var signature: String = "",
             @SerializedName("timestamp")
-            var timestamp: String = "",
-            @SerializedName("type")
-            var type: Int = 0
-    ) {
-        data class ExchangeOrderResponse(
-                @SerializedName("amount")
-                var amount: Double = 0.0,
-                @SerializedName("assetPair")
-                var assetPair: AssetPairResponse = AssetPairResponse(),
-                @SerializedName("expiration")
-                var expiration: String = "",
-                @SerializedName("id")
-                var id: String = "",
-                @SerializedName("matcherFee")
-                var matcherFee: Double = 0.0,
-                @SerializedName("matcherPublicKey")
-                var matcherPublicKey: String = "",
-                @SerializedName("orderType")
-                var orderType: String = "",
-                @SerializedName("price")
-                var price: Double = 0.0,
-                @SerializedName("sender")
-                var sender: String = "",
-                @SerializedName("senderPublicKey")
-                var senderPublicKey: String = "",
-                @SerializedName("signature")
-                var signature: String = "",
-                @SerializedName("timestamp")
-                var timestamp: String = ""
+            var timestamp: String = ""
         ) {
 
             data class AssetPairResponse(
-                    @SerializedName("amountAsset")
-                    var amountAsset: String = "",
-                    @SerializedName("priceAsset")
-                    var priceAsset: String = ""
+                @SerializedName("amountAsset")
+                var amountAsset: String = "",
+                @SerializedName("priceAsset")
+                var priceAsset: String = ""
             )
         }
 

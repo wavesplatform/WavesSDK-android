@@ -10,16 +10,18 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.ExchangeTransaction]
  */
 @Parcelize
-internal class ExchangeTransactionResponse(@SerializedName("order1")
-                                  var order1: ExchangeTransaction.Order,
-                                           @SerializedName("order2")
-                                  var order2: ExchangeTransaction.Order,
-                                           @SerializedName("price")
-                                  var price: Long,
-                                           @SerializedName("amount")
-                                  var amount: Long,
-                                           @SerializedName("buyMatcherFee")
-                                  var buyMatcherFee: Long,
-                                           @SerializedName("sellMatcherFee")
-                                  var sellMatcherFee: Long)
-    : BaseTransactionResponse(type = BaseTransaction.EXCHANGE), Parcelable
+internal class ExchangeTransactionResponse(
+    @SerializedName("order1")
+    var order1: ExchangeTransaction.Order,
+    @SerializedName("order2")
+    var order2: ExchangeTransaction.Order,
+    @SerializedName("price")
+    var price: Long,
+    @SerializedName("amount")
+    var amount: Long,
+    @SerializedName("buyMatcherFee")
+    var buyMatcherFee: Long,
+    @SerializedName("sellMatcherFee")
+    var sellMatcherFee: Long
+) :
+    BaseTransactionResponse(type = BaseTransaction.EXCHANGE), Parcelable
