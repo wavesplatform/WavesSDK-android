@@ -1,7 +1,7 @@
 package com.wavesplatform.sdk.crypto
 
 import android.util.Base64
-import java.util.*
+import java.util.Arrays
 
 typealias Bytes = ByteArray
 typealias PublicKey = String

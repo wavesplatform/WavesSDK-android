@@ -11,7 +11,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 class MoneyUtil private constructor() {
     private val wavesFormat: DecimalFormat

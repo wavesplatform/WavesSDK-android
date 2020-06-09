@@ -8,7 +8,7 @@ package com.wavesplatform.sdk.utils
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Point
-import java.util.*
+import java.util.Arrays
 
 /**
  * Icon generator by hash-string to bitmap

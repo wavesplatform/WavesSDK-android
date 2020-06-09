@@ -9,7 +9,6 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.utils.MoneyUtil
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 open class AssetBalancesResponse(
     @SerializedName("address") var address: String? = null,

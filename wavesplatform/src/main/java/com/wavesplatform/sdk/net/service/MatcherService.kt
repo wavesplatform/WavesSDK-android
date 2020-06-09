@@ -14,7 +14,12 @@ import com.wavesplatform.sdk.model.response.matcher.MarketsResponse
 import com.wavesplatform.sdk.model.response.matcher.MatcherSettingsResponse
 import com.wavesplatform.sdk.model.response.matcher.OrderBookResponse
 import io.reactivex.Observable
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * It is matcher Service for DEX, decentralized exchange of Waves.

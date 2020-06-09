@@ -20,7 +20,7 @@ package com.wavesplatform.sdk.crypto.hash
 import java.io.PrintStream
 import java.security.Key
 import java.security.spec.AlgorithmParameterSpec
-import java.util.*
+import java.util.Arrays
 
 interface Blake2b {
     // ---------------------------------------------------------------------
@@ -192,16 +192,14 @@ interface Blake2b {
      * <br></br>
      * Further node, that tree does NOT accumulate the leaf hashes --
      * you need to do that
-     */
-    class Tree
-    /**
      *
      * @param fanout
      * @param depth
      * @param leaf_length size of data input for leaf nodes.
      * @param inner_length note this is used also as digest-length for non-root nodes.
      * @param digest_length final hash out digest-length for the tree
-     */(
+     */
+    class Tree(
         internal val depth: Int,
         internal val fanout: Int,
         internal val leaf_length: Int,

@@ -19,7 +19,12 @@ import com.wavesplatform.sdk.keeper.interfaces.Keeper
 import com.wavesplatform.sdk.keeper.interfaces.KeeperCallback
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransaction
 import com.wavesplatform.sdk.keeper.interfaces.KeeperTransactionResponse
-import com.wavesplatform.sdk.keeper.model.*
+import com.wavesplatform.sdk.keeper.model.DApp
+import com.wavesplatform.sdk.keeper.model.KeeperActionType
+import com.wavesplatform.sdk.keeper.model.KeeperDataHolder
+import com.wavesplatform.sdk.keeper.model.KeeperIntentResult
+import com.wavesplatform.sdk.keeper.model.KeeperProcessData
+import com.wavesplatform.sdk.keeper.model.KeeperResult
 import com.wavesplatform.sdk.model.request.node.DataTransaction
 import com.wavesplatform.sdk.model.request.node.InvokeScriptTransaction
 import com.wavesplatform.sdk.model.request.node.TransferTransaction

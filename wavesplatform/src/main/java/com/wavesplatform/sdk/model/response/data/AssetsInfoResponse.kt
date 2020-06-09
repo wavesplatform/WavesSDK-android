@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.utils.WavesConstants
 import com.wavesplatform.sdk.utils.isWavesId
 import kotlinx.android.parcel.Parcelize
-import java.util.*
+import java.util.Date
 
 data class AssetsInfoResponse(
     @SerializedName("__type") var type: String = "list",

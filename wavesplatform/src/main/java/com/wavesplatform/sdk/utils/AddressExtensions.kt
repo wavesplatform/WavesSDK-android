@@ -2,7 +2,7 @@ package com.wavesplatform.sdk.utils
 
 import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.crypto.WavesCrypto
-import java.util.*
+import java.util.Arrays
 
 const val WAVES_PREFIX = "waves://"
 
