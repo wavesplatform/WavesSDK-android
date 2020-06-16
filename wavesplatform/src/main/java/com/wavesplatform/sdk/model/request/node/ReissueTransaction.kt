@@ -16,21 +16,22 @@ import com.wavesplatform.sdk.crypto.WavesCrypto
  * by specifying the amount and the asset id. Only quantity and reissuable can be new values
  */
 class ReissueTransaction(
-        /**
-         * Id of your asset that should be changed
-         */
-        @SerializedName("assetId") val assetId: String,
-        /**
-         * Quantity defines the total tokens supply that your asset will contain
-         */
-        @SerializedName("quantity") val quantity: Long,
-        /**
-         * Reissuability allows for additional tokens creation that will be added
-         * to the total token supply of asset.
-         * A non-reissuable asset will be permanently limited to the total token supply
-         * defined during the transaction.
-         */
-        @SerializedName("reissuable") val reissuable: Boolean) : BaseTransaction(REISSUE) {
+    /**
+     * Id of your asset that should be changed
+     */
+    @SerializedName("assetId") val assetId: String,
+    /**
+     * Quantity defines the total tokens supply that your asset will contain
+     */
+    @SerializedName("quantity") val quantity: Long,
+    /**
+     * Reissuability allows for additional tokens creation that will be added
+     * to the total token supply of asset.
+     * A non-reissuable asset will be permanently limited to the total token supply
+     * defined during the transaction.
+     */
+    @SerializedName("reissuable") val reissuable: Boolean
+) : BaseTransaction(REISSUE) {
 
     init {
         this.fee = WAVES_REISSUE_MIN_FEE
@@ -45,15 +46,16 @@ class ReissueTransaction(
             }
 
             return Bytes.concat(
-                    byteArrayOf(type),
-                    byteArrayOf(version),
-                    byteArrayOf(chainId),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    WavesCrypto.base58decode(assetId),
-                    Longs.toByteArray(quantity),
-                    reissuableBytes,
-                    Longs.toByteArray(fee),
-                    Longs.toByteArray(timestamp))
+                byteArrayOf(type),
+                byteArrayOf(version),
+                byteArrayOf(chainId),
+                WavesCrypto.base58decode(senderPublicKey),
+                WavesCrypto.base58decode(assetId),
+                Longs.toByteArray(quantity),
+                reissuableBytes,
+                Longs.toByteArray(fee),
+                Longs.toByteArray(timestamp)
+            )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Reissue Transaction", e)
             return ByteArray(0)

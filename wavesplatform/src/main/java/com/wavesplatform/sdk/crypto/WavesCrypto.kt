@@ -1,8 +1,7 @@
 package com.wavesplatform.sdk.crypto
 
 import android.util.Base64
-import java.util.*
-
+import java.util.Arrays
 
 typealias Bytes = ByteArray
 typealias PublicKey = String
@@ -148,7 +147,6 @@ interface WavesCrypto {
      */
     fun verifyAddress(address: Address, chainId: String? = null, publicKey: PublicKey? = null): Boolean
 
-
     /**
      *
      */
@@ -170,22 +168,23 @@ interface WavesCrypto {
         const val HASH_LENGTH = 20
         const val ADDRESS_LENGTH = 1 + 1 + CHECK_SUM_LENGTH + HASH_LENGTH
 
-        const val MAIN_NET_CHAIN_ID: Byte = 87  // W
-        const val TEST_NET_CHAIN_ID: Byte = 84  // T
+        const val MAIN_NET_CHAIN_ID: Byte = 87 // W
+        const val TEST_NET_CHAIN_ID: Byte = 84 // T
         const val STAGE_NET_CHAIN_ID: Byte = 83 // S
 
-        @Synchronized fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = MAIN_NET_CHAIN_ID)
-                : String {
-            return try {
-                val publicKeyHash = keccak(publicKey).copyOf(HASH_LENGTH)
-                val withoutChecksum = com.google.common.primitives.Bytes.concat(
+        @Synchronized fun addressFromPublicKey(publicKey: ByteArray, scheme: Byte = MAIN_NET_CHAIN_ID):
+            String {
+                return try {
+                    val publicKeyHash = keccak(publicKey).copyOf(HASH_LENGTH)
+                    val withoutChecksum = com.google.common.primitives.Bytes.concat(
                         byteArrayOf(ADDRESS_VERSION, scheme),
-                        publicKeyHash)
-                Base58.encode(com.google.common.primitives.Bytes.concat(withoutChecksum, calcCheckSum(withoutChecksum)))
-            } catch (e: Exception) {
-                "Unknown address"
+                        publicKeyHash
+                    )
+                    Base58.encode(com.google.common.primitives.Bytes.concat(withoutChecksum, calcCheckSum(withoutChecksum)))
+                } catch (e: Exception) {
+                    "Unknown address"
+                }
             }
-        }
 
         fun calcCheckSum(bytes: ByteArray): ByteArray {
             return Hash.keccak(bytes).copyOfRange(0, CHECK_SUM_LENGTH)
@@ -290,14 +289,16 @@ interface WavesCrypto {
                 }
             }
 
-            if (publicKey != null
-                    && addressByPublicKey(publicKey, chainId) != address) {
+            if (publicKey != null &&
+                addressByPublicKey(publicKey, chainId) != address
+            ) {
                 return false
             }
 
             return try {
-                if (bytes.size == ADDRESS_LENGTH
-                        && bytes[0] == ADDRESS_VERSION) {
+                if (bytes.size == ADDRESS_LENGTH &&
+                    bytes[0] == ADDRESS_VERSION
+                ) {
                     val checkSum = bytes.copyOfRange(bytes.size - CHECK_SUM_LENGTH, bytes.size)
                     val checkSumGenerated = calcCheckSum(bytes.copyOf(bytes.size - CHECK_SUM_LENGTH))
                     Arrays.equals(checkSum, checkSumGenerated)

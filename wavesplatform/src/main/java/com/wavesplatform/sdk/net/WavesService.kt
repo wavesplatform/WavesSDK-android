@@ -22,7 +22,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -149,9 +148,9 @@ class WavesService(private var context: Context) {
         return Interceptor { chain ->
             val originalResponse = chain.proceed(chain.request())
             if (originalResponse.request().url().url().toString()
-                    .contains(WavesSdk.getEnvironment().nodeUrl)
-                && originalResponse.headers("Set-Cookie").isNotEmpty()
-                && this.cookies.isEmpty()
+                .contains(WavesSdk.getEnvironment().nodeUrl) &&
+                originalResponse.headers("Set-Cookie").isNotEmpty() &&
+                this.cookies.isEmpty()
             ) {
                 val cookies = originalResponse.headers("Set-Cookie")
                     .toHashSet()
@@ -172,9 +171,9 @@ class WavesService(private var context: Context) {
                 .header(
                     "User-Agent",
                     "${System.getProperty("http.agent")} " +
-                            "AppId/${context.packageName} " +
-                            "DeviceId/$deviceId " +
-                            "WavesSDK/${BuildConfig.VERSION_NAME}"
+                        "AppId/${context.packageName} " +
+                        "DeviceId/$deviceId " +
+                        "WavesSDK/${BuildConfig.VERSION_NAME}"
                 )
                 .build()
             chain.proceed(request)
@@ -184,7 +183,7 @@ class WavesService(private var context: Context) {
     private fun addCookiesInterceptor(): Interceptor {
         return Interceptor { chain ->
             if (this.cookies.isNotEmpty() && chain.request().url().url().toString()
-                    .contains(WavesSdk.getEnvironment().nodeUrl)
+                .contains(WavesSdk.getEnvironment().nodeUrl)
             ) {
                 val builder = chain.request().newBuilder()
                 this.cookies.forEach {

@@ -9,8 +9,10 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.SetAssetScriptTransaction]
  */
 @Parcelize
-class SetAssetScriptTransactionResponse(@SerializedName("assetId")
-                                     val assetId: String = "",
-                                        @SerializedName("script")
-                                     val script: String = "")
-    : BaseTransactionResponse(type = BaseTransaction.ASSET_SCRIPT), Parcelable
+class SetAssetScriptTransactionResponse(
+    @SerializedName("assetId")
+    val assetId: String = "",
+    @SerializedName("script")
+    val script: String = ""
+) :
+    BaseTransactionResponse(type = BaseTransaction.ASSET_SCRIPT), Parcelable

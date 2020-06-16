@@ -11,17 +11,19 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.TransferTransaction]
  */
 @Parcelize
-class TransferTransactionResponse(@SerializedName("assetId")
-                                  var assetId: String? = "",
-                                  @SerializedName("recipient")
-                                  var recipient: String = "",
-                                  @SerializedName("amount")
-                                  var amount: Long = 0L,
-                                  @SerializedName("attachment")
-                                  var attachment: String? = "",
-                                  @SerializedName("feeAssetId")
-                                  var feeAssetId: String? = "")
-    : BaseTransactionResponse(type = BaseTransaction.TRANSFER), KeeperTransactionResponse {
+class TransferTransactionResponse(
+    @SerializedName("assetId")
+    var assetId: String? = "",
+    @SerializedName("recipient")
+    var recipient: String = "",
+    @SerializedName("amount")
+    var amount: Long = 0L,
+    @SerializedName("attachment")
+    var attachment: String? = "",
+    @SerializedName("feeAssetId")
+    var feeAssetId: String? = ""
+) :
+    BaseTransactionResponse(type = BaseTransaction.TRANSFER), KeeperTransactionResponse {
 
     companion object : Parceler<TransferTransactionResponse> {
 
@@ -37,14 +39,16 @@ class TransferTransactionResponse(@SerializedName("assetId")
         }
 
         override fun create(parcel: Parcel): TransferTransactionResponse {
-            return TransferTransactionResponse(parcel.readString().orEmpty(),
-                    parcel.readString().orEmpty(),
-                    parcel.readLong(),
-                    parcel.readString().orEmpty(),
-                    parcel.readString().orEmpty())
-                    .apply {
-                        readBaseFromParcel(parcel)
-                    }
+            return TransferTransactionResponse(
+                parcel.readString().orEmpty(),
+                parcel.readString().orEmpty(),
+                parcel.readLong(),
+                parcel.readString().orEmpty(),
+                parcel.readString().orEmpty()
+            )
+                .apply {
+                    readBaseFromParcel(parcel)
+                }
         }
     }
 }

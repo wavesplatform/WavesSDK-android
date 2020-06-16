@@ -18,7 +18,6 @@ import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
 import java.nio.charset.Charset
 
-
 /**
  * Invoke script transaction is a transaction that invokes functions of the dApp script.
  * dApp contains compiled functions  developed with [Waves Ride IDE]({https://ide.wavesplatform.com/)
@@ -121,8 +120,10 @@ class InvokeScriptTransaction(
         return Bytes.concat(
             array,
             DataTransaction.binaryValue(
-                1, (arg.value as String)
-                    .replace("base64:", ""), true
+                1,
+                (arg.value as String)
+                    .replace("base64:", ""),
+                true
             )
         )
     }

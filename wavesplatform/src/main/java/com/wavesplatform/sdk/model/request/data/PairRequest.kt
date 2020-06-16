@@ -9,35 +9,36 @@ import com.google.gson.annotations.SerializedName
  */
 data class PairRequest(
 
-        /**
-         * Get pair info by amount and price assets
-         */
-        @SerializedName("pairs") var pairs: List<String>? = null,
+    /**
+     * Get pair info by amount and price assets
+     */
+    @SerializedName("pairs") var pairs: List<String>? = null,
 
-        /**
-         * For searching pairs, that have the {searchByAsset} in asset names,
-         * tickers, id of one asset of the pair.
-         */
-        @SerializedName("search_by_asset") var searchByAsset: String? = null,
+    /**
+     * For searching pairs, that have the {searchByAsset} in asset names,
+     * tickers, id of one asset of the pair.
+     */
+    @SerializedName("search_by_asset") var searchByAsset: String? = null,
 
-        /**
-         * For searching pairs, that have the {searchByAssets} in asset names,
-         * tickers, id of one asset of the pair.
-         */
-        @SerializedName("search_by_assets") var searchByAssets: List<String>? = null,
+    /**
+     * For searching pairs, that have the {searchByAssets} in asset names,
+     * tickers, id of one asset of the pair.
+     */
+    @SerializedName("search_by_assets") var searchByAssets: List<String>? = null,
 
-        /**
-         * Whether to search assets of pairs exactly or not.
-         * Parameter position is corresponds to asset position.
-         */
-        @SerializedName("match_exactly") var matchExactly: Boolean? = null,
+    /**
+     * Whether to search assets of pairs exactly or not.
+     * Parameter position is corresponds to asset position.
+     */
+    @SerializedName("match_exactly") var matchExactly: Boolean? = null,
 
-        /**
-         * How many pairs to await in response.
-         */
-        @SerializedName("limit") var limit: Int = 100,
+    /**
+     * How many pairs to await in response.
+     */
+    @SerializedName("limit") var limit: Int = 100,
 
-        /**
-         * Matcher address
-         */
-        @SerializedName("matcher") var matcher: String? = null)
+    /**
+     * Matcher address
+     */
+    @SerializedName("matcher") var matcher: String? = null
+)

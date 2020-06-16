@@ -13,14 +13,17 @@ fun Throwable.asRetrofitException(): NetworkException {
     // Non-200 http error
     if (this is HttpException) {
         val response = this.response()
-        return NetworkException.httpError(response.raw().request()
-            .url().toString(), response, null)
+        return NetworkException.httpError(
+            response.raw().request()
+                .url().toString(),
+            response, null
+        )
     }
 
-    if (this is TimeoutException
-        || this is ConnectException
-        || this is SocketTimeoutException
-        || this is UnknownHostException
+    if (this is TimeoutException ||
+        this is ConnectException ||
+        this is SocketTimeoutException ||
+        this is UnknownHostException
     ) {
         return NetworkException.networkError(IOException(message, this))
     }

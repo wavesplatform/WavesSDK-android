@@ -15,7 +15,6 @@ import org.spongycastle.crypto.paddings.ISO10126d2Padding
 import org.spongycastle.crypto.paddings.PaddedBufferedBlockCipher
 import org.spongycastle.crypto.params.KeyParameter
 import org.spongycastle.crypto.params.ParametersWithIV
-
 import java.io.UnsupportedEncodingException
 import java.security.SecureRandom
 
@@ -45,8 +44,13 @@ object AESUtil {
     }
 
     @Throws(InvalidCipherTextException::class, UnsupportedEncodingException::class, AESUtil.DecryptionException::class)
-    fun decryptWithSetMode(cipherText: String?, password: String?, iterations: Int = DEFAULT_PBKDF2_ITERATIONS_V2, mode: Int,
-                           padding: BlockCipherPadding?): String {
+    fun decryptWithSetMode(
+        cipherText: String?,
+        password: String?,
+        iterations: Int = DEFAULT_PBKDF2_ITERATIONS_V2,
+        mode: Int,
+        padding: BlockCipherPadding?
+    ): String {
 
         if (password == null) {
             throw Exception("Password null")
@@ -58,7 +62,7 @@ object AESUtil {
 
         val cipherData = Base64.decodeBase64(cipherText.toByteArray())
 
-        //Separate the IV and cipher data
+        // Separate the IV and cipher data
         val iv = copyOfRange(cipherData, 0, AESB_LOCK_SIZE * 4)
         val input = copyOfRange(cipherData, AESB_LOCK_SIZE * 4, cipherData.size)
 
@@ -66,7 +70,8 @@ object AESUtil {
         generator.init(
             PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(
                 password.toCharArray()
-            ), iv, iterations
+            ),
+            iv, iterations
         )
         val keyParam = generator.generateDerivedParameters(256) as KeyParameter
 
@@ -75,7 +80,6 @@ object AESUtil {
         val cipherMode: BlockCipher
         if (mode == MODE_CBC) {
             cipherMode = CBCBlockCipher(AESEngine())
-
         } else {
             cipherMode = OFBBlockCipher(AESEngine(), 128)
         }
@@ -152,7 +156,7 @@ object AESUtil {
 
         val dataBytesB64 = Base64.decodeBase64(cipherText.toByteArray(charset("UTF-8")))
 
-        //Separate the IV and cipher data
+        // Separate the IV and cipher data
         val iv = copyOfRange(dataBytesB64, 0, AESB_LOCK_SIZE * 4)
         val dataBytes = copyOfRange(dataBytesB64, AESB_LOCK_SIZE * 4, dataBytesB64.size)
 
@@ -164,12 +168,12 @@ object AESUtil {
         cipher.reset()
         cipher.init(false, params)
 
-        //Create a temporary buffer to decode into (includes padding)
+        // Create a temporary buffer to decode into (includes padding)
         val buf = ByteArray(cipher.getOutputSize(dataBytes.size))
         var len = cipher.processBytes(dataBytes, 0, dataBytes.size, buf, 0)
         len += cipher.doFinal(buf, len)
 
-        //Remove padding
+        // Remove padding
         val out = ByteArray(len)
         System.arraycopy(buf, 0, out, 0, len)
 
@@ -183,7 +187,8 @@ object AESUtil {
         generator.init(
             PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(
                 string.toCharArray()
-            ), salt, iterations
+            ),
+            salt, iterations
         )
         val keyParam = generator.generateDerivedParameters(KEY_BIT_LEN) as KeyParameter
         return keyParam.key
@@ -208,8 +213,13 @@ object AESUtil {
     }
 
     @Throws(Exception::class)
-    private fun encryptWithSetMode(clearText: String?, password: String?, iterations: Int, mode: Int,
-                                   padding: BlockCipherPadding?): String {
+    private fun encryptWithSetMode(
+        clearText: String?,
+        password: String?,
+        iterations: Int,
+        mode: Int,
+        padding: BlockCipherPadding?
+    ): String {
 
         if (password == null) {
             throw Exception("Password null")

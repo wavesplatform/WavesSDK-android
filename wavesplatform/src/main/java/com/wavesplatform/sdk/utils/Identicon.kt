@@ -8,7 +8,7 @@ package com.wavesplatform.sdk.utils
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Point
-import java.util.*
+import java.util.Arrays
 
 /**
  * Icon generator by hash-string to bitmap
@@ -164,9 +164,10 @@ class Identicon {
             }
         } else {
             return color(
-                    point = Point((matrix.size - 1 - point.x), point.y),
-                    matrix = matrix,
-                    colors = colors)
+                point = Point((matrix.size - 1 - point.x), point.y),
+                matrix = matrix,
+                colors = colors
+            )
         }
     }
 
@@ -223,12 +224,13 @@ class Identicon {
     companion object {
         var defaultOptions: Options = {
             val options = Options(
-                    grid = Options.Size(cells = 8, rows = 8),
-                    sideSizePx = 192,
-                    palette = Options.Palette.RandomColor,
-                    mainRange = Options.Range(step = 4F, length = 1.5F),
-                    hollowRange = Options.Range(step = 5F, length = 3F),
-                    backgroundRange = Options.Range(step = 3F, length = 4F))
+                grid = Options.Size(cells = 8, rows = 8),
+                sideSizePx = 192,
+                palette = Options.Palette.RandomColor,
+                mainRange = Options.Range(step = 4F, length = 1.5F),
+                hollowRange = Options.Range(step = 5F, length = 3F),
+                backgroundRange = Options.Range(step = 3F, length = 4F)
+            )
             options
         }()
     }

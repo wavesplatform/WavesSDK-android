@@ -13,7 +13,8 @@ import com.google.gson.annotations.SerializedName
  */
 data class AssetsRequest(
 
-        /**
-         * Get assets info by assets ids
-         */
-        @SerializedName("ids") var ids: List<String?>? = mutableListOf())
+    /**
+     * Get assets info by assets ids
+     */
+    @SerializedName("ids") var ids: List<String?>? = mutableListOf()
+)

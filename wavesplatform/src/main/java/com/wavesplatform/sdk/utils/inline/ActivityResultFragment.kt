@@ -18,7 +18,7 @@ class ActivityResultFragment : Fragment() {
     private var started: Boolean = false
         get() {
             return arguments?.getBoolean(KEY_STARTED)
-                    ?: throw IllegalStateException(ERR_MSG_STARTED)
+                ?: throw IllegalStateException(ERR_MSG_STARTED)
         }
         set(value) {
             field = value
@@ -37,9 +37,12 @@ class ActivityResultFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == requestCode()) {
             InlineActivityResult
-                    .getInstance()
-                    .stopWithResult(requestCode = requestCode, resultCode = resultCode, data = data
-                            ?: Intent())
+                .getInstance()
+                .stopWithResult(
+                    requestCode = requestCode, resultCode = resultCode,
+                    data = data
+                        ?: Intent()
+                )
         }
     }
 
@@ -49,19 +52,19 @@ class ActivityResultFragment : Fragment() {
 
     private fun requestCode(): Int {
         return arguments?.getInt(KEY_REQUEST_CODE, 0)
-                ?.takeIf { it != 0 }
-                ?: throw IllegalStateException(ERR_MSG_REQUEST_CODE)
+            ?.takeIf { it != 0 }
+            ?: throw IllegalStateException(ERR_MSG_REQUEST_CODE)
     }
 
     companion object {
         fun newInstance(launchIntent: Intent, requestCode: Int): ActivityResultFragment {
             return ActivityResultFragment()
-                    .apply {
-                        arguments = Bundle().apply {
-                            putParcelable(KEY_INTENT, launchIntent)
-                            putInt(KEY_REQUEST_CODE, requestCode)
-                        }
+                .apply {
+                    arguments = Bundle().apply {
+                        putParcelable(KEY_INTENT, launchIntent)
+                        putInt(KEY_REQUEST_CODE, requestCode)
                     }
+                }
         }
 
         private const val KEY_INTENT = "key_intent"

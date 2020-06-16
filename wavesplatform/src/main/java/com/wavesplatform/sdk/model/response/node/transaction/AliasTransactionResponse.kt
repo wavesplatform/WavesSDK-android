@@ -9,9 +9,11 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.AliasTransaction]
  */
 @Parcelize
-class AliasTransactionResponse(@SerializedName("alias")
-                               var alias: String = "",
-                               @SerializedName("address")
-                               var address: String = "",
-                               var own: Boolean = false)
-    : BaseTransactionResponse(type = BaseTransaction.CREATE_ALIAS), Parcelable
+class AliasTransactionResponse(
+    @SerializedName("alias")
+    var alias: String = "",
+    @SerializedName("address")
+    var address: String = "",
+    var own: Boolean = false
+) :
+    BaseTransactionResponse(type = BaseTransaction.CREATE_ALIAS), Parcelable

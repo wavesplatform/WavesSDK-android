@@ -18,5 +18,5 @@ fun Context.isAppInstalled(packageName: String): Boolean {
     }
 }
 
-fun Context.isIntentAvailable(action: String)
-        = packageManager?.queryIntentActivities(Intent(action), PackageManager.MATCH_DEFAULT_ONLY)?.any() ?: false
+fun Context.isIntentAvailable(action: String) =
+    packageManager?.queryIntentActivities(Intent(action), PackageManager.MATCH_DEFAULT_ONLY)?.any() ?: false

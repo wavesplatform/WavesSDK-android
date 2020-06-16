@@ -10,16 +10,16 @@ import android.content.Intent
 typealias OnActivityResult = (success: Boolean, data: Intent) -> Unit
 
 data class ActivityResult(
-        private var onActivityResult: OnActivityResult?,
-        private var fragmentManager: androidx.fragment.app.FragmentManager?
+    private var onActivityResult: OnActivityResult?,
+    private var fragmentManager: androidx.fragment.app.FragmentManager?
 ) {
     private fun removeFragment(requestCode: Int) {
         val tag = InlineActivityResult.getTag(requestCode)
         val fragment = fragmentManager?.findFragmentByTag(tag) ?: return
         fragmentManager
-                ?.beginTransaction()
-                ?.apply { remove(fragment) }
-                ?.commit()
+            ?.beginTransaction()
+            ?.apply { remove(fragment) }
+            ?.commit()
         fragmentManager = null
     }
 

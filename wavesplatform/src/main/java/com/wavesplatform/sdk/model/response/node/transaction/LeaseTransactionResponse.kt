@@ -9,14 +9,16 @@ import kotlinx.android.parcel.Parcelize
  * See [com.wavesplatform.sdk.model.request.node.LeaseTransaction]
  */
 @Parcelize
-class LeaseTransactionResponse(@SerializedName("assetId")
-                                       var assetId: String = "",
-                               @SerializedName("recipient")
-                                       var recipient: String = "",
-                               @SerializedName("amount")
-                                       var amount: Long = 0L,
-                               @SerializedName("attachment")
-                                       var attachment: String = "",
-                               @SerializedName("feeAssetId")
-                                       var feeAssetId: String = "")
-    : BaseTransactionResponse(type = BaseTransaction.CREATE_LEASING), Parcelable
+class LeaseTransactionResponse(
+    @SerializedName("assetId")
+    var assetId: String = "",
+    @SerializedName("recipient")
+    var recipient: String = "",
+    @SerializedName("amount")
+    var amount: Long = 0L,
+    @SerializedName("attachment")
+    var attachment: String = "",
+    @SerializedName("feeAssetId")
+    var feeAssetId: String = ""
+) :
+    BaseTransactionResponse(type = BaseTransaction.CREATE_LEASING), Parcelable

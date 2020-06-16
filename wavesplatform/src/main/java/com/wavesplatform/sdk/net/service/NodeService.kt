@@ -5,12 +5,47 @@
 
 package com.wavesplatform.sdk.net.service
 
-import com.wavesplatform.sdk.model.request.node.*
-import com.wavesplatform.sdk.model.response.node.*
+import com.wavesplatform.sdk.model.request.node.AliasTransaction
+import com.wavesplatform.sdk.model.request.node.BurnTransaction
+import com.wavesplatform.sdk.model.request.node.DataTransaction
+import com.wavesplatform.sdk.model.request.node.InvokeScriptTransaction
+import com.wavesplatform.sdk.model.request.node.IssueTransaction
+import com.wavesplatform.sdk.model.request.node.LeaseCancelTransaction
+import com.wavesplatform.sdk.model.request.node.LeaseTransaction
+import com.wavesplatform.sdk.model.request.node.MassTransferTransaction
+import com.wavesplatform.sdk.model.request.node.ReissueTransaction
+import com.wavesplatform.sdk.model.request.node.SetAssetScriptTransaction
+import com.wavesplatform.sdk.model.request.node.SetScriptTransaction
+import com.wavesplatform.sdk.model.request.node.SponsorshipTransaction
+import com.wavesplatform.sdk.model.request.node.TransferTransaction
+import com.wavesplatform.sdk.model.response.node.AddressAssetBalanceResponse
+import com.wavesplatform.sdk.model.response.node.AssetBalancesResponse
+import com.wavesplatform.sdk.model.response.node.AssetsDetailsResponse
+import com.wavesplatform.sdk.model.response.node.BlockChainData
+import com.wavesplatform.sdk.model.response.node.HeightResponse
+import com.wavesplatform.sdk.model.response.node.HistoryTransactionResponse
 import com.wavesplatform.sdk.model.response.node.IssueTransactionResponse
-import com.wavesplatform.sdk.model.response.node.transaction.*
+import com.wavesplatform.sdk.model.response.node.ScriptInfoResponse
+import com.wavesplatform.sdk.model.response.node.UtilsTimeResponse
+import com.wavesplatform.sdk.model.response.node.WavesBalanceResponse
+import com.wavesplatform.sdk.model.response.node.transaction.AliasTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.BurnTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.DataTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.InvokeScriptTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.LeaseCancelTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.LeaseTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.MassTransferTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.ReissueTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.SetAssetScriptTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.SetScriptTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.SponsorshipTransactionResponse
+import com.wavesplatform.sdk.model.response.node.transaction.TransferTransactionResponse
 import io.reactivex.Observable
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 import java.util.Random
 
 /**
@@ -42,8 +77,10 @@ interface NodeService {
     fun assetsBalance(@Path("address") address: String?): Observable<AssetBalancesResponse>
 
     @GET("assets/balance/{address}")
-    fun assetsBalanceWithoutCache(@Path("address") address: String?,
-                                  @Query("r") random: Int? = Random().nextInt()): Observable<AssetBalancesResponse>
+    fun assetsBalanceWithoutCache(
+        @Path("address") address: String?,
+        @Query("r") random: Int? = Random().nextInt()
+    ): Observable<AssetBalancesResponse>
 
     /**
      * Account's assetId balance by address
@@ -52,8 +89,8 @@ interface NodeService {
      */
     @GET("assets/balance/{address}/{assetId}")
     fun assetsBalance(
-            @Path("address") address: String?,
-            @Path("assetId") assetId: String?
+        @Path("address") address: String?,
+        @Path("assetId") assetId: String?
     ): Observable<AddressAssetBalanceResponse>
 
     /**
@@ -69,8 +106,10 @@ interface NodeService {
      * @param key Exact keys to query
      */
     @GET("/addresses/data/{address}")
-    fun dataByAddress(@Path("address") address: String,
-                      @Query("key") key: String?): Observable<MutableList<BlockChainData>>
+    fun dataByAddress(
+        @Path("address") address: String,
+        @Query("key") key: String?
+    ): Observable<MutableList<BlockChainData>>
 
     /**
      * Get list of transactions where specified address has been involved
@@ -78,8 +117,10 @@ interface NodeService {
      * @param limit Number of transactions to be returned. Max is last 1000.
      */
     @GET("transactions/address/{address}/limit/{limit}")
-    fun transactionsAddress(@Path("address") address: String?,
-                            @Path("limit") limit: Int): Observable<List<List<HistoryTransactionResponse>>>
+    fun transactionsAddress(
+        @Path("address") address: String?,
+        @Path("limit") limit: Int
+    ): Observable<List<List<HistoryTransactionResponse>>>
 
     /**
      * Get current Waves block-chain height
@@ -99,7 +140,6 @@ interface NodeService {
      */
     @GET("/utils/time")
     fun utilsTime(): Observable<UtilsTimeResponse>
-
 
     // Broadcast transactions //////////////////////////////////////
 
@@ -200,5 +240,4 @@ interface NodeService {
      */
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: InvokeScriptTransaction): Observable<InvokeScriptTransactionResponse>
-
 }

@@ -21,16 +21,23 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener? = 
     /**
      * Returns an [RxCallAdapterWrapper] instance
      */
-    override fun get(returnType: Type, annotations: Array<Annotation>,
-                     retrofit: Retrofit): CallAdapter<*, *> {
-        return RxCallAdapterWrapper(retrofit, original.get(returnType, annotations, retrofit)
-                as CallAdapter<out Any, *>, returnType)
+    override fun get(
+        returnType: Type,
+        annotations: Array<Annotation>,
+        retrofit: Retrofit
+    ): CallAdapter<*, *> {
+        return RxCallAdapterWrapper(
+            retrofit,
+            original.get(returnType, annotations, retrofit)
+                as CallAdapter<out Any, *>,
+            returnType
+        )
     }
 
     inner class RxCallAdapterWrapper<R>(
-            private val retrofit: Retrofit,
-            private val wrapped: CallAdapter<R, *>,
-            private val returnType: Type
+        private val retrofit: Retrofit,
+        private val wrapped: CallAdapter<R, *>,
+        private val returnType: Type
     ) : CallAdapter<R, Any> {
 
         override fun responseType(): Type {
@@ -62,14 +69,18 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener? = 
             // Non-200 http error
             if (throwable is HttpException) {
                 val response = throwable.response()
-                return NetworkException.httpError(response.raw().request()
-                        .url().toString(), response, retrofit)
+                return NetworkException.httpError(
+                    response.raw().request()
+                        .url().toString(),
+                    response, retrofit
+                )
             }
 
-            if (throwable is TimeoutException
-                    || throwable is ConnectException
-                    || throwable is SocketTimeoutException
-                    || throwable is UnknownHostException) {
+            if (throwable is TimeoutException ||
+                throwable is ConnectException ||
+                throwable is SocketTimeoutException ||
+                throwable is UnknownHostException
+            ) {
                 return NetworkException.networkError(IOException(throwable.message, throwable))
             }
 

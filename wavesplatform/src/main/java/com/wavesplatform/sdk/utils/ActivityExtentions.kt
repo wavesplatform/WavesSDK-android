@@ -10,14 +10,14 @@ import com.wavesplatform.sdk.utils.inline.InlineActivityResult
 import com.wavesplatform.sdk.utils.inline.OnActivityResult
 
 fun androidx.fragment.app.FragmentActivity.startActivityForResult(
-        intent: Intent,
-        requestCode: Int = 196,
-        onActivityResult: OnActivityResult
+    intent: Intent,
+    requestCode: Int = 196,
+    onActivityResult: OnActivityResult
 ) = InlineActivityResult
-        .getInstance()
-        .start(
-                fragmentManager = supportFragmentManager,
-                intent = intent,
-                requestCode = requestCode,
-                onActivityResult = onActivityResult
-        )
+    .getInstance()
+    .start(
+        fragmentManager = supportFragmentManager,
+        intent = intent,
+        requestCode = requestCode,
+        onActivityResult = onActivityResult
+    )

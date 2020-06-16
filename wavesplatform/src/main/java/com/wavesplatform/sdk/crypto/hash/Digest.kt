@@ -53,8 +53,8 @@ package com.wavesplatform.sdk.crypto.hash
  * ===========================(LICENSE END)=============================
 </pre> *
  *
- * @version   $Revision: 232 $
- * @author    Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
+ * @version $Revision: 232 $
+ * @author Thomas Pornin &lt;thomas.pornin@cryptolog.com&gt;
  */
 
 interface Digest {
@@ -62,7 +62,7 @@ interface Digest {
     /**
      * Get the natural hash function output length (in bytes).
      *
-     * @return  the digest output length (in bytes)
+     * @return the digest output length (in bytes)
      */
     val digestLength: Int
 
@@ -83,7 +83,7 @@ interface Digest {
      * virtual block length B is the HMAC key length, rounded up to
      * the next multiple of 4.
      *
-     * @return  the internal block length (in bytes), or `-n`
+     * @return the internal block length (in bytes), or `-n`
      */
     val blockLength: Int
 
@@ -114,7 +114,7 @@ interface Digest {
      * Finalize the current hash computation and return the hash value
      * in a newly-allocated array. The object is resetted.
      *
-     * @return  the hash output
+     * @return the hash output
      */
     fun digest(): ByteArray
 
@@ -124,7 +124,7 @@ interface Digest {
      * is resetted.
      *
      * @param inbuf   the input data
-     * @return  the hash output
+     * @return the hash output
      */
     fun digest(inbuf: ByteArray): ByteArray
 
@@ -140,7 +140,7 @@ interface Digest {
      * @param outbuf   the output buffer
      * @param off      the output offset within `outbuf`
      * @param len      the requested hash output length (in bytes)
-     * @return  the number of bytes actually written in `outbuf`
+     * @return the number of bytes actually written in `outbuf`
      */
     fun digest(outbuf: ByteArray, off: Int, len: Int): Int
 
@@ -154,7 +154,7 @@ interface Digest {
      * Clone the current state. The returned object evolves independantly
      * of this object.
      *
-     * @return  the clone
+     * @return the clone
      */
     fun copy(): Digest
 

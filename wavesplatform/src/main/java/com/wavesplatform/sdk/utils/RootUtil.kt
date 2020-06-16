@@ -1,9 +1,7 @@
 package com.wavesplatform.sdk.utils
 
 import android.os.Build
-
 import com.wavesplatform.sdk.BuildConfig
-
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -14,14 +12,16 @@ object RootUtil {
         get() = !BuildConfig.DEBUG && (buildTags() || checkPaths() || checkSuperUser() || isEmulator)
 
     private val isEmulator: Boolean
-        get() = (Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
-                || Build.MODEL.contains("google_sdk")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for x86")
-                || Build.MANUFACTURER.contains("Genymotion")
-                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
-                || "google_sdk" == Build.PRODUCT)
+        get() = (
+            Build.FINGERPRINT.startsWith("generic") ||
+                Build.FINGERPRINT.startsWith("unknown") ||
+                Build.MODEL.contains("google_sdk") ||
+                Build.MODEL.contains("Emulator") ||
+                Build.MODEL.contains("Android SDK built for x86") ||
+                Build.MANUFACTURER.contains("Genymotion") ||
+                Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") ||
+                "google_sdk" == Build.PRODUCT
+            )
 
     private fun buildTags(): Boolean {
         val buildTags = Build.TAGS
@@ -50,6 +50,5 @@ object RootUtil {
         } finally {
             process?.destroy()
         }
-
     }
 }

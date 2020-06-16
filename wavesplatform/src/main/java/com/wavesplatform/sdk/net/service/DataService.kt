@@ -8,10 +8,22 @@ package com.wavesplatform.sdk.net.service
 import com.wavesplatform.sdk.model.request.data.AssetsRequest
 import com.wavesplatform.sdk.model.request.data.PairRatesRequest
 import com.wavesplatform.sdk.model.request.data.PairRequest
-import com.wavesplatform.sdk.model.response.data.*
+import com.wavesplatform.sdk.model.response.data.AliasDataResponse
+import com.wavesplatform.sdk.model.response.data.AliasesResponse
+import com.wavesplatform.sdk.model.response.data.AssetsInfoResponse
+import com.wavesplatform.sdk.model.response.data.CandlesResponse
+import com.wavesplatform.sdk.model.response.data.DataServiceMassTransferTransactionResponse
+import com.wavesplatform.sdk.model.response.data.LastTradesResponseDataList
+import com.wavesplatform.sdk.model.response.data.PairResponse
+import com.wavesplatform.sdk.model.response.data.PairsRatesResponse
+import com.wavesplatform.sdk.model.response.data.SearchPairResponse
 import com.wavesplatform.sdk.model.response.data.transaction.DataMassTransferTransactionResponseWrapperList
 import io.reactivex.Observable
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * The goal of this service is to provide a simple
@@ -148,7 +160,6 @@ interface DataService {
         @Path("matcher") matcher: String? = null,
         @Body request: PairRatesRequest
     ): Observable<PairsRatesResponse>
-
 
     /**
      * Get mass transfer transactions

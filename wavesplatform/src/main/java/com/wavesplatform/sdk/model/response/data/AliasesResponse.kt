@@ -11,6 +11,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class AliasesResponse(
-        @SerializedName("__type") var type: String = "list",
-        @SerializedName("data") var data: List<AliasDataResponse> = listOf()
+    @SerializedName("__type") var type: String = "list",
+    @SerializedName("data") var data: List<AliasDataResponse> = listOf()
 ) : Parcelable

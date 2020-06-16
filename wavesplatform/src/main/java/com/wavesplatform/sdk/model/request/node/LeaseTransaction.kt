@@ -24,26 +24,29 @@ import java.nio.charset.Charset
  */
 @Parcelize
 class LeaseTransaction(
-        /**
-         * Address or alias of Waves blockchain to lease
-         */
-        @SerializedName("recipient") var recipient: String,
-        /**
-         * Amount to lease of Waves in satoshi
-         */
-        @SerializedName("amount") var amount: Long)
-    : BaseTransaction(CREATE_LEASING), Parcelable {
+    /**
+     * Address or alias of Waves blockchain to lease
+     */
+    @SerializedName("recipient") var recipient: String,
+    /**
+     * Amount to lease of Waves in satoshi
+     */
+    @SerializedName("amount") var amount: Long
+) :
+    BaseTransaction(CREATE_LEASING), Parcelable {
 
     override fun toBytes(): ByteArray {
         return try {
-            Bytes.concat(byteArrayOf(type),
-                    byteArrayOf(version),
-                    byteArrayOf(0.toByte()),
-                    WavesCrypto.base58decode(senderPublicKey),
-                    resolveRecipientBytes(recipient.isAlias()),
-                    Longs.toByteArray(amount),
-                    Longs.toByteArray(fee),
-                    Longs.toByteArray(timestamp))
+            Bytes.concat(
+                byteArrayOf(type),
+                byteArrayOf(version),
+                byteArrayOf(0.toByte()),
+                WavesCrypto.base58decode(senderPublicKey),
+                resolveRecipientBytes(recipient.isAlias()),
+                Longs.toByteArray(amount),
+                Longs.toByteArray(fee),
+                Longs.toByteArray(timestamp)
+            )
         } catch (e: Exception) {
             Log.e("Sign", "Can't create bytes for sign in Create Leasing Transaction", e)
             ByteArray(0)
@@ -52,10 +55,13 @@ class LeaseTransaction(
 
     private fun resolveRecipientBytes(recipientIsAlias: Boolean): ByteArray? {
         return if (recipientIsAlias) {
-            Bytes.concat(byteArrayOf(version),
-                    byteArrayOf(chainId),
-                    recipient.parseAlias().toByteArray(
-                            Charset.forName("UTF-8")).arrayWithSize())
+            Bytes.concat(
+                byteArrayOf(version),
+                byteArrayOf(chainId),
+                recipient.parseAlias().toByteArray(
+                    Charset.forName("UTF-8")
+                ).arrayWithSize()
+            )
         } else {
             WavesCrypto.base58decode(recipient)
         }

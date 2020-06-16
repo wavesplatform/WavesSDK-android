@@ -43,17 +43,20 @@ class AssetPairOrderResponse {
     }
 
     fun getScaledPrice(amountAssetDecimals: Int?, priceAssetDecimals: Int?): String {
-        return MoneyUtil.getScaledPrice(price,
-                amountAssetDecimals ?: 8,
-                priceAssetDecimals ?: 8).stripZeros()
+        return MoneyUtil.getScaledPrice(
+            price,
+            amountAssetDecimals ?: 8,
+            priceAssetDecimals ?: 8
+        ).stripZeros()
     }
 
     fun getScaledTotal(priceAssetDecimals: Int?): String {
         return MoneyUtil.getTextStripZeros(
-                BigInteger.valueOf(amount)
-                        .multiply(BigInteger.valueOf(price))
-                        .divide(BigInteger.valueOf(100000000)).toLong(),
-                priceAssetDecimals ?: 8).stripZeros()
+            BigInteger.valueOf(amount)
+                .multiply(BigInteger.valueOf(price))
+                .divide(BigInteger.valueOf(100000000)).toLong(),
+            priceAssetDecimals ?: 8
+        ).stripZeros()
     }
 
     fun getScaledAmount(amountAssetDecimals: Int?): String {

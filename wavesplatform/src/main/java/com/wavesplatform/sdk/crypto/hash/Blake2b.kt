@@ -20,7 +20,7 @@ package com.wavesplatform.sdk.crypto.hash
 import java.io.PrintStream
 import java.security.Key
 import java.security.spec.AlgorithmParameterSpec
-import java.util.*
+import java.util.Arrays
 
 interface Blake2b {
     // ---------------------------------------------------------------------
@@ -192,9 +192,6 @@ interface Blake2b {
      * <br></br>
      * Further node, that tree does NOT accumulate the leaf hashes --
      * you need to do that
-     */
-    class Tree
-    /**
      *
      * @param fanout
      * @param depth
@@ -202,7 +199,7 @@ interface Blake2b {
      * @param inner_length note this is used also as digest-length for non-root nodes.
      * @param digest_length final hash out digest-length for the tree
      */
-        (
+    class Tree(
         internal val depth: Int,
         internal val fanout: Int,
         internal val leaf_length: Int,
@@ -237,7 +234,6 @@ interface Blake2b {
         /** configuration params  */
         private val param: Param = Param()
     ) : Blake2b {
-
 
         // ---------------------------------------------------------------------
         // Blake2b State(+) per reference implementation
@@ -293,15 +289,14 @@ interface Blake2b {
 
             initialize()
 
-            //			Debug.dumpBuffer(System.out, "param bytes at init", param.getBytes());
-
+            // 			Debug.dumpBuffer(System.out, "param bytes at init", param.getBytes());
         }
 
         private fun initialize() {
             // state vector h - copy values to address reset() requests
             System.arraycopy(param.initialized_H(), 0, this.h, 0, Spec.state_space_len)
 
-            //			Debug.dumpArray("init H", this.h);
+            // 			Debug.dumpArray("init H", this.h);
             // if we have a key update initial block
             // Note param has zero padded key_bytes to Spec.max_key_bytes
             if (param.hasKey) {
@@ -464,9 +459,9 @@ interface Blake2b {
             }
         }
 
-        ////////////////////////////////////////////////////////////////////////
-        /// Compression Kernel /////////////////////////////////////////// BEGIN
-        ////////////////////////////////////////////////////////////////////////
+        // //////////////////////////////////////////////////////////////////////
+        // / Compression Kernel /////////////////////////////////////////// BEGIN
+        // //////////////////////////////////////////////////////////////////////
 
         /** compress Spec.block_bytes data from b, from offset  */
         private fun compress(b: ByteArray, offset: Int) {
@@ -616,11 +611,11 @@ interface Blake2b {
             m[15] = m[15] or (b[offset + 125].toLong() and 0xFF shl 40)
             m[15] = m[15] or (b[offset + 126].toLong() and 0xFF shl 48)
             m[15] = m[15] or (b[offset + 127].toLong() shl 56)
-            //			Debug.dumpArray("m @ compress", m);
+            // 			Debug.dumpArray("m @ compress", m);
             //
-            //			Debug.dumpArray("h @ compress", h);
-            //			Debug.dumpArray("t @ compress", t);
-            //			Debug.dumpArray("f @ compress", f);
+            // 			Debug.dumpArray("h @ compress", h);
+            // 			Debug.dumpArray("t @ compress", t);
+            // 			Debug.dumpArray("f @ compress", f);
 
             // set v registers
             v[0] = h[0]
@@ -640,7 +635,7 @@ interface Blake2b {
             v[14] = f[0] xor 0x1f83d9abfb41bd6bL
             v[15] = f[1] xor 0x5be0cd19137e2179L
 
-            //			Debug.dumpArray("v @ compress", v);
+            // 			Debug.dumpArray("v @ compress", v);
             // the rounds
             // REVU: let's try unrolling this again TODO do & bench
             for (r in 0..11) {
@@ -776,14 +771,14 @@ interface Blake2b {
             h[6] = h[6] xor (v[6] xor v[14])
             h[7] = h[7] xor (v[7] xor v[15])
 
-            //			Debug.dumpArray("v @ compress end", v);
-            //			Debug.dumpArray("h @ compress end", h);
+            // 			Debug.dumpArray("v @ compress end", v);
+            // 			Debug.dumpArray("h @ compress end", h);
             /* kaamil */
         }
 
-        ////////////////////////////////////////////////////////////////////////
-        /// Compression Kernel //////////////////////////////////////////// FINI
-        ////////////////////////////////////////////////////////////////////////
+        // //////////////////////////////////////////////////////////////////////
+        // / Compression Kernel //////////////////////////////////////////// FINI
+        // //////////////////////////////////////////////////////////////////////
 
         /* TEMP - remove at will */
         object Debug {
@@ -963,7 +958,7 @@ interface Blake2b {
         }
 
         /** @return hex rep of byte (lower case).
-         */// because String class is slower.
+         */ // because String class is slower.
 
         companion object {
 
@@ -1129,9 +1124,9 @@ interface Blake2b {
             return clone
         }
 
-        ////////////////////////////////////////////////////////////////////////
-        /// lazy setters - write directly to the bytes image of param block ////
-        ////////////////////////////////////////////////////////////////////////
+        // //////////////////////////////////////////////////////////////////////
+        // / lazy setters - write directly to the bytes image of param block ////
+        // //////////////////////////////////////////////////////////////////////
         private fun lazyInitBytes() {
             if (bytes == null) {
                 bytes = ByteArray(Spec.param_bytes)
@@ -1366,8 +1361,8 @@ interface Blake2b {
                 default_h[7] = default_h[7] xor Spec.IV[7]
             }
         }
-        ////////////////////////////////////////////////////////////////////////
-        /// lazy setters /////////////////////////////////////////////////// END
-        ////////////////////////////////////////////////////////////////////////
+        // //////////////////////////////////////////////////////////////////////
+        // / lazy setters /////////////////////////////////////////////////// END
+        // //////////////////////////////////////////////////////////////////////
     }
 }

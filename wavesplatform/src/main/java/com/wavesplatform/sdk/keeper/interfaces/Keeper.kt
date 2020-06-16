@@ -13,21 +13,29 @@ import com.wavesplatform.sdk.keeper.model.KeeperIntentResult
 import com.wavesplatform.sdk.keeper.model.KeeperProcessData
 
 interface Keeper {
-    fun configureDApp(context: Context,
-                      dAppName: String,
-                      dAppIconUrl: String)
+    fun configureDApp(
+        context: Context,
+        dAppName: String,
+        dAppIconUrl: String
+    )
 
-    fun <T : KeeperTransaction> sign(activity: androidx.fragment.app.FragmentActivity,
-                                     transaction: KeeperTransaction,
-                                     callback: KeeperCallback<T>)
+    fun <T : KeeperTransaction> sign(
+        activity: androidx.fragment.app.FragmentActivity,
+        transaction: KeeperTransaction,
+        callback: KeeperCallback<T>
+    )
 
-    fun <T : KeeperTransactionResponse> send(activity: androidx.fragment.app.FragmentActivity,
-                                             transaction: KeeperTransaction,
-                                             callback: KeeperCallback<T>)
+    fun <T : KeeperTransactionResponse> send(
+        activity: androidx.fragment.app.FragmentActivity,
+        transaction: KeeperTransaction,
+        callback: KeeperCallback<T>
+    )
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun finishProcess(activity: androidx.fragment.app.FragmentActivity,
-                      result: KeeperIntentResult)
+    fun finishProcess(
+        activity: androidx.fragment.app.FragmentActivity,
+        result: KeeperIntentResult
+    )
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun processData(intent: Intent): KeeperProcessData?
