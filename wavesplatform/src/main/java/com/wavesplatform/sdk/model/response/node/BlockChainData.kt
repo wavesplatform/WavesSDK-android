@@ -13,5 +13,5 @@ data class BlockChainData(
     @SerializedName("type")
     var type: String,
     @SerializedName("value")
-    var value: Int
+    var value: Long
 )
