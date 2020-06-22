@@ -120,6 +120,22 @@ interface DataService {
     ): Observable<DataMassTransferTransactionResponseWrapperList>
 
     /**
+     * Get a list of mass transfer transactions by applying filters
+     * @param assetId Asset ID of mass transfer
+     * @param senders List of addresses who send amount
+     * @param recipient Address who receive amount
+     * @param limit How many transactions to await in response. Default value : 100
+     */
+    @GET("v0/transactions/mass-transfer")
+    fun massTransferTransactions(
+        @Query("assetId") assetId: String?,
+        @Query("senders") senders: List<String>?,
+        @Query("recipient") recipient: String?,
+        @Query("limit") limit: Int,
+        @Query("after") after: String? = null
+    ): Observable<DataMassTransferTransactionResponseWrapperList>
+
+    /**
      * Get candles by amount and price assets. Maximum amount of candles in response – 1440
      * @param amountAsset Asset ID of the amount asset
      * @param priceAsset Asset ID of the price asset
@@ -169,7 +185,24 @@ interface DataService {
 
     /**
      * Get mass transfer transactions
-     * @param sender Address-sender of the transaction
+     * @param senders List of sender addresses of the transaction
+     * @param recipient Search transactions by recipient address
+     * @param assetId Filter transactions by assetId
+     * @param after Cursor in base64 encoding. Holds information about timestamp, id, sort
+     * @param limit How many transactions to await in response
+     */
+    @GET("v0/transactions/mass-transfer")
+    fun getMassTransferTransaction(
+        @Query("senders") senders: List<String>,
+        @Query("recipient") recipient: String,
+        @Query("assetId") assetId: String,
+        @Query("after") after: String? = null,
+        @Query("limit") limit: Int
+    ): Observable<DataServiceMassTransferTransactionResponse>
+
+    /**
+     * Get mass transfer transactions
+     * @param senders List of sender addresses of the transaction
      * @param recipient Search transactions by recipient address
      * @param assetId Filter transactions by assetId
      * @param timeStart Time range filter, start. Defaults to first transaction's time_stamp in db (ISO-8601 or timestamp in milliseconds)
@@ -177,7 +210,7 @@ interface DataService {
      */
     @GET("v0/transactions/mass-transfer")
     fun getMassTransferTransaction(
-        @Query("sender") sender: String,
+        @Query("senders") senders: List<String>,
         @Query("recipient") recipient: String,
         @Query("assetId") assetId: String,
         @Query("timeStart") timeStart: String,
