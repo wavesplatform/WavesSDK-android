@@ -134,6 +134,8 @@ open class HistoryTransactionResponse(
     var payment: List<PaymentResponse> = mutableListOf(),
     @SerializedName("dApp")
     var dApp: String? = "",
+    @SerializedName("applicationStatus")
+    var applicationStatus: String? = null,
     var transactionTypeId: Int = 0,
     var asset: AssetInfoResponse? = AssetInfoResponse()
 ) {
