@@ -150,6 +150,8 @@ open class HistoryTransactionResponse(
     var dApp: String? = "",
     @SerializedName("call")
     var call: CallResponse? = CallResponse(),
+    @SerializedName("applicationStatus")
+    var applicationStatus: String? = null,
     var transactionTypeId: Int = 0,
     var asset: AssetInfoResponse? = AssetInfoResponse()
 ) {
