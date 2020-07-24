@@ -152,6 +152,7 @@ open class BaseTransaction(
         const val SPONSORSHIP: Byte = 14
         const val ASSET_SCRIPT: Byte = 15
         const val SCRIPT_INVOCATION: Byte = 16
+        const val UPDATE_ASSET_INFO: Byte = 17
 
         const val SET_SCRIPT_LANG_VERSION: Byte = 1
 
@@ -173,6 +174,7 @@ open class BaseTransaction(
                 SPONSORSHIP -> "Sponsorship"
                 ASSET_SCRIPT -> "Asset Script"
                 SCRIPT_INVOCATION -> "Script Invocation"
+                UPDATE_ASSET_INFO -> "Update Asset Info"
                 else -> ""
             }
         }

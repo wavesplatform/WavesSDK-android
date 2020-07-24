@@ -65,6 +65,20 @@ open class PaymentResponse(
     var asset: AssetInfoResponse? = AssetInfoResponse()
 )
 
+open class CallResponse(
+        @SerializedName("function")
+        var function: String = "",
+        @SerializedName("args")
+        var args: List<ArgResponse>? = emptyList()
+)
+
+open class ArgResponse(
+        @SerializedName("type")
+        var type: String = "",
+        @SerializedName("value")
+        var value: String? = ""
+)
+
 open class HistoryTransactionResponse(
     @SerializedName("type")
     var type: Byte = 0,
@@ -134,8 +148,8 @@ open class HistoryTransactionResponse(
     var payment: List<PaymentResponse> = mutableListOf(),
     @SerializedName("dApp")
     var dApp: String? = "",
-    @SerializedName("applicationStatus")
-    var applicationStatus: String? = null,
+    @SerializedName("call")
+    var call: CallResponse? = CallResponse(),
     var transactionTypeId: Int = 0,
     var asset: AssetInfoResponse? = AssetInfoResponse()
 ) {
@@ -272,7 +286,7 @@ open class HistoryTransactionResponse(
 open class DataResponse(
     @SerializedName("key") var key: String = "",
     @SerializedName("type") var type: String = "",
-    @SerializedName("value") var value: String = ""
+    @SerializedName("value") var value: String? = ""
 )
 
 open class TransferResponse(
