@@ -66,17 +66,17 @@ open class PaymentResponse(
 )
 
 open class CallResponse(
-        @SerializedName("function")
-        var function: String = "",
-        @SerializedName("args")
-        var args: List<ArgResponse>? = emptyList()
+    @SerializedName("function")
+    var function: String = "",
+    @SerializedName("args")
+    var args: List<ArgResponse>? = emptyList()
 )
 
 open class ArgResponse(
-        @SerializedName("type")
-        var type: String = "",
-        @SerializedName("value")
-        var value: String? = ""
+    @SerializedName("type")
+    var type: String = "",
+    @SerializedName("value")
+    var value: String? = ""
 )
 
 open class HistoryTransactionResponse(
