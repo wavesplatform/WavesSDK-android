@@ -18,7 +18,9 @@ import com.wavesplatform.sdk.net.NetworkException
 import com.wavesplatform.sdk.net.OnErrorListener
 import com.wavesplatform.sdk.utils.RxUtil
 import com.wavesplatform.sdk.utils.getScaledAmount
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_sdk.*
 
 
@@ -86,7 +88,8 @@ class SdkFragment : androidx.fragment.app.Fragment() {
             WavesSdk.service()
                 .getNode() // You can choose different Waves services: node, matcher and data service
                 .addressesBalance(address) // Here methods of service
-                .compose(RxUtil.applyObservableDefaultSchedulers())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ wavesBalance ->
                     // Do something on success, now we have wavesBalance.balance in satoshi in Long
                     Toast.makeText(

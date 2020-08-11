@@ -18,9 +18,9 @@ import com.wavesplatform.sdk.model.request.node.SetScriptTransaction
 import com.wavesplatform.sdk.model.request.node.SponsorshipTransaction
 import com.wavesplatform.sdk.model.request.node.TransferTransaction
 import com.wavesplatform.sdk.utils.Environment
-import com.wavesplatform.sdk.utils.RxUtil
 import com.wavesplatform.sdk.utils.SignUtil
 import com.wavesplatform.sdk.utils.WavesConstants
+import io.reactivex.schedulers.Schedulers
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -53,7 +53,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -101,7 +102,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -123,7 +125,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -145,7 +148,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -167,7 +171,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -189,7 +194,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -220,7 +226,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -251,7 +258,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -279,7 +287,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -312,7 +321,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -339,7 +349,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -366,7 +377,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transferTransaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
@@ -392,7 +404,8 @@ class WavesServiceTest {
         WavesSdk.service()
             .getNode()
             .transactionsBroadcast(transaction)
-            .compose(RxUtil.applyObservableDefaultSchedulers())
+            .subscribeOn(Schedulers.trampoline())
+            .observeOn(Schedulers.trampoline())
             .subscribe(
                 {
                     Assert.assertEquals(true, true)
