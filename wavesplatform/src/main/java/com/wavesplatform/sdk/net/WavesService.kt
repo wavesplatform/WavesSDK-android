@@ -14,14 +14,18 @@ import com.wavesplatform.sdk.net.service.DataService
 import com.wavesplatform.sdk.net.service.MatcherService
 import com.wavesplatform.sdk.net.service.NodeService
 import okhttp3.Cache
+import okhttp3.ConnectionPool
+import okhttp3.Dispatcher
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.internal.Util
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 /**
@@ -36,6 +40,12 @@ class WavesService(private var context: Context) {
     private var cookies: HashSet<String> = hashSetOf()
     private var adapterFactory: CallAdapter.Factory
     private val onErrorListeners = mutableListOf<OnErrorListener>()
+    private val threadPool = Executors.newFixedThreadPool(
+        MAX_OKHTTP_THREADS,
+        Util.threadFactory("OkHttp Dispatcher", false)
+    )
+    private val okHttpDispatcher = Dispatcher(threadPool)
+    private val okHttpConnectionPool = ConnectionPool(MAX_OKHTTP_THREADS, OKHTTP_CONNECTION_KEEP_ALIVE_DURATION_SECS, TimeUnit.SECONDS)
 
     init {
         adapterFactory = CallAdapterFactory(object : OnErrorListener {
@@ -123,6 +133,8 @@ class WavesService(private var context: Context) {
 
     private fun createClient(timeout: Long = 30L): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
+            .connectionPool(okHttpConnectionPool)
+            .dispatcher(okHttpDispatcher)
             .cache(createCache())
             .readTimeout(timeout, TimeUnit.SECONDS)
             .writeTimeout(timeout, TimeUnit.SECONDS)
@@ -212,5 +224,10 @@ class WavesService(private var context: Context) {
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create()
         )
+    }
+
+    private companion object {
+        private const val MAX_OKHTTP_THREADS = 5
+        private const val OKHTTP_CONNECTION_KEEP_ALIVE_DURATION_SECS = 60L
     }
 }
