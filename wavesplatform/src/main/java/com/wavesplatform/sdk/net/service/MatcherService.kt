@@ -125,7 +125,7 @@ interface MatcherService {
      * Get current rates of assets (price of 1 Waves in the specified asset)
      */
     @GET("matcher/settings/rates")
-    fun getMatcherSettingsRates(): Observable<Map<String, Double>>
+    fun getMatcherSettingsRates(): Observable<MutableMap<String, Double>>
 
     /**
      * Get matcher settings
