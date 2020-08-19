@@ -2,6 +2,8 @@ package com.wavesplatform.sdk.net
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import com.google.gson.FieldNamingPolicy
@@ -162,16 +164,25 @@ class WavesService(private var context: Context) {
 
     @SuppressLint("HardwareIds")
     private fun addUserAgentInterceptor(): Interceptor {
+        val androidVersion = Build.VERSION.RELEASE
+        val deviceId = Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+        val packageName = context.packageName
+        val packageVersion = try {
+            context.packageManager.getPackageInfo(packageName, 0).versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+            "Unknown"
+        }
+
         return Interceptor { chain ->
-            val deviceId = Settings.Secure.getString(
-                context.contentResolver,
-                Settings.Secure.ANDROID_ID
-            )
             val request = chain.request().newBuilder()
                 .header(
                     "User-Agent",
-                    "${System.getProperty("http.agent")} " +
-                        "AppId/${context.packageName} " +
+                    "Android $androidVersion " +
+                        "AppId/$packageName " +
+                        "AppVersion/$packageVersion " +
                         "DeviceId/$deviceId " +
                         "WavesSDK/${BuildConfig.VERSION_NAME}"
                 )
