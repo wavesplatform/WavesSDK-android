@@ -147,6 +147,7 @@ interface NodeService {
      * Broadcast issue-transaction (typeId = 3)
      * @param transaction IssueTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: IssueTransaction): Observable<IssueTransactionResponse>
 
@@ -154,6 +155,7 @@ interface NodeService {
      * Broadcast transfer-transaction (typeId = 4)
      * @param transaction TransferTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: TransferTransaction): Observable<TransferTransactionResponse>
 
@@ -161,6 +163,7 @@ interface NodeService {
      * Broadcast reissue-transaction (typeId = 5)
      * @param transaction ReissueTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: ReissueTransaction): Observable<ReissueTransactionResponse>
 
@@ -168,13 +171,16 @@ interface NodeService {
      * Broadcast burn-transaction (typeId = 6)
      * @param transaction BurnTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: BurnTransaction): Observable<BurnTransactionResponse>
 
     /**
      * Broadcast exchange-transaction (typeId = 7)
      * @param transaction ExchangeTransaction with signature by privateKey
-     *//*
+     */
+    /*
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: ExchangeTransaction): Observable<ExchangeTransactionResponse>*/
 
@@ -182,6 +188,7 @@ interface NodeService {
      * Broadcast lease-transaction (typeId = 8)
      * @param transaction LeaseTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: LeaseTransaction): Observable<LeaseTransactionResponse>
 
@@ -189,6 +196,7 @@ interface NodeService {
      * Broadcast lease-cancel-transaction (typeId = 9)
      * @param transaction LeaseCancelTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: LeaseCancelTransaction): Observable<LeaseCancelTransactionResponse>
 
@@ -196,6 +204,7 @@ interface NodeService {
      * Create alias-transaction. Alias - short name for address  (typeId = 10)
      * @param transaction AliasTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: AliasTransaction): Observable<AliasTransactionResponse>
 
@@ -203,6 +212,7 @@ interface NodeService {
      * Broadcast mass-transfer-transaction (typeId = 11)
      * @param transaction MassTransferTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: MassTransferTransaction): Observable<MassTransferTransactionResponse>
 
@@ -210,6 +220,7 @@ interface NodeService {
      * Broadcast data-transaction (typeId = 12)
      * @param transaction DataTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: DataTransaction): Observable<DataTransactionResponse>
 
@@ -217,6 +228,7 @@ interface NodeService {
      * Broadcast set-script-transaction, also called address-script  (typeId = 13)
      * @param transaction SetScriptTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: SetScriptTransaction): Observable<SetScriptTransactionResponse>
 
@@ -224,6 +236,7 @@ interface NodeService {
      * Broadcast sponsorship-transaction  (typeId = 14)
      * @param transaction SponsorshipTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: SponsorshipTransaction): Observable<SponsorshipTransactionResponse>
 
@@ -231,6 +244,7 @@ interface NodeService {
      * Broadcast set-asset-script-transaction (typeId = 15)
      * @param transaction SetAssetScriptTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: SetAssetScriptTransaction): Observable<SetAssetScriptTransactionResponse>
 
@@ -238,6 +252,7 @@ interface NodeService {
      * Broadcast invoke-script-transaction (typeId = 16)
      * @param transaction InvokeScriptTransaction with signature by privateKey
      */
+    @Headers("Content-Type: application/json")
     @POST("transactions/broadcast")
     fun transactionsBroadcast(@Body transaction: InvokeScriptTransaction): Observable<InvokeScriptTransactionResponse>
 }
