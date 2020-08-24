@@ -23,7 +23,7 @@ class BurnTransaction(
     /**
      * Amount of asset to burn in satoshi
      */
-    @SerializedName("quantity") var quantity: Long
+    @SerializedName("amount") var amount: Long
 ) : BaseTransaction(BURN) {
 
     override fun toBytes(): ByteArray {
@@ -34,7 +34,7 @@ class BurnTransaction(
                 byteArrayOf(chainId),
                 WavesCrypto.base58decode(senderPublicKey),
                 WavesCrypto.base58decode(assetId),
-                Longs.toByteArray(quantity),
+                Longs.toByteArray(amount),
                 Longs.toByteArray(fee),
                 Longs.toByteArray(timestamp)
             )
