@@ -19,6 +19,7 @@ import com.wavesplatform.sdk.model.response.data.PairsRatesResponse
 import com.wavesplatform.sdk.model.response.data.SearchPairResponse
 import com.wavesplatform.sdk.model.response.data.transaction.DataMassTransferTransactionResponseWrapperList
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -145,7 +146,7 @@ interface DataService {
         @Query("recipient") recipient: String?,
         @Query("limit") limit: Int,
         @Query("after") after: String? = null
-    ): Observable<DataMassTransferTransactionResponseWrapperList>
+    ): Single<DataMassTransferTransactionResponseWrapperList>
 
     /**
      * Get candles by amount and price assets. Maximum amount of candles in response – 1440
@@ -226,5 +227,5 @@ interface DataService {
         @Query("assetId") assetId: String,
         @Query("timeStart") timeStart: String,
         @Query("timeEnd") timeEnd: String
-    ): Observable<DataServiceMassTransferTransactionResponse>
+    ): Single<DataServiceMassTransferTransactionResponse>
 }

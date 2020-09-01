@@ -13,11 +13,13 @@ fun Throwable.asRetrofitException(): NetworkException {
     // Non-200 http error
     if (this is HttpException) {
         val response = this.response()
-        return NetworkException.httpError(
-            response.raw().request()
-                .url().toString(),
-            response, null
-        )
+        if (response != null) {
+            return NetworkException.httpError(
+                response.raw().request()
+                    .url().toString(),
+                response, null
+            )
+        }
     }
 
     if (this is TimeoutException ||

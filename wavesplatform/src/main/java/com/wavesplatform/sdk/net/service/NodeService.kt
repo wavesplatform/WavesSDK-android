@@ -41,6 +41,7 @@ import com.wavesplatform.sdk.model.response.node.transaction.SetScriptTransactio
 import com.wavesplatform.sdk.model.response.node.transaction.SponsorshipTransactionResponse
 import com.wavesplatform.sdk.model.response.node.transaction.TransferTransactionResponse
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -109,7 +110,7 @@ interface NodeService {
     fun dataByAddress(
         @Path("address") address: String,
         @Query("key") key: String?
-    ): Observable<MutableList<BlockChainData>>
+    ): Single<MutableList<BlockChainData>>
 
     /**
      * Get list of transactions where specified address has been involved

@@ -1,7 +1,9 @@
 package com.wavesplatform.sdk.net
 
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.HttpException
@@ -44,10 +46,8 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener? = 
             return wrapped.responseType()
         }
 
-        override fun adapt(call: Call<R>): Observable<*> {
-            return convert(wrapped.adapt(call)).onErrorResumeNext { throwable: Throwable ->
-                Observable.error(handleErrorToShow(throwable))
-            }
+        override fun adapt(call: Call<R>): Any {
+            return convert(wrapped.adapt(call))
         }
 
         private fun handleErrorToShow(throwable: Throwable): NetworkException {
@@ -56,11 +56,13 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener? = 
             return retrofitException
         }
 
-        private fun convert(o: Any): Observable<*> {
-            return if (o is Completable) {
-                o.toObservable<Any>()
-            } else {
-                o as Observable<*>
+        private fun convert(o: Any): Any {
+            return when (o) {
+                is Observable<*> -> o.onErrorResumeNext { throwable: Throwable -> Observable.error(handleErrorToShow(throwable)) }
+                is Single<*> -> o.onErrorResumeNext { Single.error(handleErrorToShow(it)) }
+                is Completable -> o.onErrorResumeNext { Completable.error(handleErrorToShow(it)) }
+                is Maybe<*> -> o.onErrorResumeNext { throwable: Throwable -> Maybe.error(handleErrorToShow(throwable)) }
+                else -> o
             }
         }
 
@@ -69,11 +71,13 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener? = 
             // Non-200 http error
             if (throwable is HttpException) {
                 val response = throwable.response()
-                return NetworkException.httpError(
-                    response.raw().request()
-                        .url().toString(),
-                    response, retrofit
-                )
+                if (response != null) {
+                    return NetworkException.httpError(
+                        response.raw().request()
+                            .url().toString(),
+                        response, retrofit
+                    )
+                }
             }
 
             if (throwable is TimeoutException ||
