@@ -5,6 +5,7 @@
 
 package com.wavesplatform.sdk.utils
 
+import android.util.SparseArray
 import com.wavesplatform.sdk.model.response.data.AssetInfoResponse
 import com.wavesplatform.sdk.model.response.node.AssetBalanceResponse
 import java.math.BigDecimal
@@ -15,18 +16,23 @@ import java.util.Locale
 
 class MoneyUtil private constructor() {
     private val wavesFormat: DecimalFormat
-    private val formatsMap: MutableList<DecimalFormat>
+    private val formatsMap = SparseArray<DecimalFormat>()
 
     init {
         wavesFormat = createFormatter(8)
-        formatsMap = ArrayList()
         for (i in 0..8) {
-            formatsMap.add(createFormatter(i))
+            formatsMap.put(i, createFormatter(i))
         }
     }
 
     fun getFormatter(decimals: Int): DecimalFormat {
-        return formatsMap[decimals]
+        val cached = formatsMap[decimals]
+        if (cached == null) {
+            val formatter = createFormatter(decimals)
+            formatsMap.put(decimals, formatter)
+            return formatter
+        }
+        return cached
     }
 
     companion object {
