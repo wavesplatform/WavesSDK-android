@@ -120,7 +120,7 @@ fun getScaledAmount(amount: Long, decimals: Int): String {
             value.divide(MoneyUtil.ONE_K, 1, RoundingMode.FLOOR)
                 .toPlainString().stripZeros() + "k"
         else ->
-            MoneyUtil.createFormatter(decimals).format(BigDecimal.valueOf(absAmount, decimals))
+            MoneyUtil.get().getFormatter(decimals).format(BigDecimal.valueOf(absAmount, decimals))
                 .stripZeros() + ""
     }
 }
