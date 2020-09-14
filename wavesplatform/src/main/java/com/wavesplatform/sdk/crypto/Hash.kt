@@ -13,11 +13,13 @@ internal object Hash {
     private val keccak256 = Keccak256()
 
     @JvmStatic
+    @Synchronized
     fun keccak(input: ByteArray): ByteArray {
-        return keccak256.digest(blake.digest(input))
+        return keccak256.digest(blake2b(input))
     }
 
     @JvmStatic
+    @Synchronized
     fun blake2b(input: ByteArray): ByteArray {
         return blake.digest(input)
     }
