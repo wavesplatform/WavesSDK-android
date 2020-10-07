@@ -9,6 +9,7 @@ import android.util.SparseArray
 import com.wavesplatform.sdk.model.response.data.AssetInfoResponse
 import com.wavesplatform.sdk.model.response.node.AssetBalanceResponse
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -70,6 +71,18 @@ class MoneyUtil private constructor() {
             } catch (e: Exception) {
                 get().getFormatter(8).format(
                     BigDecimal.valueOf(amount, decimals)
+                )
+            }
+        }
+
+        fun getScaledText(amount: BigDecimal, decimals: Int): String {
+            return try {
+                get().getFormatter(decimals).format(
+                    BigDecimal(amount.unscaledValue(), decimals)
+                )
+            } catch (e: Exception) {
+                get().getFormatter(8).format(
+                    BigDecimal(amount.unscaledValue(), decimals)
                 )
             }
         }
