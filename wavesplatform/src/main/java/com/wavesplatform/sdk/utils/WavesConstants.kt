@@ -1,6 +1,8 @@
 package com.wavesplatform.sdk.utils
 
 import com.wavesplatform.sdk.model.response.data.AssetInfoResponse
+import java.math.BigDecimal
+import java.math.BigInteger
 
 object WavesConstants {
 
@@ -25,6 +27,6 @@ object WavesConstants {
         id = WAVES_ASSET_ID_EMPTY,
         precision = 8,
         name = "WAVES",
-        quantity = 10000000000000000L
+        quantity = BigDecimal.valueOf(10000000000000000L)
     )
 }

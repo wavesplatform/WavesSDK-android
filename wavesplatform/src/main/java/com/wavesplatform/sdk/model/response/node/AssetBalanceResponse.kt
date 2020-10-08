@@ -9,6 +9,8 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.utils.MoneyUtil
 import kotlinx.android.parcel.Parcelize
+import java.math.BigDecimal
+import java.math.BigInteger
 
 open class AssetBalancesResponse(
     @SerializedName("address") var address: String? = null,
@@ -24,7 +26,7 @@ open class AssetBalanceResponse(
     @SerializedName("reissuable") var reissuable: Boolean? = false,
     @SerializedName("minSponsoredAssetFee") var minSponsoredAssetFee: Long? = 0,
     @SerializedName("sponsorBalance") var sponsorBalance: Long? = 0,
-    @SerializedName("quantity") var quantity: Long? = 0,
+    @SerializedName("quantity") var quantity: BigDecimal? = BigDecimal.ZERO,
     @SerializedName("issueTransaction") var issueTransaction: IssueTransactionResponse? = IssueTransactionResponse(id = assetId),
     var isHidden: Boolean = false,
     var position: Int = -1,
@@ -124,7 +126,7 @@ open class IssueTransactionResponse(
     @SerializedName("version") var version: Int? = 0,
     @SerializedName("assetId") var assetId: String? = "",
     @SerializedName("name") var name: String? = "",
-    @SerializedName("quantity") var quantity: Long? = 0,
+    @SerializedName("quantity") var quantity: BigDecimal? = BigDecimal.ZERO,
     @SerializedName("reissuable") var reissuable: Boolean? = false,
     @SerializedName("decimals") var decimals: Int? = 0,
     @SerializedName("description") var description: String? = "",

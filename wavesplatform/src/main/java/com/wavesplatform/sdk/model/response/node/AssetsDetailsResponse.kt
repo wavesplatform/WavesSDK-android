@@ -8,6 +8,7 @@ package com.wavesplatform.sdk.model.response.node
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import java.math.BigDecimal
 
 @Parcelize
 data class AssetsDetailsResponse(
@@ -19,7 +20,7 @@ data class AssetsDetailsResponse(
     @SerializedName("description") var description: String = "",
     @SerializedName("decimals") var decimals: Int = 8,
     @SerializedName("reissuable") var reissuable: Boolean? = null,
-    @SerializedName("quantity") var quantity: Long = 0L,
+    @SerializedName("quantity") var quantity: BigDecimal = BigDecimal.ZERO,
     @SerializedName("scripted") var scripted: Boolean = false,
     @SerializedName("minSponsoredAssetFee") var minSponsoredAssetFee: Long = 0L
 ) : Parcelable

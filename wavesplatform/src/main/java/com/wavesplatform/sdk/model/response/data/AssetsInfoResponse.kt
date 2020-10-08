@@ -10,6 +10,8 @@ import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.utils.WavesConstants
 import com.wavesplatform.sdk.utils.isWavesId
 import kotlinx.android.parcel.Parcelize
+import java.math.BigDecimal
+import java.math.BigInteger
 import java.util.Date
 
 data class AssetsInfoResponse(
@@ -32,7 +34,7 @@ open class AssetInfoResponse(
     @SerializedName("height") var height: Int = 0,
     @SerializedName("timestamp") var timestamp: Date = Date(),
     @SerializedName("sender") var sender: String = "",
-    @SerializedName("quantity") var quantity: Long = 0,
+    @SerializedName("quantity") var quantity: BigDecimal = BigDecimal.ZERO,
     @SerializedName("hasScript") var hasScript: Boolean = false,
     @SerializedName("minSponsoredFee") var minSponsoredFee: Long = 0,
     @SerializedName("reissuable") var reissuable: Boolean = false,
