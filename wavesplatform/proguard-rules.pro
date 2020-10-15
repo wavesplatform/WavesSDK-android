@@ -209,10 +209,8 @@
 
 # Common recommendations -------------------------------------#
 # Enums
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
+
+-keepclasseswithmembers class * extends java.lang.Enum { *; }
 
 # Keep all serializable objects
 -keepclassmembers class * implements java.io.Serializable {
