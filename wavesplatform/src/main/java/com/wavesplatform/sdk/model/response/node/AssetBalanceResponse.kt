@@ -10,7 +10,6 @@ import com.google.gson.annotations.SerializedName
 import com.wavesplatform.sdk.utils.MoneyUtil
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
-import java.math.BigInteger
 
 open class AssetBalancesResponse(
     @SerializedName("address") var address: String? = null,

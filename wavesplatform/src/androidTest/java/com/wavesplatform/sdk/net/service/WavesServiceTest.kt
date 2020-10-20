@@ -1,6 +1,5 @@
 package com.wavesplatform.sdk.net.service
 
-import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.wavesplatform.sdk.WavesSdk
