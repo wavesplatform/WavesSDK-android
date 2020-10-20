@@ -2,7 +2,6 @@ package com.wavesplatform.sdk.utils
 
 import com.wavesplatform.sdk.model.response.data.AssetInfoResponse
 import java.math.BigDecimal
-import java.math.BigInteger
 
 object WavesConstants {
 

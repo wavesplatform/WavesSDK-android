@@ -207,10 +207,10 @@ open class HistoryTransactionResponse(
             "Type: ${transaction.type} (${BaseTransaction.getNameBy(transaction.type).toLowerCase()}" +
                 if (transaction.type == BaseTransaction.EXCHANGE) {
                     if (findMyOrder(
-                        transaction.order1!!,
-                        transaction.order2!!,
-                        address
-                    )
+                            transaction.order1!!,
+                            transaction.order2!!,
+                            address
+                        )
                         .orderType == WavesConstants.SELL_ORDER_TYPE
                     ) {
                         "-${WavesConstants.SELL_ORDER_TYPE})\n"

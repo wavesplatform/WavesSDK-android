@@ -11,7 +11,6 @@ import com.wavesplatform.sdk.utils.WavesConstants
 import com.wavesplatform.sdk.utils.isWavesId
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.util.Date
 
 data class AssetsInfoResponse(
