@@ -9,8 +9,9 @@
     "wavesExchangeApiUrl": "https://api.waves.exchange",
     "wavesExchangePublicApiUrl": "https://api.waves.exchange",
     "wavesExchangeInternalApiUrl": "https://waves.exchange/api",
-    "firebaseAuthApiUrl": "https://waves.exchange/mobile/auth",
+    "firebaseAuthApiUrl": "https://us-central1-waves-exchange.cloudfunctions.net",
     "wavesExchangeGrpcAddress": "grpc.waves.exchange",
+    "webSocketUrl": "wss://matcher.waves.exchange/ws/v0",
     "gateways": {
       "v0": "https://coinomat.com/api",
       "v1": "https://gw.waves.exchange/api",
@@ -37,7 +38,7 @@
       "assetId": "8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS",
       "displayName": "Bitcoin",
       "wavesId": "WBTC",
-      "gatewayId": "BTC",
+      "gatewayId": "",
       "gatewayType": "v2",
       "tags": [
         "gateway",
@@ -52,7 +53,7 @@
       "assetId": "474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu",
       "displayName": "Ethereum",
       "wavesId": "WETH",
-      "gatewayId": "ETH",
+      "gatewayId": "",
       "gatewayType": "v2",
       "tags": [
         "gateway",
@@ -66,7 +67,7 @@
       },
       "assetId": "34N9YcEETLWn93qYQ64EsP1x89tSruJU44RrEMSXXEPJ",
       "displayName": "Tether USD",
-      "gatewayId": "USDT",
+      "gatewayId": "",
       "wavesId": "USDT",
       "gatewayType": "v2",
       "tags": [
@@ -78,14 +79,95 @@
     },
     {
       "iconUrls": {
-        "default": "https://configs.waves.exchange/icons/logo_neutrino.png"
+        "default": "https://configs.waves.exchange/icons/logo_usdn_48.png"
       },
       "assetId": "DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p",
       "displayName": "Neutrino",
       "wavesId": "USDN",
+      "gatewayId": "SUSDN",
+      "gatewayType": "v2",
+      "addressRegEx": "^0x[0-9a-fA-F]{40}$",
       "tags": [
         "stablecoin",
-        "isExistInExternalSource"
+        "gateway"
+      ]
+    },
+    {
+      "iconUrls": {
+        "default": "https://configs.waves.exchange/icons/logo_eurn_48.png"
+      },
+      "assetId": "DUk2YTxhRoAqMJLus4G2b3fR8hMHVh6eiyFx5r29VR6t",
+      "displayName": "Neutrino EUR",
+      "wavesId": "EURN",
+      "tags": [
+        "stablecoin",
+        "isExistInExternalSource",
+        "defi"
+      ]
+    },
+    {
+      "iconUrls": {
+        "default": "https://configs.waves.exchange/icons/logo_rubn_48.png"
+      },
+      "assetId": "eWeMD5KNeuRaALCAb4uuJKtAvon2JcTyXQyoBMhuN2X",
+      "displayName": "Neutrino RUB",
+      "wavesId": "RUBN",
+      "tags": [
+        "stablecoin",
+        "isExistInExternalSource",
+        "defi"
+      ]
+    },
+    {
+      "iconUrls": {
+        "default": "https://configs.waves.exchange/icons/logo_cnyn_48.png"
+      },
+      "assetId": "9LNqjybyCX1oexCub4yY7hdJf6aeP4HeV5LpsjcNHwRR",
+      "displayName": "Neutrino CNY",
+      "wavesId": "CNYN",
+      "tags": [
+        "stablecoin",
+        "isExistInExternalSource",
+        "defi"
+      ]
+    },
+    {
+      "iconUrls": {
+        "default": "https://configs.waves.exchange/icons/logo_jpyn_48.png"
+      },
+      "assetId": "8inca5fv4xr6KZtRMRPYr7vADfk8fd6G2z1gMoRkbUYS",
+      "displayName": "Neutrino JPY",
+      "wavesId": "JPYN",
+      "tags": [
+        "stablecoin",
+        "isExistInExternalSource",
+        "defi"
+      ]
+    },
+    {
+      "iconUrls": {
+        "default": "https://configs.waves.exchange/icons/logo_uahn_48.png"
+      },
+      "assetId": "8zKqZF6asB6yiK8rv9nMUkJ7wAVBJndSmkC7SXJhRrM3",
+      "displayName": "Neutrino UAH",
+      "wavesId": "UAHN",
+      "tags": [
+        "stablecoin",
+        "isExistInExternalSource",
+        "defi"
+      ]
+    },
+    {
+      "iconUrls": {
+        "default": "https://configs.waves.exchange/icons/logo_ngnn_48.png"
+      },
+      "assetId": "5NmV5VAhkqormdwvaQjE54yPEkNwSRtcXxhLkJbVQqkN",
+      "displayName": "Neutrino NGN",
+      "wavesId": "NGNN",
+      "tags": [
+        "stablecoin",
+        "isExistInExternalSource",
+        "defi"
       ]
     },
     {
@@ -95,13 +177,13 @@
         "defi"
       ],
       "iconUrls": {
-        "default": "https://configs.waves.exchange/icons/logo_nsbt.png"
+        "default": "https://configs.waves.exchange/icons/logo_nsbt_48.png"
       },
       "assetId": "6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g",
       "displayName": "NSBT",
       "wavesId": "NSBT",
       "gatewayId": "",
-      "gatewayType": "exchange",
+      "gatewayType": "v2",
       "addressRegEx": "^0x[0-9a-fA-F]{40}$"
     },
     {
@@ -111,7 +193,7 @@
       "assetId": "4LHHvYGNKJUg5hj65aGD5vgScvCBmLpdRFtjokvCjSL8",
       "displayName": "WEST",
       "wavesId": "Vostok",
-      "gatewayId": "WEST",
+      "gatewayId": "",
       "gatewayType": "v2",
       "tags": [
         "gateway",
@@ -346,7 +428,7 @@
       "assetId": "F81SdfzBZr5ce8JArRWLPJEDg1V8yT257ohbcHk75yCp",
       "displayName": "Bancor",
       "wavesId": "BNT",
-      "gatewayId": "BNT",
+      "gatewayId": "",
       "gatewayType": "v2",
       "tags": [
         "gateway",
@@ -361,7 +443,7 @@
       "assetId": "5dJj4Hn9t2Ve3tRpNGirUHy4yBK6qdJRAJYV21yPPuGz",
       "displayName": "Ergo",
       "wavesId": "ERG",
-      "gatewayId": "ERGO",
+      "gatewayId": "",
       "gatewayType": "v2",
       "tags": [
         "gateway",
@@ -497,6 +579,12 @@
     }
   ],
   "gateway": {
+    "minFee": {
+      "SUSDN": {
+        "rate": 1,
+        "flat": 1000000
+      }
+    },
     "availableCryptoCurrency": [
       "USD",
       "BTC",
@@ -619,7 +707,7 @@
   },
   "serviceAvailable": true,
   "matcherSwapTimestamp": 1575270000,
-  "matcherSwapAddress": "3PJaDyprvekvPXPuAtxrapacuDJopgJRaU3",
+  "matcherSwapAddress": "3PEjHv3JGjcWNpYEEkif2w8NXV4kbhnoGgu",
   "dex": {
     "lockedPairs": [
       "Ft8X1v1LTa1ABafufpaCWyVj8KkaxUWE6xBhW6sNFJck",
