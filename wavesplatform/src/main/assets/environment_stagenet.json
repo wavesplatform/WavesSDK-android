@@ -5,17 +5,18 @@
     "nodeUrl": "https://nodes-stagenet.wavesnodes.com",
     "dataUrl": "https://api-stagenet.wavesplatform.com",
     "spamUrl": "https://raw.githubusercontent.com/wavesplatform/waves-community/master/Scam%20tokens%20according%20to%20the%20opinion%20of%20Waves%20Community.csv",
-    "matcherUrl": "https://matcher-wxdevnet.waves.exchange",
-    "authUrl": "https://wxdevnet.waves.exchange/oauth",
-    "wavesExchangeApiUrl": "https://api-wxdevnet.waves.exchange",
-    "wavesExchangePublicApiUrl": "https://api-wxdevnet.waves.exchange",
-    "wavesExchangeInternalApiUrl": "https://wxdevnet.waves.exchange/api",
+    "matcherUrl": "https://matcher-stagenet.waves.exchange",
+    "authUrl": "https://stagenet.waves.exchange/oauth",
+    "wavesExchangeApiUrl": "https://api-stagenet.waves.exchange",
+    "wavesExchangePublicApiUrl": "https://api-stagenet.waves.exchange",
+    "wavesExchangeInternalApiUrl": "https://stagenet.waves.exchange/api",
     "firebaseAuthApiUrl": "https://us-central1-waves-exchange.cloudfunctions.net",
-    "wavesExchangeGrpcAddress": "grpc-testnet.waves.exchange",
+    "wavesExchangeGrpcAddress": "grpc-stagenet.waves.exchange",
+    "webSocketUrl": "wss://matcher.waves.exchange/ws/v0",
     "gateways": {
       "v0": "https://coinomat.com/api",
-      "v1": "https://gateways-dev.wvservices.com/api",
-      "v2": "https://testnet.waves.exchange/gateways"
+      "v1": "https://depricat.ed",
+      "v2": "https://depricat.ed"
     }
   },
   "scheme": "S",
@@ -484,6 +485,12 @@
     }
   ],
   "gateway": {
+    "minFee": {
+      "SUSDN": {
+        "rate": 1,
+        "flat": 1000000
+      }
+    },
     "availableCryptoCurrency": [
       "USD",
       "BTC",
