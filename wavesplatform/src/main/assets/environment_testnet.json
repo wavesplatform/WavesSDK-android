@@ -12,6 +12,7 @@
     "wavesExchangeInternalApiUrl": "https://testnet.waves.exchange/api",
     "firebaseAuthApiUrl": "https://us-central1-waves-exchange.cloudfunctions.net",
     "wavesExchangeGrpcAddress": "grpc-testnet.waves.exchange",
+    "webSocketUrl": "wss://matcher.waves.exchange/ws/v0",
     "gateways": {
       "v0": "https://coinomat.com/api",
       "v1": "https://gateways-dev.wvservices.com/api",
@@ -499,6 +500,12 @@
     }
   ],
   "gateway": {
+    "minFee": {
+      "SUSDN": {
+        "rate": 1,
+        "flat": 1000000
+      }
+    },
     "availableCryptoCurrency": [
       "USD",
       "BTC",
