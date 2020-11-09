@@ -132,7 +132,7 @@ interface NodeService {
     fun transactionsAddress(
         @Path("address") address: String?,
         @Path("limit") limit: Int,
-        @Path("after") after: String? = null
+        @Query("after") after: String? = null
     ): Single<List<List<HistoryTransactionResponse>>>
 
     /**
