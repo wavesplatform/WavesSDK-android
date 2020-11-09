@@ -124,6 +124,18 @@ interface NodeService {
     ): Observable<List<List<HistoryTransactionResponse>>>
 
     /**
+     * Get list of transactions where specified address has been involved
+     * @param address Address
+     * @param limit Number of transactions to be returned. Max is last 1000.
+     */
+    @GET("transactions/address/{address}/limit/{limit}")
+    fun transactionsAddress(
+        @Path("address") address: String?,
+        @Path("limit") limit: Int,
+        @Path("after") after: String? = null
+    ): Single<List<List<HistoryTransactionResponse>>>
+
+    /**
      * Get current Waves block-chain height
      */
     @GET("blocks/height")

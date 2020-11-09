@@ -46,6 +46,12 @@ interface DataService {
     fun aliases(@Query("address") address: String?): Observable<AliasesResponse>
 
     /**
+     * Search by array of addressOrAlias
+     */
+    @GET("v0/aliases")
+    fun aliases(@Query("queries") queries: Collection<String>): Single<AliasesResponse>
+
+    /**
      * Get a list of assets info from a list of IDs
      * @param request AssetsRequest with IDs array for many ids
      */
