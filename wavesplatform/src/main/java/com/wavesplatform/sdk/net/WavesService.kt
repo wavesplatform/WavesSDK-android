@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
  * Net-services for sending transactions and getting data from blockchain
  * and other Waves services
  */
-class WavesService(private var context: Context) {
+class WavesService(private val context: Context) {
 
     private lateinit var nodeService: NodeService
     private lateinit var dataService: DataService
@@ -38,6 +38,8 @@ class WavesService(private var context: Context) {
     private var cookies: HashSet<String> = hashSetOf()
     private var adapterFactory: CallAdapter.Factory
     private val onErrorListeners = mutableListOf<OnErrorListener>()
+
+    private val cacheDir by lazy { File(context.cacheDir, "httpcache") }
 
     init {
         adapterFactory = CallAdapterFactory(object : OnErrorListener {
@@ -209,7 +211,7 @@ class WavesService(private var context: Context) {
 
     private fun createCache(): Cache {
         val cacheSize = 200 * 1024 * 1024
-        val cacheDirectory = File(context.cacheDir, "httpcache")
+        val cacheDirectory = cacheDir
         return Cache(cacheDirectory, cacheSize.toLong())
     }
 
