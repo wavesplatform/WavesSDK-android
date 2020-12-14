@@ -84,6 +84,13 @@ interface NodeService {
     @GET("assets/balance/{address}")
     fun assetsBalance(@Path("address") address: String?): Observable<AssetBalancesResponse>
 
+    /**
+     * Account's balances for all assets by address
+     * @param address Address
+     */
+    @GET("assets/balance/{address}")
+    suspend fun loadAssetBalances(@Path("address") address: String?): AssetBalancesResponse
+
     @GET("assets/balance/{address}")
     fun assetsBalanceWithoutCache(
         @Path("address") address: String?,

@@ -27,10 +27,11 @@ internal class CallAdapterFactory(private val errorListener: OnErrorListener? = 
         returnType: Type,
         annotations: Array<Annotation>,
         retrofit: Retrofit
-    ): CallAdapter<*, *> {
+    ): CallAdapter<*, *>? {
+        val originalCallAdapter = original.get(returnType, annotations, retrofit) ?: return null
         return RxCallAdapterWrapper(
             retrofit,
-            original.get(returnType, annotations, retrofit)
+            originalCallAdapter
                 as CallAdapter<out Any, *>,
             returnType
         )
