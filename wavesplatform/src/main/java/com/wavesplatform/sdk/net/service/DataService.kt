@@ -40,6 +40,12 @@ interface DataService {
     fun alias(@Path("alias") alias: String?): Observable<AliasDataResponse>
 
     /**
+     * Get address for alias
+     */
+    @GET("v0/aliases/{alias}")
+    suspend fun loadAlias(@Path("alias") alias: String?): AliasDataResponse
+
+    /**
      * Get a list of aliases for a given address
      */
     @GET("v0/aliases")
@@ -50,6 +56,12 @@ interface DataService {
      */
     @GET("v0/aliases")
     fun aliases(@Query("queries") queries: Collection<String>): Single<AliasesResponse>
+
+    /**
+     * Search by array of addressOrAlias
+     */
+    @GET("v0/aliases")
+    suspend fun loadAliases(@Query("queries") queries: Collection<String>): AliasesResponse
 
     /**
      * Get a list of assets info from a list of IDs
