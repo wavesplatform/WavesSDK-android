@@ -64,6 +64,13 @@ interface NodeService {
     fun addressesBalance(@Path("address") address: String?): Observable<WavesBalanceResponse>
 
     /**
+     * Account's Waves balance
+     * @param address Address
+     */
+    @GET("addresses/balance/{address}")
+    suspend fun addressBalance(@Path("address") address: String?): WavesBalanceResponse
+
+    /**
      * Account's script additional info
      * @param address Address
      */
@@ -76,6 +83,13 @@ interface NodeService {
      */
     @GET("assets/balance/{address}")
     fun assetsBalance(@Path("address") address: String?): Observable<AssetBalancesResponse>
+
+    /**
+     * Account's balances for all assets by address
+     * @param address Address
+     */
+    @GET("assets/balance/{address}")
+    suspend fun loadAssetBalances(@Path("address") address: String?): AssetBalancesResponse
 
     @GET("assets/balance/{address}")
     fun assetsBalanceWithoutCache(
@@ -147,6 +161,13 @@ interface NodeService {
      */
     @GET("leasing/active/{address}")
     fun leasingActive(@Path("address") address: String?): Observable<List<HistoryTransactionResponse>>
+
+    /**
+     * Active leasing transactions of account
+     * @param address Address
+     */
+    @GET("leasing/active/{address}")
+    suspend fun loadActiveLeasing(@Path("address") address: String?): List<HistoryTransactionResponse>
 
     /**
      * Current Node time (UTC)

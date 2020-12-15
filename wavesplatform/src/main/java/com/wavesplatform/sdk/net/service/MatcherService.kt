@@ -40,6 +40,16 @@ interface MatcherService {
     ): Observable<Map<String, Long>>
 
     /**
+     * Get non-zero balance of open orders
+     */
+    @GET("matcher/balance/reserved/{publicKey}")
+    suspend fun loadReservedBalances(
+        @Path("publicKey") publicKey: String?,
+        @Header("Timestamp") timestamp: Long,
+        @Header("Signature") signature: String
+    ): Map<String, Long>
+
+    /**
      * Get the all open trading markets along with trading pairs meta data
      */
     @GET("matcher/orderbook")

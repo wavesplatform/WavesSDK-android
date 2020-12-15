@@ -35,7 +35,8 @@ fun getWavesDexFee(fee: Long): BigDecimal {
 }
 
 fun String.isWavesId(): Boolean {
-    return this.toLowerCase() == WavesConstants.WAVES_ASSET_INFO.id
+    val upperCase = this.toUpperCase()
+    return upperCase == WavesConstants.WAVES_ASSET_ID_EMPTY || upperCase == WavesConstants.WAVES_ASSET_ID_FILLED
 }
 
 fun ByteArray.arrayWithSize(): ByteArray {
