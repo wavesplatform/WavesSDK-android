@@ -59,6 +59,13 @@ interface DataService {
     fun assets(@Body request: AssetsRequest): Observable<AssetsInfoResponse>
 
     /**
+     * Get a list of assets info from a list of IDs
+     * @param request AssetsRequest with IDs array for many ids
+     */
+    @POST("v0/assets")
+    suspend fun loadAssets(@Body request: AssetsRequest): AssetsInfoResponse
+
+    /**
      * Get a list of assets info by search
      * @param search Assets prefix-search by the query in asset names, tickers, id
      */
