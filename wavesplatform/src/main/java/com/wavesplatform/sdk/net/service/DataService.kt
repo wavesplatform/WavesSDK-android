@@ -142,6 +142,20 @@ interface DataService {
     ): Observable<LastTradesResponseDataList>
 
     /**
+     * Get a list of exchange transactions by applying filters
+     * @param amountAsset Asset ID of the amount asset
+     * @param priceAsset Asset ID of the price asset
+     * @param limit How many transactions to await in response. Default value : 100
+     */
+    @GET("v0/transactions/exchange")
+    suspend fun getExchangeTransactions(
+        @Query("amountAsset") amountAsset: String?,
+        @Query("priceAsset") priceAsset: String?,
+        @Query("limit") limit: Int,
+        @Query("matcher") matcher: String? = null
+    ): LastTradesResponseDataList
+
+    /**
      * Get a list of mass transfer transactions by applying filters
      * @param assetId Asset ID of mass transfer
      * @param sender Address who send amount
