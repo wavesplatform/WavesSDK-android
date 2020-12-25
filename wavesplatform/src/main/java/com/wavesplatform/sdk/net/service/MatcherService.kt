@@ -127,6 +127,12 @@ interface MatcherService {
     fun cancelAllOrders(@Body request: CancelAllOrderRequest): Observable<Any>
 
     /**
+     * Cancel all active orders
+     */
+    @POST("matcher/orderbook/cancel")
+    suspend fun cancelAllActiveOrders(@Body request: CancelAllOrderRequest): Any
+
+    /**
      * Place a new limit order (buy or sell)
      */
     @POST("matcher/orderbook")
