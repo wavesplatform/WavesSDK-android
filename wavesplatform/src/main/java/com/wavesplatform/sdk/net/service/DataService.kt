@@ -71,6 +71,13 @@ interface DataService {
     fun assets(@Body request: AssetsRequest): Observable<AssetsInfoResponse>
 
     /**
+     * Get a list of assets info from a list of IDs
+     * @param request AssetsRequest with IDs array for many ids
+     */
+    @POST("v0/assets")
+    suspend fun loadAssets(@Body request: AssetsRequest): AssetsInfoResponse
+
+    /**
      * Get a list of assets info by search
      * @param search Assets prefix-search by the query in asset names, tickers, id
      */
@@ -133,6 +140,20 @@ interface DataService {
         @Query("limit") limit: Int,
         @Query("matcher") matcher: String? = null
     ): Observable<LastTradesResponseDataList>
+
+    /**
+     * Get a list of exchange transactions by applying filters
+     * @param amountAsset Asset ID of the amount asset
+     * @param priceAsset Asset ID of the price asset
+     * @param limit How many transactions to await in response. Default value : 100
+     */
+    @GET("v0/transactions/exchange")
+    suspend fun getExchangeTransactions(
+        @Query("amountAsset") amountAsset: String?,
+        @Query("priceAsset") priceAsset: String?,
+        @Query("limit") limit: Int,
+        @Query("matcher") matcher: String? = null
+    ): LastTradesResponseDataList
 
     /**
      * Get a list of mass transfer transactions by applying filters

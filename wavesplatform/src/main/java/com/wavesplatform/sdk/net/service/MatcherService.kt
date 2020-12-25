@@ -87,6 +87,18 @@ interface MatcherService {
     ): Observable<List<AssetPairOrderResponse>>
 
     /**
+     * Get OrderResponse History for a given Asset Pair and Public Key
+     */
+    @GET("matcher/orderbook/{amountAsset}/{priceAsset}/publicKey/{publicKey}")
+    suspend fun loadMyOrders(
+        @Path("amountAsset") amountAsset: String?,
+        @Path("priceAsset") priceAsset: String?,
+        @Path("publicKey") publicKey: String?,
+        @Header("signature") signature: String?,
+        @Header("timestamp") timestamp: Long
+    ): List<AssetPairOrderResponse>
+
+    /**
      * Get OrderResponse History for a given address
      */
     @GET("matcher/orderbook/{publicKey}")
@@ -98,10 +110,27 @@ interface MatcherService {
     ): Observable<List<AssetPairOrderResponse>>
 
     /**
+     * Get OrderResponse History for a given address
+     */
+    @GET("matcher/orderbook/{publicKey}")
+    suspend fun loadAllAddressOrders(
+        @Path("publicKey") publicKey: String,
+        @Query("activeOnly") activeOnly: Boolean = false,
+        @Header("signature") signature: String?,
+        @Header("timestamp") timestamp: Long
+    ): List<AssetPairOrderResponse>
+
+    /**
      * Cancel all active orders
      */
     @POST("matcher/orderbook/cancel")
     fun cancelAllOrders(@Body request: CancelAllOrderRequest): Observable<Any>
+
+    /**
+     * Cancel all active orders
+     */
+    @POST("matcher/orderbook/cancel")
+    suspend fun cancelAllActiveOrders(@Body request: CancelAllOrderRequest): Any
 
     /**
      * Place a new limit order (buy or sell)
