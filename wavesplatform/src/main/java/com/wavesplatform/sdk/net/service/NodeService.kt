@@ -156,6 +156,12 @@ interface NodeService {
     fun blockHeight(): Observable<HeightResponse>
 
     /**
+     * Get current Waves block-chain height
+     */
+    @GET("blocks/height")
+    suspend fun loadBlockHeight(): HeightResponse
+
+    /**
      * Active leasing transactions of account
      * @param address Address
      */
