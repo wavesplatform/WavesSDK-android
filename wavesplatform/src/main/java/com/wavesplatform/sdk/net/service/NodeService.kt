@@ -150,6 +150,18 @@ interface NodeService {
     ): Single<List<List<HistoryTransactionResponse>>>
 
     /**
+     * Get list of transactions where specified address has been involved
+     * @param address Address
+     * @param limit Number of transactions to be returned. Max is last 1000.
+     */
+    @GET("transactions/address/{address}/limit/{limit}")
+    suspend fun getTransactionsForAddress(
+        @Path("address") address: String?,
+        @Path("limit") limit: Int,
+        @Query("after") after: String? = null
+    ): List<List<HistoryTransactionResponse>>
+
+    /**
      * Get current Waves block-chain height
      */
     @GET("blocks/height")
