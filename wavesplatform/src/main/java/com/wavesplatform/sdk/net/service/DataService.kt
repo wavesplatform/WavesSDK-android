@@ -85,6 +85,13 @@ interface DataService {
     fun assets(@Query("search") search: String): Observable<AssetsInfoResponse>
 
     /**
+     * Get a list of assets info by search
+     * @param search Assets prefix-search by the query in asset names, tickers, id
+     */
+    @GET("v0/assets")
+    suspend fun searchAssets(@Query("search") search: String): AssetsInfoResponse
+
+    /**
      * Get pair info by amount and price assets
      * @param amountAsset Asset ID of the amount asset
      * @param priceAsset Asset ID of the price asset
