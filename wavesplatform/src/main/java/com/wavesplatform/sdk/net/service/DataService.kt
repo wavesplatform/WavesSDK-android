@@ -85,6 +85,13 @@ interface DataService {
     fun assets(@Query("search") search: String): Observable<AssetsInfoResponse>
 
     /**
+     * Get a list of assets info by search
+     * @param search Assets prefix-search by the query in asset names, tickers, id
+     */
+    @GET("v0/assets")
+    suspend fun searchAssets(@Query("search") search: String): AssetsInfoResponse
+
+    /**
      * Get pair info by amount and price assets
      * @param amountAsset Asset ID of the amount asset
      * @param priceAsset Asset ID of the price asset
@@ -126,6 +133,12 @@ interface DataService {
      */
     @POST("v0/pairs")
     fun pairs(@Body request: PairRequest): Observable<SearchPairResponse>
+
+    /**
+     * DEX volume, change24, last trade price. See pairs with Get-request
+     */
+    @POST("v0/pairs")
+    suspend fun loadPairs(@Body request: PairRequest): SearchPairResponse
 
     /**
      * Get a list of exchange transactions by applying filters
@@ -216,6 +229,17 @@ interface DataService {
         @Path("matcher") matcher: String? = null,
         @Body request: PairRatesRequest
     ): Observable<PairsRatesResponse>
+
+    /**
+     * Get rates info by amount and price assets
+     * @param pairs Pairs list (amountAsset/priceAsset)
+     * @param matcher Matcher address
+     */
+    @POST("v0/matchers/{matcher}/rates")
+    suspend fun loadPairsRates(
+        @Path("matcher") matcher: String? = null,
+        @Body request: PairRatesRequest
+    ): PairsRatesResponse
 
     /**
      * Get mass transfer transactions
