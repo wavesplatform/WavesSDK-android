@@ -10,6 +10,7 @@ import com.wavesplatform.sdk.model.request.matcher.CancelAllOrderRequest
 import com.wavesplatform.sdk.model.request.matcher.CancelOrderRequest
 import com.wavesplatform.sdk.model.request.matcher.CreateOrderRequest
 import com.wavesplatform.sdk.model.response.matcher.AssetPairOrderResponse
+import com.wavesplatform.sdk.model.response.matcher.CreateOrderResponse
 import com.wavesplatform.sdk.model.response.matcher.MarketsResponse
 import com.wavesplatform.sdk.model.response.matcher.MatcherSettingsResponse
 import com.wavesplatform.sdk.model.response.matcher.OrderBookResponse
@@ -136,13 +137,13 @@ interface MatcherService {
      * Place a new limit order (buy or sell)
      */
     @POST("matcher/orderbook")
-    fun createOrder(@Body orderRequest: CreateOrderRequest): Observable<Any>
+    suspend fun createLimitOrder(@Body orderRequest: CreateOrderRequest): CreateOrderResponse
 
     /**
      * Place a new market order (buy or sell)
      */
     @POST("matcher/orderbook/market")
-    fun createMarketOrder(@Body orderRequest: CreateOrderRequest): Observable<Any>
+    suspend fun createMarketOrder(@Body orderRequest: CreateOrderRequest): CreateOrderResponse
 
     /**
      * Cancel previously submitted order if it's not already filled completely
