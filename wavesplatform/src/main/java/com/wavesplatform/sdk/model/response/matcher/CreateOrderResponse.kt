@@ -47,14 +47,14 @@ import com.google.gson.annotations.SerializedName
  *
  */
 data class CreateOrderResponse(
-    @SerializedName("status")
-    var status: String? = null,
-    @SerializedName("success")
-    var success: Boolean? = null) {
+        @SerializedName("status")
+        var status: String? = null,
+        @SerializedName("success")
+        var success: Boolean? = null
+) {
 
     companion object {
         const val STATUS_ORDER_ACCEPTED = "OrderAccepted"
         const val STATUS_ORDER_REJECTED = "OrderRejected"
     }
 }
-
