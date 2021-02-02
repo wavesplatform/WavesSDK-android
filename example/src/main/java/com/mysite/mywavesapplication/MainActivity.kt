@@ -10,7 +10,6 @@ import com.wavesplatform.sdk.WavesSdk
 import com.wavesplatform.sdk.utils.Environment
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private val fragments = arrayListOf(

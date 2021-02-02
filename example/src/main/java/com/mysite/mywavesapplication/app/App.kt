@@ -12,8 +12,7 @@ class App : Application() {
         WavesSdk.init(this, Environment.TEST_NET)
 
         // or use Environment.TEST_NET for switch to Test-Net
-        //WavesSdk.init(this, Environment.TEST_NET)
-
+        // WavesSdk.init(this, Environment.TEST_NET)
 
         // You must configure dApp if you want to use Waves Keeper
         WavesSdk.keeper().configureDApp(
@@ -21,6 +20,5 @@ class App : Application() {
             "My Waves DApp",
             "https://avatars2.githubusercontent.com/u/18295288"
         )
-
     }
 }

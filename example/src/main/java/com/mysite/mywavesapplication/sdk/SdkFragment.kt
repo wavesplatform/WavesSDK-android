@@ -1,15 +1,14 @@
 package com.mysite.mywavesapplication.sdk
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.text.HtmlCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
 import com.mysite.mywavesapplication.R
 import com.mysite.mywavesapplication.utils.copyToClipboard
 import com.wavesplatform.sdk.WavesSdk
@@ -21,7 +20,6 @@ import com.wavesplatform.sdk.utils.getScaledAmount
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_sdk.*
 
-
 /**
  * A simple [Fragment] subclass.
  */
@@ -32,7 +30,8 @@ class SdkFragment : androidx.fragment.app.Fragment() {
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_sdk, container, false)
 
@@ -40,9 +39,9 @@ class SdkFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         /**
-        * First you must init() WavesSdk in [App] and add Internet permission
-        * Put your seed in const [MainActivity.Companion.SEED] from https://testnet.wavesplatform.com
-        * or https://client.wavesplatform.com
+         * First you must init() WavesSdk in [App] and add Internet permission
+         * Put your seed in const [MainActivity.Companion.SEED] from https://testnet.wavesplatform.com
+         * or https://client.wavesplatform.com
          */
 
         button_generate_seed.setOnClickListener {
@@ -72,7 +71,6 @@ class SdkFragment : androidx.fragment.app.Fragment() {
         handleServiceErrors()
     }
 
-
     private fun handleServiceErrors() {
         WavesSdk.service().addOnErrorListener(object : OnErrorListener {
             override fun onError(exception: NetworkException) {
@@ -87,24 +85,25 @@ class SdkFragment : androidx.fragment.app.Fragment() {
                 .getNode() // You can choose different Waves services: node, matcher and data service
                 .addressesBalance(address) // Here methods of service
                 .compose(RxUtil.applyObservableDefaultSchedulers())
-                .subscribe({ wavesBalance ->
-                    // Do something on success, now we have wavesBalance.balance in satoshi in Long
-                    Toast.makeText(
-                        requireActivity(),
-                        "Balance is : ${getScaledAmount(wavesBalance.balance, 8)} Waves",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }, { error ->
-                    // Do something on fail
-                    val errorMessage = "Can't get addressesBalance! + ${error.message}"
-                    Log.e("MainActivity", errorMessage)
-                    error.printStackTrace()
-                    Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show()
-                })
+                .subscribe(
+                    { wavesBalance ->
+                        // Do something on success, now we have wavesBalance.balance in satoshi in Long
+                        Toast.makeText(
+                            requireActivity(),
+                            "Balance is : ${getScaledAmount(wavesBalance.balance, 8)} Waves",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    },
+                    { error ->
+                        // Do something on fail
+                        val errorMessage = "Can't get addressesBalance! + ${error.message}"
+                        Log.e("MainActivity", errorMessage)
+                        error.printStackTrace()
+                        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                )
         )
-
-
     }
 
     // Unsubscribe after destroy
