@@ -24,7 +24,6 @@ enum class ExampleTransaction(var title: String) : IExampleTransaction {
         }
     },
 
-
     ERROR_DATA_TRANSACTION("Data Transaction (Send Error)") {
         override fun getTransaction(): KeeperTransaction {
             return DataTransaction(
@@ -52,7 +51,6 @@ enum class ExampleTransaction(var title: String) : IExampleTransaction {
         }
     },
 
-
     ERROR_TRANSFER_TRANSACTION("Transfer Transaction (Send Error)") {
         override fun getTransaction(): KeeperTransaction {
             return TransferTransaction(
@@ -64,7 +62,6 @@ enum class ExampleTransaction(var title: String) : IExampleTransaction {
             )
         }
     },
-
 
     SUCCESS_INVOKE_SCRIPT_TRANSACTION("Invoke Script Transaction (Success)") {
         override fun getTransaction(): KeeperTransaction {
@@ -108,7 +105,6 @@ enum class ExampleTransaction(var title: String) : IExampleTransaction {
         }
     }
 }
-
 
 interface IExampleTransaction {
     fun getTransaction(): KeeperTransaction

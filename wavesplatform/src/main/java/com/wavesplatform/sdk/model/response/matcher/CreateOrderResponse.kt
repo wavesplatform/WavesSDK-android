@@ -47,10 +47,10 @@ import com.google.gson.annotations.SerializedName
  *
  */
 data class CreateOrderResponse(
-        @SerializedName("status")
-        var status: String? = null,
-        @SerializedName("success")
-        var success: Boolean? = null
+    @SerializedName("status")
+    var status: String? = null,
+    @SerializedName("success")
+    var success: Boolean? = null
 ) {
 
     companion object {
