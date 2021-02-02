@@ -16,6 +16,8 @@ class AssetPairOrderResponse {
     var id: String = ""
     @SerializedName("type")
     var type: String = ""
+    @SerializedName("orderType")
+    var orderType: String = ""
     @SerializedName("amount")
     var amount: Long = 0
     @SerializedName("price")
