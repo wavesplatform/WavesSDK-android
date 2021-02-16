@@ -33,7 +33,7 @@ class WavesServiceTest {
 
     @Before
     fun initWavesSdk() {
-        WavesSdk.init(InstrumentationRegistry.getTargetContext(), Environment.TEST_NET)
+        WavesSdk.init(InstrumentationRegistry.getInstrumentation().context, Environment.TEST_NET)
     }
 
     @Test
