@@ -138,7 +138,7 @@ class WavesService(private val context: Context) {
             okHttpClientBuilder.addInterceptor(
                 LoggingInterceptor.Builder()
                     .loggable(BuildConfig.DEBUG)
-                    .setLevel(Level.BASIC)
+                    .setLevel(Level.NONE)
                     .log(Log.INFO)
                     .request("Request")
                     .response("Response")
