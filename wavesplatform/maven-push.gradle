@@ -89,6 +89,7 @@ afterEvaluate { project ->
 
     signing {
         required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        useGpgCmd()
         sign configurations.archives
     }
 
