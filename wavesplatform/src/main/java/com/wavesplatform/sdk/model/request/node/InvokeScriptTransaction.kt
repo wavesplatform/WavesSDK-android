@@ -147,11 +147,11 @@ class InvokeScriptTransaction(
                 } else {
                     SignUtil.arrayOption(paymentItem.assetId!!)
                 }
-                array = Bytes.concat(array, Bytes.concat(amount, assetId))
+                array = Bytes.concat(array, Bytes.concat(amount, assetId).arrayWithSize())
             }
             val lengthBytes = Shorts.toByteArray(payment.size.toShort())
-
-            return Bytes.concat(lengthBytes, array.arrayWithSize())
+            
+            return Bytes.concat(lengthBytes, array)
         } else {
             return byteArrayOf(0, 0)
         }
